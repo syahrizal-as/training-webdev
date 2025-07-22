@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panduan Web Developer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 40px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.2em;
+        }
+
+        .section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            color: #4a5568;
+        }
+
+        .icon {
+            width: 50px;
+            height: 50px;
+            margin-right: 15px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+        }
+
+        .icon-blue { background: linear-gradient(45deg, #4299e1, #3182ce); }
+        .icon-green { background: linear-gradient(45deg, #48bb78, #38a169); }
+        .icon-purple { background: linear-gradient(45deg, #9f7aea, #805ad5); }
+        .icon-orange { background: linear-gradient(45deg, #ed8936, #dd6b20); }
+        .icon-red { background: linear-gradient(45deg, #f56565, #e53e3e); }
+        .icon-teal { background: linear-gradient(45deg, #4fd1c7, #38b2ac); }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .card {
+            background: #f7fafc;
+            border-radius: 10px;
+            padding: 20px;
+            border-left: 4px solid #667eea;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            background: #edf2f7;
+            transform: translateX(5px);
+        }
+
+        .card h4 {
+            color: #2d3748;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .card p {
+            color: #4a5568;
+            font-size: 0.95em;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #a8edea 0%, #fed6e3 100%);
+            border: none;
+            color: #2d3748;
+        }
+
+        .step-number {
+            background: #667eea;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+            font-size: 14px;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .tool-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .tool-card:hover {
+            transform: scale(1.05);
+        }
+
+        .tool-card h4 {
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            margin-top: 40px;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .section {
+                padding: 20px;
+            }
+            
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .progress-bar {
+            background: #e2e8f0;
+            border-radius: 10px;
+            height: 8px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 10px;
+            transition: width 1s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🚀 Panduan Web Developer</h1>
+            <p>created by : Syahrizal As</p>
+        </div>
+
+        <!-- SQL Section -->
+        <div class="section">
+            <div class="section-title">
+                <div class="icon icon-blue">💾</div>
+                <h2>Database dengan SQL</h2>
+            </div>
+            <div class="content-grid">
+                <div class="card highlight">
+                    <h4>🎯 Apa itu SQL?</h4>
+                    <p>Bahasa untuk "ngobrol" sama database. Kayak ngasih perintah ke database untuk ambil, tambahin, atau ubah data.</p>
+                </div>
+                <div class="card">
+                    <h4>📝 Perintah Dasar</h4>
+                    <p><strong>SELECT</strong> - Ambil data<br>
+                       <strong>INSERT</strong> - Tambahin data<br>
+                       <strong>UPDATE</strong> - Ubah data<br>
+                       <strong>DELETE</strong> - Hapus data</p>
+                </div>
+                <div class="card">
+                    <h4>💡 Contoh Simple</h4>
+                    <p><code>SELECT * FROM users WHERE nama='John'</code><br>
+                    Artinya: "Cari semua data user yang namanya John"</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Framework Section -->
+        <div class="section">
+            <div class="section-title">
+                <div class="icon icon-green">🧩</div>
+                <h2>Framework & Library</h2>
+            </div>
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <h4>Laravel</h4>
+                    <p>Framework PHP yang powerful</p>
+                </div>
+                <div class="tool-card">
+                    <h4>React JS</h4>
+                    <p>Library JavaScript untuk UI</p>
+                </div>
+                <div class="tool-card">
+                    <h4>Vue.js</h4>
+                    <p>Framework JS yang mudah dipelajari</p>
+                </div>
+                <div class="tool-card">
+                    <h4>Bootstrap</h4>
+                    <p>CSS framework untuk styling</p>
+                </div>
+            </div>
+            <div class="card" style="margin-top: 20px;">
+                <h4>🤔 Kenapa Pakai Framework?</h4>
+                <p>Biar coding lebih cepat, rapi, dan nggak perlu bikin dari nol. Kayak pakai template yang udah jadi!</p>
+            </div>
+        </div>
+
+        <!-- Testing Section -->
+        <div class="section">
+            <div class="section-title">
+                <div class="icon icon-purple">🧪</div>
+                <h2>Testing & UAT</h2>
+            </div>
+            <div class="content-grid">
+                <div class="card">
+                    <div class="step-number">1</div>
+                    <h4>UAT adalah...</h4>
+                    <p>User Acceptance Testing - testing terakhir yang dilakukan sama user buat mastiin aplikasi udah sesuai kebutuhan mereka</p>
+                </div>
+                <div class="card">
+                    <div class="step-number">2</div>
+                    <h4>Cara Kerjanya</h4>
+                    <p>Bikin skenario testing → User cobain fitur-fitur → Catat hasilnya → Fix kalau ada masalah</p>
+                </div>
+                <div class="card">
+                    <div class="step-number">3</div>
+                    <h4>Contoh Skenario</h4>
+                    <p>Testing checkout di toko online: User pilih barang → masuk keranjang → bayar → selesai ✅</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Monitoring Section -->
+        <div class="section">
+            <div class="section-title">
+                <div class="icon icon-orange">📊</div>
+                <h2>Monitoring Aplikasi</h2>
+            </div>
+            <div class="content-grid">
+                <div class="card highlight">
+                    <h4>🔍 Kenapa Monitoring?</h4>
+                    <p>Biar tau aplikasi kita sehat atau sakit. Kayak cek kesehatan rutin!</p>
+                </div>
+                <div class="card">
+                    <h4>📈 Yang Dimonitor</h4>
+                    <p>• CPU usage (seberapa sibuk processor)<br>
+                       • Memory (RAM yang kepake)<br>
+                       • Bandwidth (kecepatan internet)<br>
+                       • Response time (seberapa cepat loading)</p>
+                </div>
+                <div class="card">
+                    <h4>🛠️ Tools Monitoring</h4>
+                    <p>UptimeRobot, Nagios, Grafana<br>
+                    Bisa kirim notifikasi kalau ada masalah!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Security Section -->
+        <div class="section">
+            <div class="section-title">
+                <div class="icon icon-red">🔒</div>
+                <h2>Keamanan Aplikasi</h2>
+            </div>
+            <div class="content-grid">
+                <div class="card">
+                    <h4>⚠️ Identifikasi Risiko</h4>
+                    <p>Cari tau ancaman keamanan yang mungkin terjadi, kayak hacker, virus, atau kebocoran data</p>
+                </div>
+                <div class="card">
+                    <h4>🛡️ Cara Melindungi</h4>
+                    <p>• Buat kebijakan keamanan yang jelas<br>
+                       • Audit keamanan secara rutin<br>
+                       • Pakai best practice (cara terbaik) yang udah terbukti</p>
+                </div>
+                <div class="card highlight">
+                    <h4>💎 Manfaatnya</h4>
+                    <p>Data user aman, aplikasi selalu bisa diakses, kepercayaan user meningkat</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Migration Section -->
+        <div class="section">
+            <div class="section-title">
+                <div class="icon icon-teal">🚚</div>
+                <h2>Migrasi & Update</h2>
+            </div>
+            <div class="content-grid">
+                <div class="card">
+                    <div class="step-number">1</div>
+                    <h4>Perencanaan</h4>
+                    <p>Tentuin kapan migrasi, siapa yang ngerjain, dan apa aja yang perlu disiapkan</p>
+                </div>
+                <div class="card">
+                    <div class="step-number">2</div>
+                    <h4>Persiapan Data</h4>
+                    <p>Pastiin data bisa dipindah dengan aman dan nggak ada yang hilang</p>
+                </div>
+                <div class="card">
+                    <div class="step-number">3</div>
+                    <h4>Eksekusi</h4>
+                    <p>Pindahin sistem dari yang lama ke yang baru sesuai jadwal</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Project Management Section -->
+        <div class="section">
+            <div class="section-title">
+                <div class="icon icon-purple">📋</div>
+                <h2>Manajemen Proyek</h2>
+            </div>
+            <div class="content-grid">
+                <div class="card">
+                    <h4>📝 Perencanaan</h4>
+                    <p>Tentuin tujuan, deadline, dan tim yang terlibat dalam proyek</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 90%;"></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <h4>🤝 Koordinasi</h4>
+                    <p>Pastiin semua tim berkomunikasi dengan baik dan kerjasama yang solid</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 75%;"></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <h4>📊 Monitoring</h4>
+                    <p>Pantau progress proyek dan cari solusi kalau ada masalah</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 85%;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tools Section -->
+        <div class="section">
+            <div class="section-title">
+                <div class="icon icon-green">🛠️</div>
+                <h2>Tools untuk Produktivitas</h2>
+            </div>
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <h4>💻 IDE</h4>
+                    <p>VS Code, PHPStorm - tempat coding yang nyaman</p>
+                </div>
+                <div class="tool-card">
+                    <h4>🔄 Git</h4>
+                    <p>Buat nyimpen versi code dan kerjasama tim</p>
+                </div>
+                <div class="tool-card">
+                    <h4>📋 Jira</h4>
+                    <p>Manajemen task dan tracking progress</p>
+                </div>
+                <div class="tool-card">
+                    <h4>🧪 Testing Tools</h4>
+                    <p>PHPUnit, Jest - buat testing otomatis</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tips Success -->
+        <div class="section">
+            <div class="section-title">
+                <div class="icon icon-orange">🏆</div>
+                <h2>Tips Sukses Web Developer</h2>
+            </div>
+            <div class="content-grid">
+                <div class="card highlight">
+                    <h4>🎯 Fundamental</h4>
+                    <p>Kuasai dasar-dasar pemrograman, algoritma, dan database dengan kuat</p>
+                </div>
+                <div class="card highlight">
+                    <h4>💪 Praktis</h4>
+                    <p>Jangan cuma teori! Bikin project nyata buat ngasah skill</p>
+                </div>
+                <div class="card highlight">
+                    <h4>🚀 Update Terus</h4>
+                    <p>Teknologi web cepat berkembang, jadi harus selalu belajar hal baru</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <h3>🎉 Selamat Belajar!</h3>
+            <p>Semoga materi ini membantu kalian untuk menghadapi ujikom dengan percaya diri</p>
+            <p><em>Good luck, future web developers! 💻✨</em></p>
+        </div>
+    </div>
+
+    <script>
+        // Add some interactive animations
+        document.addEventListener('DOMContentLoaded', function() {
+            const sections = document.querySelectorAll('.section');
+            
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+            
+            sections.forEach(section => {
+                section.style.opacity = '0';
+                section.style.transform = 'translateY(20px)';
+                section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(section);
+            });
+            
+            // Progress bar animation
+            const progressBars = document.querySelectorAll('.progress-fill');
+            progressBars.forEach(bar => {
+                const width = bar.style.width;
+                bar.style.width = '0%';
+                setTimeout(() => {
+                    bar.style.width = width;
+                }, 500);
+            });
+        });
+    </script>
+</body>
+</html>
