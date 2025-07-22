@@ -3,279 +3,224 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web Developer Training - Laravel 10</title>
+    <title>Web Developer Training - Laravel 12</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #5563c1 0%, #7c64c2 100%);
             min-height: 100vh;
             overflow-x: hidden;
         }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
         .slide {
             min-height: 100vh;
             display: none;
             justify-content: center;
             align-items: center;
             padding: 40px 20px;
-            position: relative;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            margin: 20px 0;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            background: rgba(255,255,255,0.07);
+            backdrop-filter: blur(7px);
+            border-radius: 18px;
+            margin: 22px 0;
+            box-shadow: 0 10px 30px rgba(60,60,120,0.11);
         }
-
-        .slide.active {
-            display: flex;
-        }
-
+        .slide.active { display: flex; }
         .slide-content {
             text-align: center;
-            color: white;
+            color: #f7f7fa;
             max-width: 900px;
             animation: fadeInUp 0.8s ease;
         }
-
         @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(20px);}
+            to   { opacity: 1; transform: translateY(0);}
         }
-
         .title-main {
-            font-size: 4rem;
-            font-weight: 800;
+            font-size: 3.5rem;
+            font-weight: 700;
             margin-bottom: 20px;
-            background: linear-gradient(45deg, #ff6b6b, #ffd93d);
+            background: linear-gradient(45deg, #f7f7fa, #e8eaf6 70%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-
         .subtitle {
-            font-size: 1.8rem;
-            font-weight: 300;
-            margin-bottom: 40px;
-            opacity: 0.9;
+            font-size: 1.6rem;
+            font-weight: 400;
+            margin-bottom: 34px;
+            color: #e2e8f0;
         }
-
         .trainer-card {
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(15px);
-            border-radius: 20px;
-            padding: 40px;
-            margin: 30px 0;
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255,255,255,0.13);
+            backdrop-filter: blur(12px);
+            border-radius: 18px;
+            padding: 34px;
+            margin: 22px 0;
+            border: 1px solid rgba(255,255,255,0.17);
+            box-shadow: 0 7px 20px rgba(60,60,120,0.08);
         }
-
         .trainer-info h2 {
-            font-size: 2.5rem;
+            font-size: 2rem;
             margin-bottom: 10px;
-            color: #ffd93d;
+            color: #ffe066;
         }
-
         .trainer-info p {
-            font-size: 1.2rem;
-            margin-bottom: 8px;
+            font-size: 1.1rem;
+            margin-bottom: 6px;
+            color: #f7f7fa;
             opacity: 0.9;
         }
-
         .badge {
             display: inline-block;
-            background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
-            padding: 8px 20px;
-            border-radius: 25px;
+            background: linear-gradient(90deg, #7c64c2 60%, #ffe066 100%);
+            color: #2d3142;
+            padding: 7px 16px;
+            border-radius: 20px;
             font-weight: 600;
-            font-size: 0.9rem;
-            margin: 5px;
+            font-size: 0.95rem;
+            margin: 5px 5px 0 0;
         }
-
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin: 40px 0;
+            gap: 26px;
+            margin: 34px 0;
         }
-
         .card {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 30px;
+            background: rgba(255,255,255,0.13);
+            backdrop-filter: blur(9px);
+            border-radius: 14px;
+            padding: 24px;
             text-align: left;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.14);
+            transition: box-shadow 0.3s;
+            color: #e9ecef;
         }
-
         .card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 14px 34px rgba(60,60,120,0.17);
         }
-
         .card h3 {
-            color: #ffd93d;
-            font-size: 1.4rem;
-            margin-bottom: 15px;
+            color: #ffe066;
+            font-size: 1.25rem;
+            margin-bottom: 10px;
         }
-
-        .card ul {
-            list-style: none;
-            padding: 0;
-        }
-
+        .card ul { list-style: none; padding: 0; }
         .card li {
-            padding: 8px 0;
+            padding: 7px 0 7px 22px;
             position: relative;
-            padding-left: 25px;
         }
-
         .card li::before {
             content: "✓";
             position: absolute;
             left: 0;
-            color: #4ade80;
+            color: #ffe066;
             font-weight: bold;
         }
-
         .navigation {
             position: fixed;
-            bottom: 30px;
+            bottom: 28px;
             left: 50%;
             transform: translateX(-50%);
             display: flex;
-            gap: 15px;
+            gap: 14px;
             z-index: 1000;
         }
-
         .nav-btn {
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
+            background: linear-gradient(90deg, #7c64c2 70%, #ffe066 100%);
             border: none;
             border-radius: 50px;
-            padding: 15px 25px;
-            color: white;
-            font-weight: 600;
+            padding: 14px 22px;
+            color: #2d3142;
+            font-weight: 700;
             cursor: pointer;
-            transition: all 0.3s ease;
+            font-size: 1rem;
+            transition: background .3s, transform .3s;
         }
-
         .nav-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: scale(1.05);
+            background: linear-gradient(90deg, #ffe066 60%, #7c64c2 100%);
+            transform: scale(1.06);
         }
-
         .slide-indicator {
             position: fixed;
-            top: 30px;
-            right: 30px;
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
+            top: 24px;
+            right: 26px;
+            background: rgba(255,255,255,0.13);
+            backdrop-filter: blur(7px);
             border-radius: 50px;
-            padding: 10px 20px;
-            color: white;
-            font-weight: 600;
+            padding: 8px 18px;
+            color: #f7f7fa;
+            font-weight: 700;
+            font-size: 1rem;
         }
-
         .tools-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 25px;
-            margin: 40px 0;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin: 34px 0;
         }
-
         .tool-card {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 25px;
+            background: rgba(255,255,255,0.10);
+            backdrop-filter: blur(7px);
+            border-radius: 13px;
+            padding: 18px;
             text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255,255,255,0.12);
+            color: #e9ecef;
         }
-
         .tool-icon {
-            font-size: 3rem;
-            margin-bottom: 15px;
+            font-size: 2.5rem;
+            margin-bottom: 12px;
+            color: #ffe066;
         }
-
         .role-cards {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-            margin: 40px 0;
+            grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+            gap: 18px;
+            margin: 34px 0;
         }
-
         .role-card {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
-            backdrop-filter: blur(15px);
-            border-radius: 20px;
-            padding: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            transition: all 0.3s ease;
+            background: linear-gradient(135deg,rgba(255,255,255,0.10),rgba(255,255,255,0.07));
+            backdrop-filter: blur(10px);
+            border-radius: 14px;
+            padding: 20px;
+            border: 1px solid rgba(255,255,255,0.16);
+            transition: box-shadow 0.3s;
+            color: #e9ecef;
         }
-
         .role-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 14px 34px rgba(60,60,120,0.13);
         }
-
+        .role-card h3{color:#ffe066;}
         .features-list {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin: 30px 0;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 24px 0;
         }
-
         .feature-item {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 20px;
+            background: rgba(255,255,255,0.09);
+            border-radius: 10px;
+            padding: 14px;
             text-align: center;
-            transition: all 0.3s ease;
+            color: #e9ecef;
         }
-
-        .feature-item:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
+        .feature-item:hover { background: rgba(255,255,255,0.18);}
+        .feature-item h3 {font-size: 1.3rem; color: #ffe066; margin-bottom: 5px;}
+        .feature-item h4 {font-size: 1rem;}
+        a {text-decoration: none; color: #ffe066;}
+        a:hover {color: #7c64c2;}
         @media (max-width: 768px) {
-            .title-main {
-                font-size: 2.5rem;
-            }
-            
-            .subtitle {
-                font-size: 1.2rem;
-            }
-            
-            .grid, .tools-grid, .role-cards {
-                grid-template-columns: 1fr;
-            }
+            .title-main {font-size: 2.1rem;}
+            .subtitle {font-size: 1.08rem;}
+            .grid, .tools-grid, .role-cards {grid-template-columns: 1fr;}
+            .trainer-card, .card, .role-card {padding: 12px;}
+            .slide-content{max-width:96vw;}
         }
     </style>
 </head>
 <body>
     <div class="slide-indicator" id="slideIndicator">1 / 10</div>
-    
     <!-- Slide 1: Cover -->
     <div class="slide active">
         <div class="slide-content">
@@ -286,7 +231,7 @@
                     <h2>Syahrizal as</h2>
                     <p>📍 Tangerang Selatan - Banten, Indonesia</p>
                     <p>🎓 Software Engineer</p>
-                    <div style="margin-top: 20px;">
+                    <div style="margin-top: 14px;">
                         <span class="badge">Laravel Expert</span>
                         <span class="badge">Full Stack Developer</span>
                     </div>
@@ -298,16 +243,16 @@
     <!-- Slide 2: About Instructor -->
     <div class="slide">
         <div class="slide-content">
-            <h1 style="font-size: 3rem; margin-bottom: 40px; color: #ffd93d;">KENALAN YUK! 👋</h1>
+            <h1 style="font-size: 2.2rem; margin-bottom: 34px; color: #ffe066;">KENALAN YUK! 👋</h1>
             <div class="trainer-card">
                 <h2>Syahrizal</h2>
-                <p>📅 Cirebon, 20 November 1999</p>
-                <p>🎓 Sarjana Teknik Informatika, UMC</p>
-                <p>📧 syahrizal.dev@gmail.com</p>
-                <p>📱 +62 895-3748-97965</p>
-                <div style="margin-top: 30px;">
+                <p>📅 Sumedang, 29 Agustus 1997</p>
+                <p>🎓 Sarjana Sistem Informasi, Pranata Indonesia</p>
+                <p>📧 alisadikinsyahrizal@gmail.com</p>
+                <p>📱 +62 8964-9532-860</p>
+                <div style="margin-top: 14px;">
                     <div class="badge">Software Engineer</div>
-                    <div class="badge">BNSP Certified</div>
+                    <!-- <div class="badge">BNSP Certified</div> -->
                     <div class="badge">Web Developer</div>
                 </div>
             </div>
@@ -317,7 +262,7 @@
     <!-- Slide 3: Rights & Obligations -->
     <div class="slide">
         <div class="slide-content">
-            <h1 style="font-size: 2.5rem; margin-bottom: 40px; color: #ffd93d;">Hak & Kewajiban Peserta</h1>
+            <h1 style="font-size: 1.8rem; margin-bottom: 30px; color: #ffe066;">Hak & Kewajiban Peserta</h1>
             <div class="grid">
                 <div class="card">
                     <h3>🎯 Hak Peserta Latih</h3>
@@ -347,94 +292,51 @@
     <!-- Slide 4: Goals & Benefits -->
     <div class="slide">
         <div class="slide-content">
-            <h1 style="font-size: 2.5rem; margin-bottom: 40px; color: #ffd93d;">Tujuan & Manfaat Pelatihan</h1>
+            <h1 style="font-size: 1.8rem; margin-bottom: 30px; color: #ffe066;">Tujuan & Manfaat Pelatihan</h1>
             <div class="grid">
                 <div class="card">
                     <h3>🎯 Tujuan</h3>
                     <div class="features-list">
-                        <div class="feature-item">
-                            <h4>📈 Pemahaman Web Development</h4>
-                        </div>
-                        <div class="feature-item">
-                            <h4>🛠️ Menguasai Tools & Teknologi</h4>
-                        </div>
-                        <div class="feature-item">
-                            <h4>💪 Kemampuan Praktis</h4>
-                        </div>
-                        <div class="feature-item">
-                            <h4>🚀 Meningkatkan Daya Saing</h4>
-                        </div>
-                        <div class="feature-item">
-                            <h4>🎨 Kreativitas & Teknologi</h4>
-                        </div>
+                        <div class="feature-item"><h4>📈 Pemahaman Web Development</h4></div>
+                        <div class="feature-item"><h4>🛠️ Menguasai Tools & Teknologi</h4></div>
+                        <div class="feature-item"><h4>💪 Kemampuan Praktis</h4></div>
+                        <div class="feature-item"><h4>🚀 Meningkatkan Daya Saing</h4></div>
+                        <div class="feature-item"><h4>🎨 Kreativitas & Teknologi</h4></div>
                     </div>
                 </div>
                 <div class="card">
                     <h3>🎁 Manfaat</h3>
                     <div class="features-list">
-                        <div class="feature-item">
-                            <h4>🌐 Website dari Nol</h4>
-                        </div>
-                        <div class="feature-item">
-                            <h4>💼 Peluang Karir</h4>
-                        </div>
-                        <div class="feature-item">
-                            <h4>⚡ Efisiensi Proyek</h4>
-                        </div>
-                        <div class="feature-item">
-                            <h4>🧠 Problem Solving</h4>
-                        </div>
-                        <div class="feature-item">
-                            <h4>💼 Portfolio Siap Pakai</h4>
-                        </div>
+                        <div class="feature-item"><h4>🌐 Website dari Nol</h4></div>
+                        <div class="feature-item"><h4>💼 Peluang Karir</h4></div>
+                        <div class="feature-item"><h4>⚡ Efisiensi Proyek</h4></div>
+                        <div class="feature-item"><h4>🧠 Problem Solving</h4></div>
+                        <div class="feature-item"><h4>💼 Portfolio Siap Pakai</h4></div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
     <!-- Slide 5: Course Overview -->
     <div class="slide">
         <div class="slide-content">
-            <h1 style="font-size: 2.5rem; margin-bottom: 40px; color: #ffd93d;">Course Overview</h1>
+            <h1 style="font-size: 1.8rem; margin-bottom: 30px; color: #ffe066;">Course Overview</h1>
             <div class="features-list">
-                <div class="feature-item">
-                    <h3>01</h3>
-                    <h4>Pre-Test</h4>
-                </div>
-                <div class="feature-item">
-                    <h3>02</h3>
-                    <h4>Overview Web Developer</h4>
-                </div>
-                <div class="feature-item">
-                    <h3>03</h3>
-                    <h4>Install Tools</h4>
-                </div>
-                <div class="feature-item">
-                    <h3>04</h3>
-                    <h4>Slicing Template Bootstrap</h4>
-                </div>
-                <div class="feature-item">
-                    <h3>05</h3>
-                    <h4>CRUD Master 1</h4>
-                </div>
-                <div class="feature-item">
-                    <h3>06</h3>
-                    <h4>CRUD Master 2</h4>
-                </div>
-                <div class="feature-item">
-                    <h3>07</h3>
-                    <h4>CRUD Transaksi Relasi</h4>
-                </div>
+                <div class="feature-item"><h3>01</h3><h4>Pre-Test</h4></div>
+                <div class="feature-item"><h3>02</h3><h4>Overview Web Developer</h4></div>
+                <div class="feature-item"><h3>03</h3><h4>Install Tools</h4></div>
+                <div class="feature-item"><h3>04</h3><h4>Slicing Template Bootstrap</h4></div>
+                <div class="feature-item"><h3>05</h3><h4>CRUD Master 1</h4></div>
+                <div class="feature-item"><h3>06</h3><h4>CRUD Master 2</h4></div>
+                <div class="feature-item"><h3>07</h3><h4>CRUD Transaksi Relasi</h4></div>
             </div>
         </div>
     </div>
-
     <!-- Slide 6: Web Developer Roles -->
     <div class="slide">
         <div class="slide-content">
-            <h1 style="font-size: 2.5rem; margin-bottom: 40px; color: #ffd93d;">Web Developer Roles</h1>
-            <p style="font-size: 1.2rem; margin-bottom: 40px;">Orang yang bertugas membuat, mengembangkan, dan memelihara situs web.</p>
+            <h1 style="font-size: 1.8rem; margin-bottom: 30px; color: #ffe066;">Web Developer Roles</h1>
+            <p style="font-size: 1rem; margin-bottom: 30px;">Orang yang bertugas membuat, mengembangkan, dan memelihara situs web.</p>
             <div class="role-cards">
                 <div class="role-card">
                     <h3>🎨 Front End Developer</h3>
@@ -452,16 +354,15 @@
             </div>
         </div>
     </div>
-
     <!-- Slide 7: Laravel & Bootstrap -->
     <div class="slide">
         <div class="slide-content">
-            <h1 style="font-size: 2.5rem; margin-bottom: 40px; color: #ffd93d;">Framework & Tools</h1>
+            <h1 style="font-size: 1.8rem; margin-bottom: 30px; color: #ffe066;">Framework & Tools</h1>
             <div class="grid">
                 <div class="card">
                     <h3>🚀 Laravel</h3>
                     <p>Framework PHP open source yang digunakan untuk mengembangkan aplikasi web dengan fitur-fitur modern dan powerful.</p>
-                    <div style="margin-top: 20px;">
+                    <div style="margin-top: 14px;">
                         <span class="badge">MVC Pattern</span>
                         <span class="badge">Eloquent ORM</span>
                         <span class="badge">Artisan CLI</span>
@@ -470,7 +371,7 @@
                 <div class="card">
                     <h3>🎨 Bootstrap</h3>
                     <p>Framework open-source untuk membuat situs web dan aplikasi web dengan desain responsif dan komponen UI yang siap pakai.</p>
-                    <div style="margin-top: 20px;">
+                    <div style="margin-top: 14px;">
                         <span class="badge">Responsive</span>
                         <span class="badge">Components</span>
                         <span class="badge">Grid System</span>
@@ -479,38 +380,36 @@
             </div>
         </div>
     </div>
-
     <!-- Slide 8: Required Tools -->
     <div class="slide">
         <div class="slide-content">
-            <h1 style="font-size: 2.5rem; margin-bottom: 40px; color: #ffd93d;">Install Tools</h1>
+            <h1 style="font-size: 1.8rem; margin-bottom: 30px; color: #ffe066;">Install Tools</h1>
             <div class="tools-grid">
                 <div class="tool-card">
                     <div class="tool-icon">🗄️</div>
                     <h3>XAMPP</h3>
                     <p>Web server lokal</p>
-                    <a href="https://www.apachefriends.org/download.html" style="color: #ffd93d;">Download Link</a>
+                    <a href="https://www.apachefriends.org/download.html">Download Link</a>
                 </div>
                 <div class="tool-card">
                     <div class="tool-icon">📦</div>
                     <h3>Composer</h3>
                     <p>Dependency Manager PHP</p>
-                    <a href="https://getcomposer.org/download/" style="color: #ffd93d;">Download Link</a>
+                    <a href="https://getcomposer.org/download/">Download Link</a>
                 </div>
                 <div class="tool-card">
                     <div class="tool-icon">💻</div>
                     <h3>VS Code</h3>
                     <p>Code Editor</p>
-                    <a href="https://code.visualstudio.com/download" style="color: #ffd93d;">Download Link</a>
+                    <a href="https://code.visualstudio.com/download">Download Link</a>
                 </div>
             </div>
         </div>
     </div>
-
     <!-- Slide 9: Laravel Setup -->
     <div class="slide">
         <div class="slide-content">
-            <h1 style="font-size: 2.5rem; margin-bottom: 40px; color: #ffd93d;">Laravel Setup</h1>
+            <h1 style="font-size: 1.8rem; margin-bottom: 30px; color: #ffe066;">Laravel Setup</h1>
             <div class="grid">
                 <div class="card">
                     <h3>📋 Persiapan Laravel</h3>
@@ -530,69 +429,53 @@
                         <li>Setting database di .env</li>
                         <li>php artisan migrate</li>
                     </ul>
-                    <p style="margin-top: 15px;"><strong>Dokumentasi:</strong> <a href="https://laravel.com/docs/10.x" style="color: #ffd93d;">laravel.com/docs/10.x</a></p>
+                    <p style="margin-top: 10px;"><strong>Dokumentasi:</strong> <a href="https://laravel.com/docs/10.x">laravel.com/docs/10.x</a></p>
                 </div>
             </div>
         </div>
     </div>
-
     <!-- Slide 10: Assignment -->
     <div class="slide">
         <div class="slide-content">
-            <h1 style="font-size: 2.5rem; margin-bottom: 40px; color: #ffd93d;">📝 Tugas 1</h1>
+            <h1 style="font-size: 1.8rem; margin-bottom: 30px; color: #ffe066;">📝 Tugas 1</h1>
             <div class="card" style="max-width: 800px; margin: 0 auto;">
                 <h3>Instruksi Tugas:</h3>
-                <ul style="font-size: 1.1rem; line-height: 1.8;">
+                <ul style="font-size: 1.02rem; line-height: 1.7;">
                     <li>Install semua tools yang dibutuhkan (XAMPP, Composer, VS Code)</li>
                     <li>Bukti Install (screenshot PHP version dan Composer version)</li>
                     <li>Kirimkan ke Google Form dengan subject: <strong>Nama_Tugas 1</strong></li>
                     <li><strong>Batas waktu:</strong> Besok jam 18.00 (sebelum pertemuan kedua)</li>
                 </ul>
             </div>
-            <div style="margin-top: 60px;">
-                <h2 style="color: #ffd93d; font-size: 2rem;">Terimakasih! 🙏</h2>
-                <p style="font-size: 1.2rem; margin-top: 10px;">Happy Coding! 🚀</p>
+            <div style="margin-top: 34px;">
+                <h2 style="color: #ffe066; font-size: 1.4rem;">Terimakasih! 🙏</h2>
+                <p style="font-size: 1rem; margin-top: 7px;">Happy Coding! 🚀</p>
             </div>
         </div>
     </div>
-
     <div class="navigation">
         <button class="nav-btn" onclick="prevSlide()">← Prev</button>
         <button class="nav-btn" onclick="nextSlide()">Next →</button>
     </div>
-
     <script>
         let currentSlide = 0;
         const slides = document.querySelectorAll('.slide');
         const totalSlides = slides.length;
-
         function showSlide(n) {
             slides[currentSlide].classList.remove('active');
             currentSlide = (n + totalSlides) % totalSlides;
             slides[currentSlide].classList.add('active');
             updateIndicator();
         }
-
-        function nextSlide() {
-            showSlide(currentSlide + 1);
-        }
-
-        function prevSlide() {
-            showSlide(currentSlide - 1);
-        }
-
+        function nextSlide() { showSlide(currentSlide + 1); }
+        function prevSlide() { showSlide(currentSlide - 1); }
         function updateIndicator() {
             document.getElementById('slideIndicator').textContent = `${currentSlide + 1} / ${totalSlides}`;
         }
-
-        // Keyboard navigation
         document.addEventListener('keydown', function(e) {
             if (e.key === 'ArrowRight') nextSlide();
             if (e.key === 'ArrowLeft') prevSlide();
         });
-
-        // Auto-advance slides (optional)
-        // setInterval(nextSlide, 10000);
     </script>
 </body>
 </html>
