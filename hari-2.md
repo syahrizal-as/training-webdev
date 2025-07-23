@@ -92,7 +92,7 @@ Cocok untuk aplikasi besar dan tim development.
 
 Install Laravel 12:
 ```bash
-composer create-project laravel/laravel:^12.0 laravel-sbadmin
+composer create-project laravel/laravel:^12.0 sample-sbadmin
 ```
 Integrasikan SB Admin 2 seperti pada materi sebelumnya.
 
@@ -163,9 +163,10 @@ public function authorize(): bool
 
 public function rules()
 {
+    #yang diambil adalah parameter {user} dari route, jadi gunakan $this->route('user').
     return [
         'name' => 'required|string|min:3|max:255',
-        'email' => 'required|email|unique:users,email,' . $this->id,
+        'email' => 'required|email|unique:users,email,' . $this->route('user')->id,
         'password' => $this->isMethod('post') ? 'required|min:6' : 'nullable|min:6',
     ];
 }
@@ -235,9 +236,10 @@ Route::resource('users', UserController::class);
 
 Contoh tampilan index users (`resources/views/users/index.blade.php`):
 ```blade
-@extends('layouts.sbadmin')
+@extends('layouts.admin')
 @section('content')
-<div class="container">
+<div class="container-fluid">
+      
     <h1>Daftar Users</h1>
     <a href="{{ route('users.create') }}" class="btn btn-primary mb-2">Tambah User</a>
     @if(session('success'))
@@ -252,7 +254,7 @@ Contoh tampilan index users (`resources/views/users/index.blade.php`):
             </tr>
         </thead>
         <tbody>
-        @foreach($users as $user)
+        @forelse($users as $user)
             <tr>
                 <td>{{ $user->name }}</td>
                 <td>{{ $user->email }}</td>
@@ -264,7 +266,11 @@ Contoh tampilan index users (`resources/views/users/index.blade.php`):
                     </form>
                 </td>
             </tr>
-        @endforeach
+            @empty
+            <tr>
+                <td colspan="3" class="text-center">Tidak ada data user</td>
+            </tr>
+        @endforelse
         </tbody>
     </table>
     {{ $users->links() }}
@@ -276,10 +282,11 @@ Contoh tampilan index users (`resources/views/users/index.blade.php`):
 
 `resources/views/users/create.blade.php` dan `edit.blade.php` (mirip):
 ```blade
-@extends('layouts.sbadmin')
+@extends('layouts.admin')
 @section('content')
-<div class="container">
-    <h1>Tambah User</h1>
+<div class="container-fluid">
+      
+   <h1>Tambah User</h1>
     <form action="{{ route('users.store') }}" method="POST">
         @csrf
         <div class="mb-3">
@@ -327,7 +334,7 @@ Untuk edit, ganti action dan value:
 
 ## 10. Layout SB Admin 2
 
-Pastikan `resources/views/layouts/sbadmin.blade.php` sudah menampilkan konten dengan `@yield('content')`, dan asset sudah terintegrasi.
+Pastikan `resources/views/layouts/admin.blade.php` sudah menampilkan konten dengan `@yield('content')`, dan asset sudah terintegrasi.
 
 ---
 
@@ -337,7 +344,7 @@ Jika validasi gagal, Laravel otomatis redirect ke form dan menampilkan error di 
 
 
 **Tugas 2:**
-- Buatkan satu sidebar baru (Book, Courses, Product, dsb) upload foto ke storage Laravel
+- Buatkan satu sidebar baru (Book, Courses, Product, dsb)
 - Buat se-kreatifitas mungkin dengan memanfaatkan styling dari Bootstrap
 - Di menu tersebut terdapat:
     - Penjelasan terkait fungsi dari menu tersebut
