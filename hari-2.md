@@ -46,35 +46,6 @@ Laravel adalah framework PHP modern yang menerapkan arsitektur MVC (Model-View-C
 
 ---
 
-## Integrasi SB Admin 2 dengan Laravel 12
-
-### Langkah-langkah Integrasi
-
-1. **Install Laravel 12**
-   ```bash
-   composer create-project laravel/laravel:^12.0  laravel-sbadmin
-   ```
-
-2. **Download SB Admin 2**
-   Unduh template SB Admin 2 dari Github atau website resmi.
-
-3. **Copy Asset SB Admin 2**
-   - Copy folder `assets` (CSS, JS, fonts) ke folder `public/` Laravel.
-   - Copy file HTML utama ke folder `resources/views/`.
-
-4. **Ubah File Blade**
-   - Rename file HTML menjadi `.blade.php`
-   - Integrasikan dengan Blade Template (`@yield`, `@section`, dst)
-
-5. **Sesuaikan Routing dan Controller**
-   - Buat controller dan route untuk mengakses dashboard SB Admin 2.
-
-Contoh route:
-```php
-Route::get('/dashboard', [DashboardController::class, 'index']);
-```
-
----
 
 ## Struktur MVC pada Laravel
 
@@ -115,7 +86,7 @@ Alur kode jelas, mudah debug.
 **Aman dan Scalable:**  
 Cocok untuk aplikasi besar dan tim development.
 
-# CRUD Users Laravel 12 dengan Validasi & SB Admin 2
+#  Laravel 12 & SB Admin 2
 
 ## 1. Persiapan Project
 
