@@ -226,6 +226,8 @@ public function destroy(User $user)
 
 Edit `routes/web.php`:
 ```php
+use App\Http\Controllers\UserController;
+
 Route::resource('users', UserController::class);
 ```
 
