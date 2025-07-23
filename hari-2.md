@@ -335,3 +335,17 @@ Pastikan `resources/views/layouts/sbadmin.blade.php` sudah menampilkan konten de
 ## 10. Validasi Otomatis
 
 Jika validasi gagal, Laravel otomatis redirect ke form dan menampilkan error di setiap field, seperti yang dicontohkan di atas.
+
+
+**Tugas 2:**
+- Buatkan satu sidebar baru (Book, Courses, Product, dsb) upload foto ke storage Laravel
+- Buat se-kreatifitas mungkin dengan memanfaatkan styling dari Bootstrap
+- Di menu tersebut terdapat:
+    - Penjelasan terkait fungsi dari menu tersebut
+    - Action Button untuk Add Data dan List Data baik sebelum atau sesudah ada datanya
+    - Action Button Edit dan fungsi Editnya berjalan dengan baik
+    - Action Button Delete dan fungsi Deletenya berjalan dengan baik
+    - Dokumentasi berupa screenshot dari web yang sudah dibuat dalam bentuk .pdf
+
+**Link Pengumpulan Tugas:**  
+Menyusul
