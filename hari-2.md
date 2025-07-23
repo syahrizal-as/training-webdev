@@ -94,7 +94,16 @@ Install Laravel 12:
 ```bash
 composer create-project laravel/laravel:^12.0 sample-sbadmin
 ```
-Integrasikan SB Admin 2 seperti pada materi sebelumnya.
+Setelah Berhasil Install, Lakukan langkah berikut:
+```bash
+cd sample-sbadmin
+composer run dev
+```
+lalu buka browser dan akses `http://localhost:8000`
+hasil nya seperti berikut :
+
+![Struktur MVC](/assets/welcome.png)
+
 
 ## 2. Konfigurasi File `.env` di Laravel
 
