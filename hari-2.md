@@ -155,6 +155,12 @@ php artisan make:request UserRequest
 ```
 Edit `app/Http/Requests/UserRequest.php`:
 ```php
+
+public function authorize(): bool
+{
+    return true;
+}
+
 public function rules()
 {
     return [
