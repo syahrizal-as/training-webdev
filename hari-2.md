@@ -1,7 +1,7 @@
 # Integrasi Laravel 12 dengan SB Admin 2
 
 ## SB Admin 2
-
+![SB ADMIN 2](/assets/sbadmin-2.png)
 SB Admin 2 adalah sebuah _free Bootstrap admin HTML template_ yang populer untuk membangun dashboard dan panel admin. Template ini memiliki desain modern, responsif, dan mudah diintegrasikan dengan berbagai framework web, termasuk Laravel.
 
 Beberapa fitur utama SB Admin 2:
