@@ -125,7 +125,27 @@ composer create-project laravel/laravel:^12.0 laravel-sbadmin
 ```
 Integrasikan SB Admin 2 seperti pada materi sebelumnya.
 
-## 2. Membuat Model dan Migration User
+## 2. Konfigurasi File `.env` di Laravel
+
+Setelah instalasi Laravel selesai, lakukan konfigurasi pada file `.env` yang ada di root folder project. File ini digunakan untuk menyimpan konfigurasi lingkungan aplikasi seperti koneksi database, mail, dan lain-lain.
+
+Contoh konfigurasi database di file `.env`:
+```env
+APP_NAME=Laravel
+APP_ENV=local
+APP_KEY=base64:xxxxxxxxxxxxxx
+APP_DEBUG=true
+APP_URL=http://localhost
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=nama_database
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+## 3. Membuat Model dan Migration User
 
 Jika belum ada, buat model User dan migration:
 ```bash
@@ -149,14 +169,14 @@ Migrasi database:
 php artisan migrate
 ```
 
-## 3. Membuat Controller CRUD
+## 4. Membuat Controller CRUD
 
 Buat controller dengan resource:
 ```bash
 php artisan make:controller UserController --resource
 ```
 
-## 4. Membuat Form Request Validasi
+## 5. Membuat Form Request Validasi
 
 Buat form request untuk validasi:
 ```bash
@@ -174,7 +194,7 @@ public function rules()
 }
 ```
 
-## 5. Implementasi CRUD di Controller
+## 6. Implementasi CRUD di Controller
 
 Edit `app/Http/Controllers/UserController.php`:
 ```php
@@ -225,14 +245,14 @@ public function destroy(User $user)
 }
 ```
 
-## 6. Routing
+## 7. Routing
 
 Edit `routes/web.php`:
 ```php
 Route::resource('users', UserController::class);
 ```
 
-## 7. Blade SB Admin 2 - Tabel Users
+## 8. Blade SB Admin 2 - Tabel Users
 
 Contoh tampilan index users (`resources/views/users/index.blade.php`):
 ```blade
@@ -273,7 +293,7 @@ Contoh tampilan index users (`resources/views/users/index.blade.php`):
 @endsection
 ```
 
-## 8. Blade SB Admin 2 - Create & Edit User
+## 9. Blade SB Admin 2 - Create & Edit User
 
 `resources/views/users/create.blade.php` dan `edit.blade.php` (mirip):
 ```blade
@@ -326,13 +346,13 @@ Untuk edit, ganti action dan value:
 </form>
 ```
 
-## 9. Layout SB Admin 2
+## 10. Layout SB Admin 2
 
 Pastikan `resources/views/layouts/sbadmin.blade.php` sudah menampilkan konten dengan `@yield('content')`, dan asset sudah terintegrasi.
 
 ---
 
-## 10. Validasi Otomatis
+## 11. Validasi Otomatis
 
 Jika validasi gagal, Laravel otomatis redirect ke form dan menampilkan error di setiap field, seperti yang dicontohkan di atas.
 
