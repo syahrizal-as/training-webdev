@@ -1037,4 +1037,7 @@ php artisan route:list
 
 ![Imgur](https://i.imgur.com/HYAaJae.png)
 
-<p><em>sumber</em>  <a href="https://santrikoding.com/tutorial-restful-api-laravel-11-1-cara-install-menjalankan-laravel-11" target="_blank">https://santrikoding.com/tutorial-restful-api-laravel-11-1-cara-install-menjalankan-laravel-11</a>.</p>
+TUGAS
+- Buat API CRUD (Product, dsb)
+- Screenshot dan Upload ke Form
+- Link Pengumulan Tugas https://forms.gle/e5VYFVzimttezGKT6
