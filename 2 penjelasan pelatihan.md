@@ -1,4 +1,4 @@
-# 🎯 Tujuan & Manfaat Pelatihan Laravel
+# 🎯 Tujuan & Manfaat Pelatihan Web Developer
 
 ## 🎯 Tujuan Pelatihan
 1. 📈 **Pemahaman Web Development**  
