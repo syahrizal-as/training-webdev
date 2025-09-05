@@ -24,9 +24,10 @@ Maka, dalam setiap sesi pelatihan saya akan:
 ### 🌟 Motivasi
 Saya senang berbagi ilmu karena percaya bahwa teknologi bisa membuka banyak peluang, baik untuk karier maupun bisnis.  
 Dengan mengikuti pelatihan ini, saya berharap teman-teman bisa:  
-1. Memahami dasar dan konsep Laravel.  
-2. Mampu membangun project nyata sendiri.  
-3. Siap menghadapi tantangan dunia kerja di bidang web development.  
+1. Bisa membangun aplikasi dengan **struktur yang rapi** dan mudah dikembangkan.  
+2. Lebih percaya diri saat masuk ke dunia kerja, karena Laravel adalah salah satu framework PHP yang paling banyak digunakan.  
+3. Siap membuat **project nyata** baik untuk kebutuhan pribadi, startup, maupun perusahaan.  
+4. Tidak hanya bisa *ngoding*, tapi juga paham konsep penting dalam pengembangan aplikasi modern. 
 
 ---
 
