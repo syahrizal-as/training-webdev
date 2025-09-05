@@ -51,6 +51,6 @@
    - Melatih pola pikir sistematis ala programmer.  
 
 5. 📂 **Portfolio Siap Pakai**  
-   - Peserta akan memiliki minimal 1 project Laravel (misalnya blog, sistem booking, atau manajemen data).  
+   - Peserta akan memiliki minimal 1 project Laravel.  
    - Project ini bisa langsung dijadikan portfolio untuk melamar kerja atau freelance.  
    - Portfolio menjadi bukti nyata keterampilan, bukan hanya teori.  
