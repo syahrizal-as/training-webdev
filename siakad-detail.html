@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Detail Prodi • Poltek SCI</title>
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50:'#f8fafc',100:'#f1f5f9',200:'#e2e8f0',300:'#cbd5e1',
+              400:'#94a3b8',500:'#64748b',600:'#475569',700:'#334155',
+              800:'#1f2937',900:'#0f172a'
+            }
+          },
+          boxShadow: { subtle: '0 1px 2px rgba(15,23,42,.06)' }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+  <style>body{font-family:Inter,system-ui,Segoe UI,Roboto,Arial}</style>
+</head>
+
+<body class="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100">
+  <!-- Topbar minimal -->
+  <header class="border-b border-slate-200/70 bg-white/80 backdrop-blur dark:bg-slate-900/80 dark:border-slate-700/60 sticky top-0 z-40">
+    <div class="mx-auto max-w-6xl h-14 px-4 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <div class="h-7 w-7 rounded bg-brand-700"></div>
+        <span class="font-semibold">Poltek SCI</span>
+      </div>
+      <nav class="hidden md:flex items-center gap-6 text-sm text-slate-600 dark:text-slate-300">
+        <a class="hover:text-brand-700" href="#">Beranda</a>
+        <a class="hover:text-brand-700" href="#">Jalur</a>
+        <a class="hover:text-brand-700" href="#">Program Studi</a>
+      </nav>
+      <div class="flex items-center gap-2">
+        <button id="themeToggle" class="rounded-lg border border-slate-200 px-3 py-1.5 text-sm hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-800" title="Tema">Tema</button>
+        <a class="hidden sm:inline-flex items-center rounded-lg bg-brand-700 px-3 py-1.5 text-sm font-semibold text-white hover:opacity-95" href="#">Masuk</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Breadcrumb -->
+  <div class="mx-auto max-w-6xl px-4">
+    <nav class="py-4 text-sm text-slate-600 dark:text-slate-400">
+      <ol class="flex items-center gap-2 flex-wrap">
+        <li><a class="hover:text-brand-700" href="#">Beranda</a></li>
+        <li>›</li>
+        <li><a class="hover:text-brand-700" href="#">Program Studi</a></li>
+        <li>›</li>
+        <li class="text-slate-900 dark:text-slate-100 font-medium">Formulir KIP PMB 20237</li>
+      </ol>
+    </nav>
+  </div>
+
+  <!-- Header Title + Meta -->
+  <section class="mx-auto max-w-6xl px-4">
+    <div class="flex items-start justify-between gap-6">
+      <div>
+        <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight">FORMULIR KIP PMB 20237</h1>
+        <div class="mt-3 flex flex-wrap items-center gap-2 text-sm text-slate-600 dark:text-slate-300">
+          <span class="inline-flex items-center rounded-full border border-slate-200 px-2.5 py-0.5 dark:border-slate-700">Strata Satu</span>
+          <span class="inline-flex items-center rounded-full border border-slate-200 px-2.5 py-0.5 dark:border-slate-700">Akreditasi: Baik</span>
+          <a class="inline-flex items-center rounded-full border border-slate-200 px-2.5 py-0.5 hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-800" href="#" target="_blank">Website Prodi</a>
+        </div>
+      </div>
+      <a href="#daftar" class="shrink-0 rounded-lg border border-slate-200 px-3 py-2 text-sm font-semibold hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-800">Daftar (Rp 150.000)</a>
+    </div>
+
+    <hr class="my-6 border-slate-200 dark:border-slate-800" />
+
+    <div class="flex flex-wrap items-center gap-3 text-sm text-slate-600 dark:text-slate-300">
+      <div class="font-medium">S1 – PMB Akademik 2025</div>
+      <div class="h-1 w-1 rounded-full bg-slate-300"></div>
+      <div>PMB Akademik 2025</div>
+      <div class="h-1 w-1 rounded-full bg-slate-300"></div>
+      <div>Periode: 2025-08-28 s.d. 2025-08-28</div>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <main class="mx-auto max-w-6xl px-4 py-10 grid gap-10 lg:grid-cols-[1fr_320px]">
+    <!-- Left column -->
+    <section class="space-y-10">
+      <!-- Hero image / media placeholder -->
+      <div class="aspect-[16/7] w-full rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 grid place-items-center text-slate-500">
+        (Area Media / Banner Prodi)
+      </div>
+
+      <!-- Why choose section -->
+      <article>
+        <h2 class="text-2xl font-extrabold tracking-tight">Kenapa memilih Prodi Sastra Inggris di Poltek SCI?</h2>
+        <p class="mt-3 text-slate-600 dark:text-slate-300 max-w-3xl">
+          Program Studi Bisnis Digital Poltek SCI dirancang untuk membekali mahasiswa
+          dengan keterampilan bisnis berbasis teknologi, manajemen digital, dan kewirausahaan inovatif yang relevan dengan industri.
+        </p>
+
+        <div class="mt-6 grid gap-6 sm:grid-cols-2">
+          <div class="rounded-xl border border-slate-200 p-5 shadow-subtle dark:border-slate-700">
+            <h3 class="font-semibold">Entrepreneur</h3>
+            <p class="mt-1 text-sm text-slate-600 dark:text-slate-300">Membangun & mengembangkan bisnis digital.</p>
+          </div>
+          <div class="rounded-xl border border-slate-200 p-5 shadow-subtle dark:border-slate-700">
+            <h3 class="font-semibold">Data Analyst</h3>
+            <p class="mt-1 text-sm text-slate-600 dark:text-slate-300">Mengolah & menganalisis data untuk keputusan bisnis.</p>
+          </div>
+          <div class="rounded-xl border border-slate-200 p-5 shadow-subtle dark:border-slate-700">
+            <h3 class="font-semibold">Digital Marketer</h3>
+            <p class="mt-1 text-sm text-slate-600 dark:text-slate-300">Strategi pemasaran produk/jasa melalui kanal digital.</p>
+          </div>
+          <div class="rounded-xl border border-slate-200 p-5 shadow-subtle dark:border-slate-700">
+            <h3 class="font-semibold">Consultant Business Process</h3>
+            <p class="mt-1 text-sm text-slate-600 dark:text-slate-300">Membantu efisiensi proses bisnis berbasis teknologi.</p>
+          </div>
+        </div>
+      </article>
+
+      <!-- Kurikulum Highlight -->
+      <article>
+        <h2 class="text-2xl font-extrabold tracking-tight">Highlight Kurikulum</h2>
+        <div class="mt-4 grid gap-4 sm:grid-cols-2">
+          <div class="rounded-lg border border-slate-200 p-4 dark:border-slate-700">
+            <h4 class="font-semibold">Semester 1–2</h4>
+            <ul class="mt-2 list-disc pl-5 text-sm text-slate-600 dark:text-slate-300 space-y-1">
+              <li>Pengantar Bisnis Digital</li>
+              <li>Komunikasi & Bahasa Inggris Akademik</li>
+              <li>Dasar Analitik Data</li>
+            </ul>
+          </div>
+          <div class="rounded-lg border border-slate-200 p-4 dark:border-slate-700">
+            <h4 class="font-semibold">Semester 3–4</h4>
+            <ul class="mt-2 list-disc pl-5 text-sm text-slate-600 dark:text-slate-300 space-y-1">
+              <li>Digital Marketing Strategy</li>
+              <li>UI/UX untuk Bisnis</li>
+              <li>Statistika Bisnis</li>
+            </ul>
+          </div>
+          <div class="rounded-lg border border-slate-200 p-4 dark:border-slate-700">
+            <h4 class="font-semibold">Semester 5–6</h4>
+            <ul class="mt-2 list-disc pl-5 text-sm text-slate-600 dark:text-slate-300 space-y-1">
+              <li>Product Management</li>
+              <li>Manajemen Proyek</li>
+              <li>AI Dasar untuk Bisnis</li>
+            </ul>
+          </div>
+          <div class="rounded-lg border border-slate-200 p-4 dark:border-slate-700">
+            <h4 class="font-semibold">Semester 7–8</h4>
+            <ul class="mt-2 list-disc pl-5 text-sm text-slate-600 dark:text-slate-300 space-y-1">
+              <li>Magang Industri</li>
+              <li>Riset Terapan / Skripsi</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <!-- FAQ -->
+      <article>
+        <h2 class="text-2xl font-extrabold tracking-tight">Pertanyaan Umum</h2>
+        <div class="mt-4 divide-y rounded-xl border border-slate-200 dark:border-slate-700 dark:divide-slate-700">
+          <details class="group p-5" open>
+            <summary class="flex cursor-pointer list-none items-center justify-between">
+              <span class="font-semibold">Apakah tersedia kelas Malam/SHIFT?</span>
+              <svg class="h-5 w-5 transition group-open:rotate-180" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 10.94l3.71-3.71a.75.75 0 1 1 1.06 1.06l-4.24 4.24a.75.75 0 0 1-1.06 0L5.21 8.29a.75.75 0 0 1 .02-1.08z" clip-rule="evenodd"/></svg>
+            </summary>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Ada. Pilih saat mengisi formulir.</p>
+          </details>
+          <details class="group p-5">
+            <summary class="flex cursor-pointer list-none items-center justify-between">
+              <span class="font-semibold">Bagaimana biaya pendaftaran dibayarkan?</span>
+              <svg class="h-5 w-5 transition group-open:rotate-180" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 10.94l3.71-3.71a.75.75 0 1 1 1.06 1.06l-4.24 4.24a.75.75 0 0 1-1.06 0L5.21 8.29a.75.75 0 0 1 .02-1.08z" clip-rule="evenodd"/></svg>
+            </summary>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Via VA/transfer atau loket kampus.</p>
+          </details>
+          <details class="group p-5">
+            <summary class="flex cursor-pointer list-none items-center justify-between">
+              <span class="font-semibold">Apakah ada beasiswa?</span>
+              <svg class="h-5 w-5 transition group-open:rotate-180" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 10.94l3.71-3.71a.75.75 0 1 1 1.06 1.06l-4.24 4.24a.75.75 0 0 1-1.06 0L5.21 8.29a.75.75 0 0 1 .02-1.08z" clip-rule="evenodd"/></svg>
+            </summary>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Tersedia jalur prestasi & kemitraan.</p>
+          </details>
+        </div>
+      </article>
+    </section>
+
+    <!-- Sidebar -->
+    <aside class="lg:sticky lg:top-20 space-y-6">
+      <!-- Box daftar -->
+      <div class="rounded-xl border border-slate-200 p-5 shadow-subtle dark:border-slate-700 dark:bg-slate-900">
+        <div class="flex items-center justify-between">
+          <h3 class="font-semibold">Pendaftaran</h3>
+          <span class="rounded-full bg-slate-100 px-2 py-0.5 text-xs text-slate-700 dark:bg-slate-800 dark:text-slate-300">Gel. 1</span>
+        </div>
+        <dl class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-1">
+          <div class="flex justify-between"><dt>Biaya</dt><dd class="font-semibold">Rp 150.000</dd></div>
+          <div class="flex justify-between"><dt>Periode</dt><dd>28 Aug 2025</dd></div>
+        </dl>
+        <a id="daftar" href="#" class="mt-4 inline-flex w-full items-center justify-center rounded-lg bg-brand-700 px-4 py-2.5 font-semibold text-white hover:opacity-95">Daftar Sekarang</a>
+        <p class="mt-2 text-xs text-slate-500">*Pastikan dokumen siap diunggah.</p>
+      </div>
+
+      <!-- Kontak -->
+      <div class="rounded-xl border border-slate-200 p-5 shadow-subtle dark:border-slate-700 dark:bg-slate-900">
+        <h3 class="font-semibold">Butuh Bantuan?</h3>
+        <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Tim kami siap membantu.</p>
+        <div class="mt-3 space-y-2">
+          <a href="https://wa.me/6282130053832" target="_blank" class="inline-flex w-full items-center justify-center rounded-lg border border-slate-200 px-4 py-2 hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-800">WhatsApp</a>
+          <a href="mailto:info@polteksci.ac.id" class="inline-flex w-full items-center justify-center rounded-lg border border-slate-200 px-4 py-2 hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-800">Email</a>
+        </div>
+      </div>
+
+      <!-- Dokumen persyaratan -->
+      <div class="rounded-xl border border-slate-200 p-5 shadow-subtle dark:border-slate-700 dark:bg-slate-900">
+        <h3 class="font-semibold">Persyaratan Dokumen</h3>
+        <ul class="mt-3 list-disc pl-5 text-sm text-slate-600 dark:text-slate-300 space-y-1">
+          <li>KTP/KK</li>
+          <li>Ijazah/SKL</li>
+          <li>Pas foto 3x4 (2 lembar)</li>
+        </ul>
+      </div>
+    </aside>
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-slate-200 py-8 dark:border-slate-800">
+    <div class="mx-auto max-w-6xl px-4 text-sm text-slate-500">
+      © 2025 Poltek SCI • Semua hak dilindungi
+    </div>
+  </footer>
+
+  <script>
+    // Dark mode toggle
+    const root = document.documentElement;
+    const themeToggle = document.getElementById('themeToggle');
+    if (localStorage.getItem('theme') === 'dark') root.classList.add('dark');
+    themeToggle?.addEventListener('click', () => {
+      root.classList.toggle('dark');
+      localStorage.setItem('theme', root.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>
