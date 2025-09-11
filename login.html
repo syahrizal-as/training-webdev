@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PMB 2025 – Masuk</title>
+  <!-- Tailwind Play CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'ui-sans-serif', 'system-ui'] },
+          boxShadow: {
+            soft: '0 10px 25px -10px rgba(0,0,0,.15)',
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body class="font-sans antialiased bg-gray-50 text-gray-800">
+  <!-- Page wrapper -->
+  <div class="min-h-screen grid grid-cols-1 lg:grid-cols-2">
+    <!-- Branding / Left -->
+    <aside class="relative hidden lg:flex items-center justify-center overflow-hidden bg-gradient-to-br from-indigo-600 via-blue-600 to-indigo-700 text-white p-10">
+      <div class="absolute -top-20 -right-16 w-72 h-72 rounded-full bg-white/10 blur-2xl"></div>
+      <div class="absolute -bottom-24 -left-24 w-96 h-96 rounded-full bg-white/10 blur-2xl"></div>
+
+      <div class="relative max-w-xl">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="w-12 h-12 rounded-xl bg-white/20 grid place-items-center ring-1 ring-white/30">
+            <!-- logo placeholder -->
+            <span class="text-xl font-bold">SCI</span>
+          </div>
+          <div>
+            <p class="text-sm/5 uppercase tracking-widest text-white/80">Poltek SCI</p>
+            <h1 class="text-3xl font-extrabold">PMB 2025</h1>
+          </div>
+        </div>
+
+        <h2 class="text-4xl font-extrabold leading-tight">
+          Kuliah <span class="text-white/90">Terjangkau</span>,  
+          Kurikulum <span class="text-white/90">Terupdate</span>,  
+          Karier <span class="text-white/90">Melesat</span>
+        </h2>
+
+        <p class="mt-5 text-white/85">
+          Penerimaan Mahasiswa Baru – buka kelas Pagi, Malam, dan SHIFT.
+          Temukan jalur pendaftaran yang cocok dan lanjutkan prosesmu di sini.
+        </p>
+
+        <ul class="mt-8 space-y-3 text-white/90">
+          <li class="flex items-center gap-3">
+            <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-white/15">🎓</span>
+            <span>5.000+ Alumni</span>
+          </li>
+          <li class="flex items-center gap-3">
+            <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-white/15">📈</span>
+            <span>98% Lulusan Terserap</span>
+          </li>
+          <li class="flex items-center gap-3">
+            <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-white/15">🤝</span>
+            <span>15+ Mitra Industri</span>
+          </li>
+        </ul>
+
+        <div class="mt-10">
+          <a href="#" class="inline-flex items-center gap-2 bg-white text-indigo-700 px-5 py-2.5 rounded-xl font-semibold shadow-soft hover:shadow-md transition">
+            Lihat Informasi PMB
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Form / Right -->
+    <main class="flex items-center justify-center p-6">
+      <div class="w-full max-w-md">
+        <div class="text-center mb-6">
+          <div class="mx-auto w-14 h-14 rounded-2xl bg-indigo-600 text-white grid place-items-center shadow-soft">
+            <!-- logo small -->
+            <span class="font-extrabold">SCI</span>
+          </div>
+          <h3 class="mt-4 text-2xl font-bold">Masuk Ke Akunmu</h3>
+          <p class="mt-1 text-gray-500">Gunakan <b>ID Pendaftar</b> & <b>Password</b> yang terdaftar</p>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-soft p-6">
+          <form class="space-y-4" onsubmit="event.preventDefault()">
+            <!-- ID -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700">ID Pendaftar</label>
+              <input type="text" placeholder="Masukkan ID Pendaftar"
+                     class="mt-1 w-full rounded-xl border border-gray-300 bg-white px-3.5 py-2.5 text-gray-800 placeholder-gray-400
+                            focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition" />
+            </div>
+
+            <!-- Password -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Password</label>
+              <div class="mt-1 relative">
+                <input id="password" type="password" placeholder="••••••••"
+                       class="w-full rounded-xl border border-gray-300 bg-white px-3.5 py-2.5 pr-11 text-gray-800 placeholder-gray-400
+                              focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition" />
+                <button type="button" id="togglePwd"
+                        class="absolute inset-y-0 right-2 my-auto h-9 px-2 rounded-lg text-gray-500 hover:bg-gray-100"
+                        aria-label="Tampilkan/Sembunyikan password">
+                  👁️
+                </button>
+              </div>
+            </div>
+
+            <!-- remember + forgot -->
+            <div class="flex items-center justify-between text-sm">
+              <label class="inline-flex items-center gap-2 select-none">
+                <input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                <span>Ingat saya</span>
+              </label>
+              <a href="#" class="text-indigo-600 hover:underline">Lupa ID/Password?</a>
+            </div>
+
+            <!-- submit -->
+            <button type="submit"
+                    class="w-full inline-flex items-center justify-center gap-2 bg-indigo-600 text-white font-semibold
+                           px-4 py-2.5 rounded-xl hover:bg-indigo-700 active:bg-indigo-800 transition shadow-soft">
+              Masuk
+            </button>
+
+            <!-- divider -->
+            <div class="relative py-2">
+              <div class="absolute inset-0 flex items-center">
+                <div class="w-full border-t border-gray-200"></div>
+              </div>
+              <div class="relative flex justify-center">
+                <span class="bg-white px-3 text-xs uppercase tracking-wider text-gray-400">atau lanjutkan dengan</span>
+              </div>
+            </div>
+
+            <!-- SSO -->
+            <div class="grid grid-cols-3 gap-3">
+              <button type="button" class="h-11 rounded-xl border border-gray-200 hover:bg-gray-50 transition"></button>
+              <button type="button" class="h-11 rounded-xl border border-gray-200 hover:bg-gray-50 transition">G</button>
+              <button type="button" class="h-11 rounded-xl border border-gray-200 hover:bg-gray-50 transition">f</button>
+            </div>
+          </form>
+
+          <p class="mt-6 text-center text-sm">
+            Belum punya akun?
+            <a href="#" class="text-indigo-600 font-medium hover:underline">Daftar Sekarang</a>
+          </p>
+        </div>
+
+        <!-- Footer small -->
+        <div class="mt-6 text-center text-xs text-gray-400">
+          © 2025 Poltek SCI • PMB Sistem
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Password toggle -->
+  <script>
+    const btn = document.getElementById('togglePwd');
+    const input = document.getElementById('password');
+    btn?.addEventListener('click', () => {
+      input.type = input.type === 'password' ? 'text' : 'password';
+      btn.textContent = input.type === 'password' ? '👁️' : '🙈';
+    });
+  </script>
+</body>
+</html>
