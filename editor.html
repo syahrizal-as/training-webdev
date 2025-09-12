@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TinyMCE @mention – External Dummy API</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.6.2/tinymce.min.js"></script></script>
+  <style>
+    body { font-family: system-ui, sans-serif; padding: 24px; }
+    a.mention {
+      padding: 0 4px; border-radius: 4px; background: #eef3ff; text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>Demo TinyMCE Autocomplete: @mention (API Publik)</h1>
+  <p>Ketik <code>@jo</code> / <code>@mi</code> / <code>@an</code> dll untuk uji.</p>
+
+  <textarea id="editor" rows="12">Coba ketik @an atau @mi...</textarea>
+
+  <script>
+  tinymce.init({
+    selector: '#editor',
+    menubar: false,
+    plugins: 'link autolink lists',
+    toolbar: 'undo redo | bold italic | bullist numlist | link',
+    height: 360,
+
+    setup: (editor) => {
+      editor.ui.registry.addAutocompleter('mentionUsers', {
+        ch: '@',
+        minChars: 1,
+        columns: 1,
+        fetch: (pattern) => {
+          return new Promise(async (resolve) => {
+            try {
+              // API publik: DummyJSON (mendukung pencarian q=)
+              const url = `https://dummyjson.com/users/search?q=${encodeURIComponent(pattern)}`;
+              const res = await fetch(url, { headers: { 'Accept': 'application/json' }});
+              const data = await res.json();
+              const users = (data.users || []).slice(0, 10);
+
+              resolve(users.map(u => {
+                const fullName = [u.firstName, u.lastName].filter(Boolean).join(' ');
+                return {
+                  text: `${fullName} (@${u.username})`,
+                  // Konten yang disisipkan ke editor saat dipilih
+                  value: `<a href="/users/${encodeURIComponent(u.lastName)}"
+                             class="mention"
+                             data-user-id="${u.id}"
+                             data-username="${u.lastName}">@${u.lastName}</a>&nbsp;`
+                };
+              }));
+            } catch (e) {
+              console.error('Mention fetch error:', e);
+              resolve([]);
+            }
+          });
+        },
+        onAction: (api, rng, value) => {
+          editor.selection.setRng(rng);
+          editor.insertContent(value);
+          api.hide();
+        }
+      });
+    }
+  });
+  </script>
+</body>
+</html>
