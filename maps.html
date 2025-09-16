@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Leaflet – Peta Dummy Trantibum</title>
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <!-- Leaflet MarkerCluster (optional, for grouping) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+  <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+  <style>
+    html, body { height: 100%; margin: 0; }
+    #map { height: 100vh; }
+    .legend { background: #fff; padding: .5rem .75rem; border-radius: .5rem; box-shadow: 0 2px 12px rgba(0,0,0,.1); }
+    .legend .item { display:flex; align-items:center; gap:.5rem; margin:.25rem 0; }
+    .dot { width:12px; height:12px; border-radius:50%; display:inline-block; border:1px solid rgba(0,0,0,.15); }
+    .dot.green { background:#22c55e; }
+    .dot.yellow{ background:#eab308; }
+    .dot.red   { background:#ef4444; }
+    .leaflet-popup-content table { border-collapse: collapse; }
+    .leaflet-popup-content td { padding: 2px 6px; vertical-align: top; }
+    .leaflet-popup-content td.key { font-weight: 600; color:#444; white-space: nowrap; }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+
+<script>
+// ============ Dummy data ============
+// status: 'aman' (green), 'waspada' (yellow), 'pelanggaran' (red)
+const points = [
+  { title: 'Bulan puasa Diskotik beroperasi', status:'pelanggaran', lat:-8.65, lng:115.21, lokasi: 'Diskotik M One, Ubung, Denpasar', urusan:'KUKP & Perlindungan Masyarakat', jenis:'Pembatasan Kegiatan Masyarakat', potensi_pad: 0, waktu:'2024-03-23', pelapor:'M One (082293184325)', sumber:'SPAN LAPOR!', tanggal_info:'2024-03-23' },
+  { title: 'Kegiatan Seni Jalanan', status:'aman', lat:-7.782, lng:110.367, lokasi:'Malioboro, Yogyakarta', urusan:'Ketertiban Umum', jenis:'Izin Keramaian', potensi_pad: 5000000, waktu:'2025-05-26', pelapor:'UPTD Pariwisata', sumber:'Form Web', tanggal_info:'2025-05-20' },
+  { title: 'Bengkel buka hingga larut', status:'waspada', lat:-7.2575, lng:112.7521, lokasi:'Kec. Bulak, Surabaya', urusan:'Ketertiban Lingkungan', jenis:'Jam Operasional Usaha', potensi_pad: 1500000, waktu:'2025-05-18', pelapor:'Warga', sumber:'Call Center', tanggal_info:'2025-05-18' },
+  { title: 'Kafe gunakan trotoar', status:'pelanggaran', lat:-7.556, lng:112.232, lokasi:'Mojokerto', urusan:'Ketertiban Umum', jenis:'Pemanfaatan Fasilitas Umum', potensi_pad: 2500000, waktu:'2025-05-22', pelapor:'Petugas Satpol', sumber:'Patroli', tanggal_info:'2025-05-22' },
+  { title: 'Pasar malam musiman', status:'aman', lat:-7.742, lng:111.613, lokasi:'Madiun', urusan:'Izin Keramaian', jenis:'Kegiatan Niaga', potensi_pad: 2000000, waktu:'2025-06-01', pelapor:'Disperdagin', sumber:'Surat Resmi', tanggal_info:'2025-05-28' },
+  { title: 'Sound system melebihi ambang', status:'waspada', lat:-8.094, lng:112.168, lokasi:'Blitar', urusan:'Ketentraman & Ketertiban', jenis:'Kebisingan', potensi_pad: 0, waktu:'2025-06-03', pelapor:'RT setempat', sumber:'WA Layanan', tanggal_info:'2025-06-03' },
+];
+
+// Tambah beberapa titik acak di Jawa Timur agar peta ramai
+for(let i=0;i<60;i++){
+  const lat = -7.3 + (Math.random()-0.5)*2.2;   // sekitar Jatim/Jateng selatan
+  const lng = 112.0 + (Math.random()-0.5)*3.2;  // sekitar Jatim
+  const s = ['aman','waspada','pelanggaran'][Math.floor(Math.random()*3)];
+  points.push({ title:'Titik Dummy '+(i+1), status:s, lat, lng, lokasi:'—', urusan:'—', jenis:'—', potensi_pad:0, waktu:'2025-06-01', pelapor:'—', sumber:'—', tanggal_info:'2025-06-01' });
+}
+
+// ============ Map init ============
+const map = L.map('map', { zoomControl:true }).setView([-7.7, 112.5], 7);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  maxZoom: 19,
+  attribution: '&copy; OpenStreetMap contributors'
+}).addTo(map);
+
+// ============ Marker styles ============
+const statusColor = {
+  aman: '#22c55e',      // green
+  waspada: '#eab308',   // yellow
+  pelanggaran: '#ef4444'// red
+};
+
+function circleMarker(point){
+  return L.circleMarker([point.lat, point.lng], {
+    radius: 7,
+    color: '#334155',    // stroke
+    weight: 1,
+    fillColor: statusColor[point.status] || '#64748b',
+    fillOpacity: .9
+  });
+}
+
+function popupHtml(p){
+  return `
+    <div style="min-width:260px">
+      <h6 style="margin:.2rem 0 .6rem 0">${p.title}</h6>
+      <table>
+        <tr><td class="key">Lokasi</td><td>${p.lokasi}</td></tr>
+        <tr><td class="key">Urusan</td><td>${p.urusan}</td></tr>
+        <tr><td class="key">Jenis Trantibum</td><td>${p.jenis}</td></tr>
+        <tr><td class="key">Potensi PAD</td><td>${p.potensi_pad}</td></tr>
+        <tr><td class="key">Waktu Kejadian</td><td>${p.waktu}</td></tr>
+        <tr><td class="key">Pelapor</td><td>${p.pelapor}</td></tr>
+        <tr><td class="key">Sumber Informasi</td><td>${p.sumber}</td></tr>
+        <tr><td class="key">Tanggal Informasi</td><td>${p.tanggal_info}</td></tr>
+      </table>
+    </div>`;
+}
+
+// Cluster layer supaya ringan saat titik banyak
+const clusters = L.markerClusterGroup({ disableClusteringAtZoom: 12 });
+
+// LayerGroups per status (agar bisa difilter)
+const layers = { aman: L.layerGroup(), waspada: L.layerGroup(), pelanggaran: L.layerGroup() };
+
+points.forEach(p => {
+  const m = circleMarker(p).bindPopup(popupHtml(p));
+  layers[p.status].addLayer(m);
+  clusters.addLayer(m);
+});
+
+layers.aman.addTo(map); layers.waspada.addTo(map); layers.pelanggaran.addTo(map);
+map.addLayer(clusters);
+
+// ============ Legend + Filter ============
+const legend = L.control({position:'topright'});
+legend.onAdd = function(){
+  const div = L.DomUtil.create('div', 'legend');
+  div.innerHTML = `
+    <div class="item"><span class="dot green"></span> Aman</div>
+    <div class="item"><span class="dot yellow"></span> Waspada</div>
+    <div class="item"><span class="dot red"></span> Pelanggaran</div>
+    <hr style="margin:.4rem 0;"/>
+    <div style="font-size:.85rem; opacity:.85">Klik marker untuk detail.</div>`;
+  return div;
+};
+legend.addTo(map);
+
+// Layer control untuk show/hide status
+L.control.layers(null, {
+  'Aman': layers.aman,
+  'Waspada': layers.waspada,
+  'Pelanggaran': layers.pelanggaran
+}, { collapsed: false }).addTo(map);
+
+</script>
+</body>
+</html>
