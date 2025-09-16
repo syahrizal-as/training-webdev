@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Facility Detail — Booking</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ["Inter", "ui-sans-serif", "system-ui"] },
+          boxShadow: { smooth: "0 10px 25px -10px rgba(0,0,0,.25)" },
+          container: { center: true, padding: "1rem" },
+        }
+      },
+      darkMode: 'class'
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100">
+  <header class="sticky top-0 z-30 border-b border-slate-200/60 dark:border-slate-700/60 bg-white/80 dark:bg-slate-900/70 supports-[backdrop-filter]:backdrop-blur">
+    <div class="container max-w-6xl flex items-center justify-between py-3">
+      <a href="index.html" class="inline-flex items-center gap-2 text-sm hover:underline">
+        ← Kembali
+      </a>
+      <button id="toggleDark2" class="rounded-xl px-3 py-2 text-sm border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800">🌙/☀️</button>
+    </div>
+  </header>
+
+  <main class="container max-w-6xl py-6">
+    <div id="header" class="flex flex-col gap-2 mb-4">
+      <!-- Title + status injected -->
+    </div>
+
+    <div class="grid lg:grid-cols-3 gap-6">
+      <!-- Gallery -->
+      <section class="lg:col-span-2">
+        <div id="gallery" class="grid grid-cols-3 gap-3">
+          <!-- images injected -->
+        </div>
+        <div class="mt-6 p-5 rounded-2xl border border-slate-200/70 dark:border-slate-700/60 bg-white dark:bg-slate-800">
+          <h3 class="font-bold text-lg">Deskripsi</h3>
+          <p id="desc" class="mt-1 text-slate-600 dark:text-slate-300"></p>
+          <div class="mt-4 grid sm:grid-cols-2 gap-3">
+            <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/70 dark:border-slate-700/60">
+              <h4 class="font-semibold">Kapasitas</h4>
+              <p id="capacity" class="text-slate-600 dark:text-slate-300"></p>
+            </div>
+            <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/70 dark:border-slate-700/60">
+              <h4 class="font-semibold">Fasilitas</h4>
+              <ul id="amenities" class="text-slate-600 dark:text-slate-300 list-disc list-inside"></ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Booking Sidebar -->
+      <aside class="lg:col-span-1">
+        <div class="rounded-2xl border border-slate-200/70 dark:border-slate-700/60 bg-white dark:bg-slate-800 p-5 sticky top-20">
+          <h3 class="font-bold text-lg">Ketersediaan</h3>
+          <p id="statusText" class="mt-1 text-sm"></p>
+
+          <div class="mt-4">
+            <label class="text-sm text-slate-500">Tanggal</label>
+            <input id="datePick" type="date" class="mt-1 w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white/60 dark:bg-slate-900/60 px-3 py-2"/>
+          </div>
+
+          <div class="mt-3">
+            <label class="text-sm text-slate-500">Jam</label>
+            <select id="slotPick" class="mt-1 w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white/60 dark:bg-slate-900/60 px-3 py-2">
+              <option value="07:00-09:00">07:00-09:00</option>
+              <option value="10:00-12:00">10:00-12:00</option>
+              <option value="13:00-16:00">13:00-16:00</option>
+              <option value="18:00-21:00">18:00-21:00</option>
+            </select>
+          </div>
+
+          <button id="bookBtn" class="mt-5 w-full rounded-xl px-4 py-2.5 bg-slate-900 text-white dark:bg-white dark:text-slate-900 font-semibold disabled:opacity-60 disabled:cursor-not-allowed">Booking Sekarang</button>
+          <p id="bookMsg" class="text-xs text-slate-500 mt-2"></p>
+
+          <div class="mt-6">
+            <h4 class="font-semibold">Jadwal Terbooking</h4>
+            <div id="upcomingList" class="mt-2 space-y-2 text-sm"></div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <script>
+    // Theme toggle (shared preference)
+    const htmlEl2 = document.documentElement; const saved2 = localStorage.getItem('theme'); if(saved2==='dark') htmlEl2.classList.add('dark');
+    document.getElementById('toggleDark2').addEventListener('click',()=>{ htmlEl2.classList.toggle('dark'); localStorage.setItem('theme', htmlEl2.classList.contains('dark') ? 'dark':'light'); });
+
+    // Same dataset as index
+    const DATA = {
+      pool: {
+        id:'pool', name:'Kolam Renang',
+        images:[
+          'https://images.unsplash.com/photo-1508609349937-5ec4ae374ebf?q=80&w=1600&auto=format&fit=crop',
+          'https://images.unsplash.com/photo-1505575972940-3bdcbe6ef8be?q=80&w=1600&auto=format&fit=crop',
+          'https://images.unsplash.com/photo-1476922027627-aa7293e3aaa8?q=80&w=1600&auto=format&fit=crop'
+        ],
+        desc:'Kolam renang bersih dengan pemandangan kota, cocok untuk keluarga maupun olahraga rutin.',
+        capacity:'Maks 20 orang / sesi',
+        amenities:['Shower','Loker','Lifeguard','Handuk'],
+        upcoming:[{date:'2025-09-20', slot:'07:00-09:00'}]
+      },
+      hall: {
+        id:'hall', name:'Ruang Serbaguna (Hall)',
+        images:[
+          'https://images.unsplash.com/photo-1559595500-e15296bdb0d6?q=80&w=1600&auto=format&fit=crop',
+          'https://images.unsplash.com/photo-1540573133985-87b6da6d54a9?q=80&w=1600&auto=format&fit=crop',
+          'https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1600&auto=format&fit=crop'
+        ],
+        desc:'Ruang multifungsi untuk rapat, acara komunitas, ulang tahun, dan seminar kecil.',
+        capacity:'Maks 80 orang',
+        amenities:['Proyektor','Sound system','Kursi & Meja','AC'],
+        upcoming:[{date:'2025-09-18', slot:'13:00-16:00'},{date:'2025-09-25', slot:'18:00-21:00'}]
+      },
+      court: {
+        id:'court', name:'Lapangan Basket',
+        images:[
+          'https://images.unsplash.com/photo-1519861155730-0b5fbf0dd889?q=80&w=1600&auto=format&fit=crop',
+          'https://images.unsplash.com/photo-1505664194779-8beaceb93744?q=80&w=1600&auto=format&fit=crop',
+          'https://images.unsplash.com/photo-1534158914592-062992fbe900?q=80&w=1600&auto=format&fit=crop'
+        ],
+        desc:'Lapangan outdoor standar komunitas untuk permainan santai atau latihan rutin.',
+        capacity:'Maks 12 orang',
+        amenities:['Penerangan malam','Bangku penonton','Skor manual'],
+        upcoming:[]
+      },
+      meeting: {
+        id:'meeting', name:'Ruang Meeting',
+        images:[
+          'https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80&w=1600&auto=format&fit=crop',
+          'https://images.unsplash.com/photo-1497366811353-6870744d04b2?q=80&w=1600&auto=format&fit=crop',
+          'https://images.unsplash.com/photo-1557800636-894a64c1696f?q=80&w=1600&auto=format&fit=crop'
+        ],
+        desc:'Ruang rapat nyaman untuk tim kecil, dilengkapi TV dan koneksi HDMI.',
+        capacity:'Maks 10 orang',
+        amenities:['Smart TV','Whiteboard','Kopi & Teh'],
+        upcoming:[{date:'2025-09-19', slot:'10:00-12:00'}]
+      },
+      bbq: {
+        id:'bbq', name:'Area BBQ & Taman',
+        images:[
+          'https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80&w=1600&auto=format&fit=crop&sat=-60',
+          'https://images.unsplash.com/photo-1460353581641-37baddab0fa2?q=80&w=1600&auto=format&fit=crop',
+          'https://images.unsplash.com/photo-1528484709683-60554bca3b84?q=80&w=1600&auto=format&fit=crop'
+        ],
+        desc:'Taman rindang untuk barbeque, arisan, dan kumpul keluarga.',
+        capacity:'Maks 25 orang',
+        amenities:['Grill','Meja piknik','Stop kontak luar'],
+        upcoming:[]
+      },
+      studio: {
+        id:'studio', name:'Studio Fitness',
+        images:[
+          'https://images.unsplash.com/photo-1599050751797-5f02ed2bb040?q=80&w=1600&auto=format&fit=crop',
+          'https://images.unsplash.com/photo-1552196563-55cd4e45efb3?q=80&w=1600&auto=format&fit=crop',
+          'https://images.unsplash.com/photo-1540497077202-7c8a3999166f?q=80&w=1600&auto=format&fit=crop'
+        ],
+        desc:'Studio untuk yoga, zumba, dan kelas kebugaran lainnya.',
+        capacity:'Maks 15 orang',
+        amenities:['Matras','Speaker','Cermin dinding'],
+        upcoming:[{date:'2025-09-17', slot:'19:00-20:00'}]
+      },
+    };
+
+    const params = new URLSearchParams(location.search);
+    const id = params.get('id');
+    const fac = DATA[id];
+    if(!fac){ document.body.innerHTML = `<div class='min-h-[60vh] grid place-content-center text-center p-10'><p class='text-2xl font-bold'>Fasilitas tidak ditemukan</p><a class='mt-4 underline' href='index.html'>Kembali</a></div>`; throw new Error('Not found'); }
+
+    const header = document.getElementById('header');
+    const gallery = document.getElementById('gallery');
+    const desc = document.getElementById('desc');
+    const capacity = document.getElementById('capacity');
+    const amenities = document.getElementById('amenities');
+    const statusText = document.getElementById('statusText');
+    const upcomingList = document.getElementById('upcomingList');
+    const datePick = document.getElementById('datePick');
+    const slotPick = document.getElementById('slotPick');
+    const bookBtn = document.getElementById('bookBtn');
+    const bookMsg = document.getElementById('bookMsg');
+
+    function refreshStatus(){
+      const today = new Date().toISOString().slice(0,10);
+      const bookedToday = fac.upcoming.some(u=>u.date===today);
+      header.innerHTML = `
+        <div class="flex items-center gap-3">
+          <h1 class="text-2xl md:text-3xl font-black">${fac.name}</h1>
+          <span class="px-2.5 py-1 rounded-full text-xs font-medium ${bookedToday ? 'bg-red-500 text-white' : 'bg-emerald-500 text-white'}">${bookedToday ? 'Terbooking hari ini' : 'Tersedia hari ini'}</span>
+        </div>`;
+      statusText.textContent = fac.upcoming.length ? `${fac.upcoming.length} jadwal terbooking ke depan` : 'Belum ada booking';
+    }
+
+    // Populate UI
+    gallery.innerHTML = fac.images.map((src,i)=>`<img src='${src}' alt='${fac.name} ${i+1}' class='rounded-xl border border-slate-200/70 dark:border-slate-700/60 w-full h-40 md:h-56 object-cover'>`).join('');
+    desc.textContent = fac.desc;
+    capacity.textContent = fac.capacity;
+    amenities.innerHTML = fac.amenities.map(a=>`<li>${a}</li>`).join('');
+    upcomingList.innerHTML = fac.upcoming.length ? fac.upcoming.map(u=>`<div class='flex items-center justify-between rounded-lg border border-slate-200/70 dark:border-slate-700/60 px-3 py-2'><span>${u.date}</span><span class='text-slate-600 dark:text-slate-300'>${u.slot}</span></div>`).join('') : `<div class='text-slate-500 text-sm'>Belum ada jadwal.</div>`;
+    datePick.value = new Date().toISOString().slice(0,10);
+    refreshStatus();
+
+    function isConflict(date, slot){ return fac.upcoming.some(u=>u.date===date && u.slot===slot); }
+
+    function tryBook(){
+      const date = datePick.value; const slot = slotPick.value;
+      if(isConflict(date, slot)){
+        bookMsg.textContent = 'Slot sudah terisi. Pilih tanggal/jam lain.'; return;
+      }
+      // Simulasi booking, mendorong ke upcoming
+      fac.upcoming.push({date, slot});
+      upcomingList.innerHTML = fac.upcoming.map(u=>`<div class='flex items-center justify-between rounded-lg border border-slate-200/70 dark:border-slate-700/60 px-3 py-2'><span>${u.date}</span><span class='text-slate-600 dark:text-slate-300'>${u.slot}</span></div>`).join('');
+      bookMsg.textContent = 'Berhasil dipesan (demo). Integrasikan ke API untuk produksi.';
+      refreshStatus();
+    }
+
+    bookBtn.addEventListener('click', tryBook);
+  </script>
+</body>
+</html>
