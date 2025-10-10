@@ -1040,4 +1040,4 @@ php artisan route:list
 TUGAS
 - Buat API CRUD (Product, dsb)
 - Screenshot dan Upload ke Form
-- Link Pengumulan Tugas https://forms.gle/e5VYFVzimttezGKT6
+- Link Pengumulan Tugas ttps://forms.gle/5v5ov1a23M9RCp558
