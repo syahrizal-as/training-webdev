@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Aktivitas Pengguna</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 20px;
+    background: #f5f7fa;
+    color: #333;
+  }
+  h2 { text-align: center; color: #222; margin-bottom: 20px; }
+
+  /* FILTER */
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  select, input[type="date"], button {
+    padding: 8px 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+  }
+  button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  button:hover { background-color: #0056b3; }
+
+  /* CARD */
+  .card {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  .summary-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+  .summary-card {
+    background: linear-gradient(135deg, #007bff, #00bfff);
+    color: white;
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
+  .summary-card h3 { margin: 5px 0; font-size: 28px; }
+  .summary-card p { margin: 0; font-size: 14px; }
+
+  /* TABLE */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+  }
+  th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+  }
+  th {
+    background: #007bff;
+    color: white;
+  }
+  tr:nth-child(even){ background-color: #f2f2f2; }
+</style>
+</head>
+<body>
+
+<h2>📊 Dashboard Aktivitas Pengguna Sistem</h2>
+
+<!-- FILTER AREA -->
+<div class="card">
+  <h3>🔍 Filter Data</h3>
+  <div class="filters">
+    <div>
+      <label>Perusahaan:</label>
+      <select id="companyFilter">
+        <option value="All">Semua</option>
+        <option value="PT Alpha">PT Alpha</option>
+        <option value="PT Beta">PT Beta</option>
+      </select>
+    </div>
+    <div>
+      <label>Menu:</label>
+      <select id="menuFilter">
+        <option value="My Document">My Document</option>
+        <option value="My Tag">My Tag</option>
+        <option value="Workflow">Workflow</option>
+        <option value="Nomor Surat">Nomor Surat</option>
+        <option value="Ticket">Ticket</option>
+      </select>
+    </div>
+    <div>
+      <label>Tanggal:</label>
+      <input type="date" id="startDate"> -
+      <input type="date" id="endDate">
+    </div>
+    <button onclick="updateDashboard()">Terapkan</button>
+  </div>
+</div>
+
+<!-- CARD RINGKASAN -->
+<div class="summary-cards" id="summaryCards">
+  <div class="summary-card">
+    <p>Total Aktivitas</p>
+    <h3 id="totalAktivitas">0</h3>
+  </div>
+  <div class="summary-card">
+    <p>Pengguna Aktif</p>
+    <h3 id="totalUser">0</h3>
+  </div>
+  <div class="summary-card">
+    <p>Menu Terpilih</p>
+    <h3 id="selectedMenu">My Document</h3>
+  </div>
+  <div class="summary-card">
+    <p>Periode</p>
+    <h3 id="selectedPeriod">Semua</h3>
+  </div>
+</div>
+
+<!-- GRAFIK -->
+<div class="card">
+  <h3 id="chartTitle">Aktivitas per Departemen - My Document</h3>
+  <canvas id="activityChart" height="120"></canvas>
+</div>
+
+<!-- LIST DATA -->
+<div class="card">
+  <h3>📋 Daftar Aktivitas Terbaru</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Reporter</th>
+        <th>Departemen</th>
+        <th>Menu</th>
+        <th>Aktivitas</th>
+        <th>Perusahaan</th>
+        <th>Waktu</th>
+      </tr>
+    </thead>
+    <tbody id="activityTable"></tbody>
+  </table>
+</div>
+
+<script>
+const ctx = document.getElementById('activityChart');
+let chart;
+
+// Contoh data dummy
+const dataDummy = [
+  { reporter: "A", dept: "IT", menu: "My Document", company: "PT Alpha", aktivitas: "Upload Dokumen", waktu: "2025-10-23 09:20" },
+  { reporter: "B", dept: "Finance", menu: "My Document", company: "PT Beta", aktivitas: "Download File", waktu: "2025-10-23 08:45" },
+  { reporter: "C", dept: "Operation", menu: "Workflow", company: "PT Alpha", aktivitas: "Approve Step", waktu: "2025-10-23 08:00" },
+  { reporter: "D", dept: "IT Support", menu: "Ticket", company: "PT Beta", aktivitas: "Buat Tiket", waktu: "2025-10-22 15:30" },
+  { reporter: "E", dept: "Marketing", menu: "My Tag", company: "PT Alpha", aktivitas: "Tambah Tag", waktu: "2025-10-22 15:00" },
+  { reporter: "F", dept: "Finance", menu: "Nomor Surat", company: "PT Alpha", aktivitas: "Generate Nomor", waktu: "2025-10-22 14:30" },
+  { reporter: "G", dept: "HR", menu: "Ticket", company: "PT Beta", aktivitas: "Tutup Tiket", waktu: "2025-10-21 16:10" },
+];
+
+function renderChart(labels, values, selectedMenu) {
+  if (chart) chart.destroy();
+  chart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{
+        label: 'Jumlah Aktivitas',
+        data: values,
+        backgroundColor: '#007bff',
+        borderRadius: 6
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: { beginAtZero: true, title: { display: true, text: 'Jumlah Aktivitas' } },
+        x: { title: { display: true, text: 'Departemen' } }
+      },
+      plugins: { legend: { display: false } }
+    }
+  });
+  document.getElementById("chartTitle").innerText = `Aktivitas per Departemen - ${selectedMenu}`;
+}
+
+function renderTable(filteredData) {
+  const tbody = document.getElementById("activityTable");
+  tbody.innerHTML = "";
+  filteredData.forEach(item => {
+    const row = `
+      <tr>
+        <td>${item.reporter}</td>
+        <td>${item.dept}</td>
+        <td>${item.menu}</td>
+        <td>${item.aktivitas}</td>
+        <td>${item.company}</td>
+        <td>${item.waktu}</td>
+      </tr>`;
+    tbody.innerHTML += row;
+  });
+}
+
+function updateSummary(filteredData, selectedMenu, startDate, endDate) {
+  document.getElementById("totalAktivitas").innerText = filteredData.length;
+  document.getElementById("totalUser").innerText = new Set(filteredData.map(d => d.reporter)).size;
+  document.getElementById("selectedMenu").innerText = selectedMenu;
+  document.getElementById("selectedPeriod").innerText = startDate && endDate ? `${startDate} s.d. ${endDate}` : "Semua";
+}
+
+function updateDashboard() {
+  const selectedCompany = document.getElementById("companyFilter").value;
+  const selectedMenu = document.getElementById("menuFilter").value;
+  const startDate = document.getElementById("startDate").value;
+  const endDate = document.getElementById("endDate").value;
+
+  let filtered = dataDummy.filter(d => d.menu === selectedMenu);
+
+  if (selectedCompany !== "All") filtered = filtered.filter(d => d.company === selectedCompany);
+  if (startDate && endDate)
+    filtered = filtered.filter(d => d.waktu >= startDate && d.waktu <= endDate + " 23:59");
+
+  const counts = {};
+  filtered.forEach(d => counts[d.dept] = (counts[d.dept] || 0) + 1);
+  const labels = Object.keys(counts);
+  const values = Object.values(counts);
+
+  renderChart(labels, values, selectedMenu);
+  renderTable(filtered);
+  updateSummary(filtered, selectedMenu, startDate, endDate);
+}
+
+updateDashboard();
+</script>
+
+</body>
+</html>
