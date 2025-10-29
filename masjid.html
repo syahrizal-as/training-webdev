@@ -1,0 +1,762 @@
+<!doctype html>
+<html lang="id" data-bs-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CMS Pengurus Masjid (Dummy)</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <style>
+    .table-fit td, .table-fit th { white-space: nowrap; }
+    .pointer { cursor: pointer; }
+    .sidebar { width: 270px; }
+    @media (max-width: 991.98px){ .sidebar{ position: fixed; z-index:1050; height:100%; } }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom sticky-top">
+    <div class="container-fluid">
+      <button class="btn d-lg-none" data-bs-toggle="offcanvas" data-bs-target="#sideNav"><i class="bi bi-list"></i></button>
+      <a class="navbar-brand fw-semibold" href="#"><i class="bi bi-moon-stars me-2"></i>CMS Pengurus Masjid</a>
+      <div class="d-flex gap-2">
+        <select id="activeMasjid" class="form-select form-select-sm"></select>
+        <button id="btnDark" class="btn btn-sm btn-outline-secondary"><i class="bi bi-brightness-high"></i></button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Sidebar -->
+  <div class="offcanvas-lg offcanvas-start sidebar bg-body-tertiary" tabindex="-1" id="sideNav">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title">Menu</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+    </div>
+    <div class="offcanvas-body p-0">
+      <div class="list-group list-group-flush" id="menu">
+        <a data-page="dashboard" class="list-group-item list-group-item-action active"><i class="bi bi-speedometer2 me-2"></i>Dashboard</a>
+        <a data-page="masjid" class="list-group-item list-group-item-action"><i class="bi bi-buildings me-2"></i>Masjid</a>
+        <a data-page="pengurus" class="list-group-item list-group-item-action"><i class="bi bi-people me-2"></i>Pengurus & Jabatan</a>
+        <a data-page="kas" class="list-group-item list-group-item-action"><i class="bi bi-cash-stack me-2"></i>Kas</a>
+        <a data-page="aset" class="list-group-item list-group-item-action"><i class="bi bi-box-seam me-2"></i>Aset</a>
+        <a data-page="wilayah" class="list-group-item list-group-item-action"><i class="bi bi-geo-alt me-2"></i>Wilayah</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main -->
+  <main class="container-fluid">
+    <div class="row">
+      <div class="col-lg-3 d-none d-lg-block"></div>
+      <div class="col-lg-9 col-12 py-3" id="content"></div>
+    </div>
+  </main>
+
+<script>
+/* --------------------------- UTIL & STORAGE --------------------------- */
+const $$  = (s,el=document)=>el.querySelector(s);
+const $$$ = (s,el=document)=>[...el.querySelectorAll(s)];
+const fmtIDR = n => (Number(n)||0).toLocaleString('id-ID');
+const today = () => new Date().toISOString().slice(0,10);
+const uid = () => crypto.randomUUID();
+
+const KEY='cms_masjid_dummy_v1';
+const db = JSON.parse(localStorage.getItem(KEY) || 'null') || seed();
+save();
+
+function save(){ localStorage.setItem(KEY, JSON.stringify(db)); refreshMasjidSelector(); }
+
+function seed(){
+  const kab=[{id:1,name:'Tangerang'},{id:2,name:'Bekasi'}];
+  const kec=[{id:1,name:'Ciputat',kabupaten_id:1},{id:2,name:'Pondok Aren',kabupaten_id:1},{id:3,name:'Pondok Gede',kabupaten_id:2}];
+  const kel=[{id:1,name:'Cipayung',kecamatan_id:1},{id:2,name:'Pondok Kacang',kecamatan_id:2},{id:3,name:'Jatiwaringin',kecamatan_id:3}];
+
+  const masjid=[
+    {id:1,name:'Masjid Al-Falah',alamat:'Jl. Mawar No.12',kecamatan_id:1,kelurahan_id:1,image:'al-falah.jpg'},
+    {id:2,name:'Masjid Al-Muhajirin',alamat:'Jl. Melati No.7',kecamatan_id:2,kelurahan_id:2,image:'muhajirin.jpg'}
+  ];
+
+  const jabatan=[
+    {id:1,name:'Ketua DKM',type:'Struktural'},
+    {id:2,name:'Bendahara',type:'Struktural'},
+    {id:3,name:'Sekretaris',type:'Struktural'},
+    {id:4,name:'Imam',type:'Religius'},
+    {id:5,name:'Muadzin',type:'Religius'},
+  ];
+
+  const users=[
+    {id:1,nik:'320101001',nama:'Ust. Ahmad',email:'ahmad@gmail.com',phone:'0812345678',image:'ahmad.jpg',masjid_id:1,kecamatan_id:1,kelurahan_id:1},
+    {id:2,nik:'320101002',nama:'Pak Ridwan',email:'ridwan@gmail.com',phone:'0812987654',image:'ridwan.jpg',masjid_id:1,kecamatan_id:1,kelurahan_id:1},
+    {id:3,nik:'320102003',nama:'Pak Yusuf',email:'yusuf@gmail.com',phone:'0822114455',image:'yusuf.jpg',masjid_id:2,kecamatan_id:2,kelurahan_id:2},
+  ];
+
+  const user_jabatan=[
+    {user_id:1,jabatan_id:1},
+    {user_id:2,jabatan_id:2},
+    {user_id:3,jabatan_id:4},
+  ];
+
+  const kas=[
+    {id:uid(),masjid_id:1,nominal:5000000,keterangan:'Donasi Jumat',tanggal:'2025-10-15',type:'pemasukan'},
+    {id:uid(),masjid_id:1,nominal:2000000,keterangan:'Pembelian Karpet',tanggal:'2025-10-20',type:'pengeluaran'},
+    {id:uid(),masjid_id:2,nominal:3500000,keterangan:'Sumbangan Warga',tanggal:'2025-10-25',type:'pemasukan'},
+  ];
+
+  const assets=[
+    {id:uid(),masjid_id:1,name:'Sound System'},
+    {id:uid(),masjid_id:1,name:'Karpet'},
+    {id:uid(),masjid_id:2,name:'Mimbar Kayu'},
+  ];
+
+  return {kab,kec,kel,masjid,jabatan,users,user_jabatan,kas,assets, activeMasjid:1};
+}
+
+/* --------------------------- NAV & THEME --------------------------- */
+$$$('#menu a').forEach(a=>{
+  a.addEventListener('click', e=>{
+    $$('#menu a.active')?.classList.remove('active');
+    a.classList.add('active');
+    render(a.dataset.page);
+    const offcanvasEl = document.getElementById('sideNav');
+    bootstrap.Offcanvas.getInstance(offcanvasEl)?.hide();
+  });
+});
+function refreshMasjidSelector(){
+  const sel=$$('#activeMasjid'); if(!sel) return;
+  sel.innerHTML = db.masjid.map(m=>`<option value="${m.id}" ${m.id==db.activeMasjid?'selected':''}>${m.name}</option>`).join('');
+}
+$('#btnDark')?.addEventListener('click', ()=>{
+  const root=document.documentElement;
+  const current=root.getAttribute('data-bs-theme')==='dark'?'light':'dark';
+  root.setAttribute('data-bs-theme', current);
+});
+document.addEventListener('change', e=>{
+  if(e.target.id==='activeMasjid'){ db.activeMasjid = Number(e.target.value); save(); render(currentPage); }
+});
+let currentPage='dashboard';
+function render(page){ currentPage=page; const el=$$('#content'); const mID=db.activeMasjid; switch(page){
+  case 'dashboard': return el.innerHTML = viewDashboard(mID), mountDashboard();
+  case 'masjid': return el.innerHTML = viewMasjid(), mountMasjid();
+  case 'pengurus': return el.innerHTML = viewPengurus(mID), mountPengurus();
+  case 'kas': return el.innerHTML = viewKas(mID), mountKas();
+  case 'aset': return el.innerHTML = viewAset(mID), mountAset();
+  case 'wilayah': return el.innerHTML = viewWilayah(), mountWilayah();
+}}
+
+/* --------------------------- VIEWS --------------------------- */
+function viewDashboard(mID){
+  const saldo = calcSaldo(mID);
+  const m = db.masjid.find(x=>x.id===mID);
+  const totalPengurus = db.users.filter(u=>u.masjid_id===mID).length;
+  const totalAset = db.assets.filter(a=>a.masjid_id===mID).length;
+  return `
+  <div class="d-flex align-items-center justify-content-between mb-3">
+    <h4 class="mb-0">Dashboard – <span class="text-primary">${m?.name||'-'}</span></h4>
+    <div class="btn-group">
+      <button class="btn btn-sm btn-outline-secondary" id="exportCSV"><i class="bi bi-filetype-csv me-1"></i>Export Kas</button>
+      <input type="month" class="form-control form-control-sm" id="monthFilter" value="${new Date().toISOString().slice(0,7)}">
+    </div>
+  </div>
+
+  <div class="row g-3">
+    <div class="col-md-4">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <div class="text-muted small">Saldo Kas</div>
+              <div class="fs-4 fw-semibold">Rp ${fmtIDR(saldo)}</div>
+            </div>
+            <i class="bi bi-wallet2 fs-2 text-success"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <div class="text-muted small">Pengurus Aktif</div>
+          <div class="fs-4 fw-semibold">${totalPengurus}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <div class="text-muted small">Total Aset</div>
+          <div class="fs-4 fw-semibold">${totalAset}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h6 class="mb-3">Grafik Kas Bulanan</h6>
+          <canvas id="chartKas" height="110"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h6 class="mb-3">Transaksi Terbaru</h6>
+          <div class="table-responsive">
+            <table class="table table-sm table-striped table-hover align-middle table-fit">
+              <thead><tr><th>Tanggal</th><th>Jenis</th><th>Keterangan</th><th class="text-end">Nominal</th></tr></thead>
+              <tbody>
+                ${db.kas.filter(k=>k.masjid_id===mID).sort((a,b)=>b.tanggal.localeCompare(a.tanggal)).slice(0,8).map(k=>`
+                  <tr>
+                    <td>${k.tanggal}</td>
+                    <td><span class="badge ${k.type==='pemasukan'?'text-bg-success':'text-bg-danger'}">${k.type}</span></td>
+                    <td>${k.keterangan}</td>
+                    <td class="text-end">Rp ${fmtIDR(k.nominal)}</td>
+                  </tr>`).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+function viewMasjid(){
+  return `
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="mb-0">Manajemen Masjid</h4>
+    <button class="btn btn-primary" id="btnAddMasjid"><i class="bi bi-plus-lg me-1"></i>Masjid</button>
+  </div>
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <input id="searchMasjid" class="form-control mb-3" placeholder="Cari nama/alamat...">
+      <div class="table-responsive">
+        <table class="table table-striped align-middle">
+          <thead><tr><th>Nama</th><th>Alamat</th><th>Wilayah</th><th style="width:120px"></th></tr></thead>
+          <tbody id="tblMasjid"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  ${modalMasjid()}`;
+}
+function viewPengurus(mID){
+  const jabOps = db.jabatan.map(j=>`<option value="${j.id}">${j.name} (${j.type})</option>`).join('');
+  return `
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="mb-0">Pengurus & Jabatan</h4>
+    <button class="btn btn-primary" id="btnAddUser"><i class="bi bi-plus-lg me-1"></i>Pengurus</button>
+  </div>
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <div class="d-flex gap-2 mb-3">
+        <input id="searchUser" class="form-control" placeholder="Cari nama/email/HP">
+        <select id="filterJabatan" class="form-select" style="max-width:260px">
+          <option value="">Semua Jabatan</option>
+          ${db.jabatan.map(j=>`<option value="${j.id}">${j.name}</option>`).join('')}
+        </select>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-striped align-middle table-fit">
+          <thead><tr><th>Nama</th><th>Kontak</th><th>Jabatan</th><th style="width:140px"></th></tr></thead>
+          <tbody id="tblUser"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal User -->
+  <div class="modal fade" id="modalUser" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form id="formUser">
+          <div class="modal-header"><h5 class="modal-title">Pengurus</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+          <div class="modal-body">
+            <input type="hidden" name="id">
+            <div class="row g-2">
+              <div class="col-8"><label class="form-label">Nama</label><input name="nama" class="form-control" required></div>
+              <div class="col-4"><label class="form-label">NIK</label><input name="nik" class="form-control"></div>
+              <div class="col-6"><label class="form-label">Email</label><input name="email" type="email" class="form-control"></div>
+              <div class="col-6"><label class="form-label">No. HP</label><input name="phone" class="form-control"></div>
+              <div class="col-6"><label class="form-label">Kecamatan</label>${selectKec('kecamatan_id')}</div>
+              <div class="col-6"><label class="form-label">Kelurahan</label>${selectKel('kelurahan_id')}</div>
+              <div class="col-12"><label class="form-label">Jabatan</label>
+                <select multiple name="jabatan_ids" class="form-select" size="5">
+                  ${jabOps}
+                </select>
+                <div class="form-text">Tahan Ctrl/Cmd untuk memilih lebih dari satu.</div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-primary" type="submit">Simpan</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>`;
+}
+function viewKas(mID){
+  return `
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="mb-0">Kas – <span class="text-primary">${db.masjid.find(m=>m.id===mID)?.name||'-'}</span></h4>
+    <button class="btn btn-primary" id="btnAddKas"><i class="bi bi-plus-lg me-1"></i>Transaksi</button>
+  </div>
+  <div class="row g-3">
+    <div class="col-md-4">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <div class="text-muted small">Saldo Saat Ini</div>
+          <div class="fs-3 fw-semibold">Rp ${fmtIDR(calcSaldo(mID))}</div>
+        </div>
+      </div>
+      <div class="card shadow-sm mt-3">
+        <div class="card-body">
+          <div class="text-muted small mb-1">Filter</div>
+          <div class="vstack gap-2">
+            <input type="month" id="kasMonth" class="form-control">
+            <input type="text" id="kasSearch" placeholder="Cari keterangan..." class="form-control">
+            <button class="btn btn-outline-secondary btn-sm" id="kasReset">Reset</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-8">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-striped align-middle table-fit">
+              <thead><tr><th>Tanggal</th><th>Jenis</th><th>Keterangan</th><th class="text-end">Nominal</th><th style="width:120px"></th></tr></thead>
+              <tbody id="tblKas"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  ${modalKas()}`;
+}
+function viewAset(mID){
+  return `
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="mb-0">Aset – <span class="text-primary">${db.masjid.find(m=>m.id===mID)?.name||'-'}</span></h4>
+    <button class="btn btn-primary" id="btnAddAset"><i class="bi bi-plus-lg me-1"></i>Aset</button>
+  </div>
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-striped align-middle">
+          <thead><tr><th>Nama Aset</th><th style="width:120px"></th></tr></thead>
+          <tbody id="tblAset"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  ${modalAset()}`;
+}
+function viewWilayah(){
+  return `
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="mb-0">Master Wilayah</h4>
+    <div class="btn-group">
+      <button class="btn btn-outline-primary btn-sm" id="btnAddKab">Kabupaten</button>
+      <button class="btn btn-outline-primary btn-sm" id="btnAddKec">Kecamatan</button>
+      <button class="btn btn-outline-primary btn-sm" id="btnAddKel">Kelurahan</button>
+    </div>
+  </div>
+  <div class="row g-3">
+    <div class="col-md-4">${cardList('Kabupaten/Kota','tblKab', db.kab.map(k=>`${k.name}`).join(''), renderListKab())}</div>
+    <div class="col-md-4">${cardList('Kecamatan','tblKec', '', renderListKec())}</div>
+    <div class="col-md-4">${cardList('Kelurahan','tblKel', '', renderListKel())}</div>
+  </div>
+  ${modalSimple('modalAddKab','Tambah Kabupaten',['name'])}
+  ${modalSimple('modalAddKec','Tambah Kecamatan',['name','kabupaten_id'],'Kabupaten')}
+  ${modalSimple('modalAddKel','Tambah Kelurahan',['name','kecamatan_id'],'Kecamatan')}
+  `;
+}
+
+/* --------------------------- PARTIALS --------------------------- */
+function selectKab(name='kabupaten_id', val=''){
+  return `<select name="${name}" class="form-select">${db.kab.map(k=>`<option value="${k.id}" ${k.id==val?'selected':''}>${k.name}</option>`).join('')}</select>`;
+}
+function selectKec(name='kecamatan_id', val=''){
+  return `<select name="${name}" class="form-select">${db.kec.map(k=>`<option value="${k.id}" ${k.id==val?'selected':''}>${k.name}</option>`).join('')}</select>`;
+}
+function selectKel(name='kelurahan_id', val=''){
+  return `<select name="${name}" class="form-select">${db.kel.map(k=>`<option value="${k.id}" ${k.id==val?'selected':''}>${k.name}</option>`).join('')}</select>`;
+}
+function modalMasjid(){
+  return `
+  <div class="modal fade" id="modalMasjid" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form id="formMasjid">
+          <div class="modal-header"><h5 class="modal-title">Masjid</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+          <div class="modal-body">
+            <input type="hidden" name="id">
+            <div class="mb-2"><label class="form-label">Nama</label><input name="name" class="form-control" required></div>
+            <div class="mb-2"><label class="form-label">Alamat</label><input name="alamat" class="form-control"></div>
+            <div class="row g-2">
+              <div class="col-6"><label class="form-label">Kecamatan</label>${selectKec()}</div>
+              <div class="col-6"><label class="form-label">Kelurahan</label>${selectKel()}</div>
+            </div>
+          </div>
+          <div class="modal-footer"><button class="btn btn-primary" type="submit">Simpan</button></div>
+        </form>
+      </div>
+    </div>
+  </div>`;
+}
+function modalKas(){
+  return `
+  <div class="modal fade" id="modalKas" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form id="formKas">
+          <div class="modal-header"><h5 class="modal-title">Transaksi Kas</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+          <div class="modal-body">
+            <input type="hidden" name="id">
+            <div class="row g-2">
+              <div class="col-6"><label class="form-label">Tanggal</label><input type="date" name="tanggal" value="${today()}" class="form-control" required></div>
+              <div class="col-6"><label class="form-label">Jenis</label>
+                <select name="type" class="form-select" required>
+                  <option value="pemasukan">Pemasukan</option>
+                  <option value="pengeluaran">Pengeluaran</option>
+                </select>
+              </div>
+              <div class="col-12"><label class="form-label">Keterangan</label><input name="keterangan" class="form-control" required></div>
+              <div class="col-12"><label class="form-label">Nominal (Rp)</label><input name="nominal" type="number" min="0" class="form-control" required></div>
+            </div>
+          </div>
+          <div class="modal-footer"><button class="btn btn-primary" type="submit">Simpan</button></div>
+        </form>
+      </div>
+    </div>
+  </div>`;
+}
+function modalAset(){
+  return `
+  <div class="modal fade" id="modalAset" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form id="formAset">
+          <div class="modal-header"><h5 class="modal-title">Aset</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+          <div class="modal-body">
+            <input type="hidden" name="id">
+            <label class="form-label">Nama Aset</label>
+            <input name="name" class="form-control" required>
+          </div>
+          <div class="modal-footer"><button class="btn btn-primary" type="submit">Simpan</button></div>
+        </form>
+      </div>
+    </div>
+  </div>`;
+}
+function modalSimple(id,title,fields,relTitle=''){
+  const rel = relTitle?`<div class="mb-2">${relTitle==='Kabupaten'?selectKab('kabupaten_id'):relTitle==='Kecamatan'?selectKec('kecamatan_id'):''}</div>`:'';
+  return `
+  <div class="modal fade" id="${id}" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form data-id="${id}">
+          <div class="modal-header"><h5 class="modal-title">${title}</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+          <div class="modal-body">
+            ${fields.map(f=>`<div class="mb-2"><label class="form-label text-capitalize">${f.replace('_',' ')}</label><input name="${f}" class="form-control" required></div>`).join('')}
+            ${rel}
+          </div>
+          <div class="modal-footer"><button class="btn btn-primary" type="submit">Simpan</button></div>
+        </form>
+      </div>
+    </div>
+  </div>`;
+}
+function cardList(title,id,placeholder,body){
+  return `<div class="card shadow-sm">
+    <div class="card-body">
+      <h6 class="mb-3">${title}</h6>
+      <div id="${id}">
+        ${body}
+      </div>
+    </div>
+  </div>`;
+}
+function renderListKab(){
+  return `<ul class="list-group">${db.kab.map(k=>`<li class="list-group-item d-flex justify-content-between align-items-center">${k.name}
+    <button class="btn btn-sm btn-outline-danger" data-del-kab="${k.id}"><i class="bi bi-trash"></i></button></li>`).join('')}</ul>`;
+}
+function renderListKec(){
+  return `<ul class="list-group">${db.kec.map(k=>`<li class="list-group-item d-flex justify-content-between align-items-center">${k.name} <span class="badge text-bg-light">${db.kab.find(x=>x.id==k.kabupaten_id)?.name||'-'}</span>
+  <button class="btn btn-sm btn-outline-danger" data-del-kec="${k.id}"><i class="bi bi-trash"></i></button></li>`).join('')}</ul>`;
+}
+function renderListKel(){
+  return `<ul class="list-group">${db.kel.map(k=>`<li class="list-group-item d-flex justify-content-between align-items-center">${k.name} <span class="badge text-bg-light">${db.kec.find(x=>x.id==k.kecamatan_id)?.name||'-'}</span>
+  <button class="btn btn-sm btn-outline-danger" data-del-kel="${k.id}"><i class="bi bi-trash"></i></button></li>`).join('')}</ul>`;
+}
+
+/* --------------------------- MOUNTS / LOGIC --------------------------- */
+function calcSaldo(mID){
+  return db.kas.filter(k=>k.masjid_id===mID).reduce((t,k)=> t + (k.type==='pemasukan'?+k.nominal:-k.nominal),0);
+}
+
+/* Dashboard */
+function mountDashboard(){
+  const ctx = document.getElementById('chartKas');
+  const mID = db.activeMasjid;
+  const ym = $$('#monthFilter').value || new Date().toISOString().slice(0,7);
+  const rows = db.kas.filter(k=>k.masjid_id===mID && k.tanggal.startsWith(ym))
+  const days = [...new Set(rows.map(r=>r.tanggal.slice(8,10)))].sort();
+  const pemasukan = days.map(d=> rows.filter(r=>r.tanggal.slice(8,10)===d && r.type==='pemasukan').reduce((a,b)=>a+Number(b.nominal),0));
+  const pengeluaran = days.map(d=> rows.filter(r=>r.tanggal.slice(8,10)===d && r.type==='pengeluaran').reduce((a,b)=>a+Number(b.nominal),0));
+  if(window._chartKas) window._chartKas.destroy();
+  window._chartKas = new Chart(ctx, {
+    type:'bar',
+    data:{ labels: days.map(d=>`${ym}-${d}`), datasets:[
+      { label:'Pemasukan', data:pemasukan },
+      { label:'Pengeluaran', data:pengeluaran }
+    ]},
+    options:{ responsive:true, scales:{ y:{ beginAtZero:true } } }
+  });
+
+  $$('#monthFilter').addEventListener('change', mountDashboard);
+  $$('#exportCSV').addEventListener('click', ()=>{
+    const rows = db.kas.filter(k=>k.masjid_id===mID).map(k=>[k.tanggal,k.type,k.keterangan,k.nominal]);
+    const csv = 'Tanggal,Jenis,Keterangan,Nominal\n'+rows.map(r=>r.join(',')).join('\n');
+    const blob = new Blob([csv],{type:'text/csv'}); const url=URL.createObjectURL(blob);
+    const a=document.createElement('a'); a.href=url; a.download='kas.csv'; a.click(); URL.revokeObjectURL(url);
+  });
+}
+
+/* Masjid */
+function mountMasjid(){
+  const tb=$$('#tblMasjid'), inputSearch=$$('#searchMasjid');
+  const draw=()=>{
+    const q=(inputSearch.value||'').toLowerCase();
+    tb.innerHTML = db.masjid.filter(m=>`${m.name} ${m.alamat}`.toLowerCase().includes(q)).map(m=>{
+      const kec=db.kec.find(k=>k.id==m.kecamatan_id)?.name||'-';
+      const kel=db.kel.find(k=>k.id==m.kelurahan_id)?.name||'-';
+      return `<tr>
+        <td class="fw-semibold">${m.name}</td>
+        <td>${m.alamat||'-'}</td>
+        <td><span class="badge text-bg-light">${kec} / ${kel}</span></td>
+        <td class="text-end">
+          <button class="btn btn-sm btn-outline-primary" data-edit="${m.id}"><i class="bi bi-pencil"></i></button>
+          <button class="btn btn-sm btn-outline-danger" data-del="${m.id}"><i class="bi bi-trash"></i></button>
+        </td>
+      </tr>`;
+    }).join('');
+  }; draw();
+
+  $$('#btnAddMasjid').onclick=()=>{
+    $$('#formMasjid').reset();
+    $$('#formMasjid [name=id]').value='';
+    bootstrap.Modal.getOrCreateInstance('#modalMasjid').show();
+  };
+  tb.addEventListener('click',e=>{
+    const id=e.target.closest('button')?.dataset.edit;
+    const del=e.target.closest('button')?.dataset.del;
+    if(id){
+      const m=db.masjid.find(x=>x.id==id);
+      for(const k in m){ const f=$$(`#formMasjid [name=${k}]`); if(f) f.value=m[k]; }
+      bootstrap.Modal.getOrCreateInstance('#modalMasjid').show();
+    }
+    if(del){ if(confirm('Hapus masjid ini?')){ db.masjid=db.masjid.filter(x=>x.id!=del); if(db.activeMasjid==del) db.activeMasjid=db.masjid[0]?.id||1; save(); draw(); refreshMasjidSelector(); } }
+  });
+  inputSearch.addEventListener('input',draw);
+
+  $$('#formMasjid').onsubmit=e=>{
+    e.preventDefault();
+    const f=new FormData(e.target); const v=Object.fromEntries(f.entries());
+    v.id = v.id? Number(v.id) : (Math.max(0,...db.masjid.map(x=>x.id))+1);
+    v.kecamatan_id=Number(v.kecamatan_id); v.kelurahan_id=Number(v.kelurahan_id);
+    const idx=db.masjid.findIndex(x=>x.id==v.id);
+    if(idx>-1) db.masjid[idx]=v; else db.masjid.push(v);
+    save(); draw(); refreshMasjidSelector();
+    bootstrap.Modal.getInstance('#modalMasjid').hide();
+  };
+}
+
+/* Pengurus */
+function mountPengurus(mID){
+  const tb=$$('#tblUser'), q=$$('#searchUser'), fj=$$('#filterJabatan');
+  const mapJabatanByUser = uid => db.user_jabatan.filter(uj=>uj.user_id==uid).map(uj=>db.jabatan.find(j=>j.id==uj.jabatan_id)?.name).filter(Boolean).join(', ');
+  const draw=()=>{
+    const kw=(q.value||'').toLowerCase();
+    const filterJ=fj.value;
+    const rows=db.users.filter(u=>u.masjid_id===mID && (`${u.nama} ${u.email} ${u.phone}`.toLowerCase().includes(kw))).filter(u=>{
+      if(!filterJ) return true;
+      return db.user_jabatan.some(uj=>uj.user_id==u.id && uj.jabatan_id==filterJ);
+    });
+    tb.innerHTML = rows.map(u=>`
+      <tr>
+        <td class="fw-semibold">${u.nama}</td>
+        <td><div>${u.email||'-'}</div><div class="text-muted small">${u.phone||'-'}</div></td>
+        <td>${mapJabatanByUser(u.id)||'-'}</td>
+        <td class="text-end">
+          <button class="btn btn-sm btn-outline-primary" data-edit="${u.id}"><i class="bi bi-pencil"></i></button>
+          <button class="btn btn-sm btn-outline-danger" data-del="${u.id}"><i class="bi bi-trash"></i></button>
+        </td>
+      </tr>
+    `).join('');
+  }; draw();
+
+  $$('#btnAddUser').onclick=()=>{
+    $$('#formUser').reset();
+    $$('#formUser [name=id]').value='';
+    $$('#formUser [name=kecamatan_id]').value=db.kec[0]?.id||'';
+    $$('#formUser [name=kelurahan_id]').value=db.kel[0]?.id||'';
+    bootstrap.Modal.getOrCreateInstance('#modalUser').show();
+  };
+  tb.addEventListener('click',e=>{
+    const id=e.target.closest('button')?.dataset.edit;
+    const del=e.target.closest('button')?.dataset.del;
+    if(id){
+      const u=db.users.find(x=>x.id==id);
+      for(const k of ['id','nik','nama','email','phone','kecamatan_id','kelurahan_id']){ const f=$$(`#formUser [name=${k}]`); if(f) f.value=u[k]??''; }
+      const owned = db.user_jabatan.filter(uj=>uj.user_id==u.id).map(uj=>String(uj.jabatan_id));
+      $$$('#formUser [name="jabatan_ids"] option').forEach(o=>o.selected=owned.includes(o.value));
+      bootstrap.Modal.getOrCreateInstance('#modalUser').show();
+    }
+    if(del){ if(confirm('Hapus pengurus ini?')){ 
+      db.users=db.users.filter(x=>x.id!=del); 
+      db.user_jabatan=db.user_jabatan.filter(uj=>uj.user_id!=del);
+      save(); draw(); 
+    }}
+  });
+  q.addEventListener('input',draw); fj.addEventListener('change',draw);
+
+  $$('#formUser').onsubmit=e=>{
+    e.preventDefault();
+    const f=new FormData(e.target); const v=Object.fromEntries(f.entries());
+    const id = v.id? Number(v.id) : (Math.max(0,...db.users.map(x=>x.id))+1);
+    const u = { id, nik:v.nik||'', nama:v.nama, email:v.email||'', phone:v.phone||'', image:'', masjid_id:mID, kecamatan_id:Number(v.kecamatan_id), kelurahan_id:Number(v.kelurahan_id) };
+    const idx=db.users.findIndex(x=>x.id==id);
+    if(idx>-1) db.users[idx]=u; else db.users.push(u);
+    // jabatan
+    const selected=[...$$$('#formUser [name="jabatan_ids"] option')].filter(o=>o.selected).map(o=>Number(o.value));
+    db.user_jabatan = db.user_jabatan.filter(uj=>uj.user_id!=id).concat(selected.map(jid=>({user_id:id,jabatan_id:jid})));
+    save(); draw(); bootstrap.Modal.getInstance('#modalUser').hide();
+  };
+}
+
+/* Kas */
+function mountKas(mID){
+  const tb=$$('#tblKas'), mon=$$('#kasMonth'), q=$$('#kasSearch'), rs=$$('#kasReset');
+  const draw=()=>{
+    const ym=(mon.value||'').trim();
+    const kw=(q.value||'').toLowerCase();
+    const rows=db.kas.filter(k=>k.masjid_id===mID).filter(k=>!ym || k.tanggal.startsWith(ym)).filter(k=>k.keterangan.toLowerCase().includes(kw)).sort((a,b)=>b.tanggal.localeCompare(a.tanggal));
+    tb.innerHTML = rows.map(k=>`
+      <tr>
+        <td>${k.tanggal}</td>
+        <td><span class="badge ${k.type==='pemasukan'?'text-bg-success':'text-bg-danger'}">${k.type}</span></td>
+        <td>${k.keterangan}</td>
+        <td class="text-end">Rp ${fmtIDR(k.nominal)}</td>
+        <td class="text-end">
+          <button class="btn btn-sm btn-outline-primary" data-edit="${k.id}"><i class="bi bi-pencil"></i></button>
+          <button class="btn btn-sm btn-outline-danger" data-del="${k.id}"><i class="bi bi-trash"></i></button>
+        </td>
+      </tr>`).join('');
+  }; draw();
+
+  $$('#btnAddKas').onclick=()=>{ $$('#formKas').reset(); $$('[name="tanggal"]').value=today(); $$('[name=id]').value=''; bootstrap.Modal.getOrCreateInstance('#modalKas').show(); };
+  tb.addEventListener('click',e=>{
+    const id=e.target.closest('button')?.dataset.edit;
+    const del=e.target.closest('button')?.dataset.del;
+    if(id){
+      const k=db.kas.find(x=>x.id==id);
+      ['id','tanggal','type','keterangan','nominal'].forEach(n=>$$(`#formKas [name=${n}]`).value=k[n]);
+      bootstrap.Modal.getOrCreateInstance('#modalKas').show();
+    }
+    if(del){ if(confirm('Hapus transaksi?')){ db.kas=db.kas.filter(x=>x.id!=del); save(); draw(); render('dashboard'); } }
+  });
+  mon.addEventListener('change',draw); q.addEventListener('input',draw); rs.addEventListener('click',()=>{ mon.value=''; q.value=''; draw(); });
+
+  $$('#formKas').onsubmit=e=>{
+    e.preventDefault();
+    const f=new FormData(e.target); const v=Object.fromEntries(f.entries());
+    const row={ id: v.id||uid(), masjid_id:mID, tanggal:v.tanggal, type:v.type, keterangan:v.keterangan, nominal:Number(v.nominal) };
+    const idx=db.kas.findIndex(x=>x.id==row.id);
+    if(idx>-1) db.kas[idx]=row; else db.kas.push(row);
+    save(); draw(); render('dashboard'); bootstrap.Modal.getInstance('#modalKas').hide();
+  };
+}
+
+/* Aset */
+function mountAset(mID){
+  const tb=$$('#tblAset'); const draw=()=>{
+    tb.innerHTML = db.assets.filter(a=>a.masjid_id===mID).map(a=>`
+    <tr>
+      <td>${a.name}</td>
+      <td class="text-end">
+        <button class="btn btn-sm btn-outline-primary" data-edit="${a.id}"><i class="bi bi-pencil"></i></button>
+        <button class="btn btn-sm btn-outline-danger" data-del="${a.id}"><i class="bi bi-trash"></i></button>
+      </td>
+    </tr>`).join('');
+  }; draw();
+
+  $$('#btnAddAset').onclick=()=>{ $$('#formAset').reset(); $$('[name=id]').value=''; bootstrap.Modal.getOrCreateInstance('#modalAset').show(); };
+  tb.addEventListener('click',e=>{
+    const id=e.target.closest('button')?.dataset.edit;
+    const del=e.target.closest('button')?.dataset.del;
+    if(id){ const a=db.assets.find(x=>x.id==id); $$('[name=id]').value=a.id; $$('[name=name]').value=a.name; bootstrap.Modal.getOrCreateInstance('#modalAset').show(); }
+    if(del){ if(confirm('Hapus aset?')){ db.assets=db.assets.filter(x=>x.id!=del); save(); draw(); } }
+  });
+  $$('#formAset').onsubmit=e=>{
+    e.preventDefault();
+    const f=new FormData(e.target); const v=Object.fromEntries(f.entries());
+    const row={ id: v.id||uid(), masjid_id:mID, name:v.name };
+    const idx=db.assets.findIndex(x=>x.id==row.id);
+    if(idx>-1) db.assets[idx]=row; else db.assets.push(row);
+    save(); draw(); bootstrap.Modal.getInstance('#modalAset').hide();
+  };
+}
+
+/* Wilayah */
+function mountWilayah(){
+  $$('#tblKab').innerHTML = renderListKab();
+  $$('#tblKec').innerHTML = renderListKec();
+  $$('#tblKel').innerHTML = renderListKel();
+  // add
+  $$('#btnAddKab').onclick=()=> bootstrap.Modal.getOrCreateInstance('#modalAddKab').show();
+  $$('#btnAddKec').onclick=()=> bootstrap.Modal.getOrCreateInstance('#modalAddKec').show();
+  $$('#btnAddKel').onclick=()=> bootstrap.Modal.getOrCreateInstance('#modalAddKel').show();
+
+  document.querySelectorAll('form[data-id="modalAddKab"], form[data-id="modalAddKec"], form[data-id="modalAddKel"]').forEach(f=>{
+    f.onsubmit=e=>{
+      e.preventDefault();
+      const id=f.getAttribute('data-id');
+      const data=Object.fromEntries(new FormData(f).entries());
+      if(id==='modalAddKab'){ db.kab.push({id:Math.max(0,...db.kab.map(k=>k.id))+1,name:data.name}); }
+      if(id==='modalAddKec'){ db.kec.push({id:Math.max(0,...db.kec.map(k=>k.id))+1,name:data.name,kabupaten_id:Number(data.kabupaten_id)}); }
+      if(id==='modalAddKel'){ db.kel.push({id:Math.max(0,...db.kel.map(k=>k.id))+1,name:data.name,kecamatan_id:Number(data.kecamatan_id)}); }
+      save(); mountWilayah(); bootstrap.Modal.getInstance('#'+id).hide(); f.reset();
+    };
+  });
+
+  // delete
+  $$('#tblKab').addEventListener('click',e=>{
+    const id=e.target.closest('button')?.dataset.delKab; if(!id) return;
+    if(confirm('Hapus kabupaten?')){ db.kab=db.kab.filter(k=>k.id!=id); save(); mountWilayah(); }
+  });
+  $$('#tblKec').addEventListener('click',e=>{
+    const id=e.target.closest('button')?.dataset.delKec; if(!id) return;
+    if(confirm('Hapus kecamatan?')){ db.kec=db.kec.filter(k=>k.id!=id); save(); mountWilayah(); }
+  });
+  $$('#tblKel').addEventListener('click',e=>{
+    const id=e.target.closest('button')?.dataset.delKel; if(!id) return;
+    if(confirm('Hapus kelurahan?')){ db.kel=db.kel.filter(k=>k.id!=id); save(); mountWilayah(); }
+  });
+}
+
+/* --------------------------- INIT --------------------------- */
+render('dashboard');
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
