@@ -126,13 +126,13 @@ function refreshMasjidSelector(){
   const sel=$$('#activeMasjid'); if(!sel) return;
   sel.innerHTML = db.masjid.map(m=>`<option value="${m.id}" ${m.id==db.activeMasjid?'selected':''}>${m.name}</option>`).join('');
 }
-$('#btnDark')?.addEventListener('click', ()=>{
+$$('#btnDark')?.addEventListener('click', ()=>{
   const root=document.documentElement;
-  const current=root.getAttribute('data-bs-theme')==='dark'?'light':'dark';
-  root.setAttribute('data-bs-theme', current);
+  const theme = root.getAttribute('data-bs-theme')==='dark' ? 'light' : 'dark';
+  root.setAttribute('data-bs-theme', theme);
 });
 document.addEventListener('change', e=>{
-  if(e.target.id==='activeMasjid'){ db.activeMasjid = Number(e.target.value); save(); render(currentPage); }
+  if(e.target.id==='activeMasjid'){ db.activeMasjid = Number(e.target.value); save(); render(window.currentPage || 'dashboard'); }
 });
 let currentPage='dashboard';
 function render(page){ currentPage=page; const el=$$('#content'); const mID=db.activeMasjid; switch(page){
