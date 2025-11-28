@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard Surat</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background: #f3f4f6;
+        }
+        .topbar {
+            background: #1f2937;
+            color: #fff;
+            padding: 16px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .container {
+            padding: 20px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .card h3 {
+            margin-top: 0;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="topbar">Dashboard Surat</div>
+    <div class="container">
+ 
+        <!-- CARD STATISTIK -->
+        <div class="grid">
+            <div class="card"><h3>Total Dokumen</h3><p style='font-size:32px;font-weight:bold;'>350</p></div>
+            <div class="card"><h3>Kontrak Perjanjian Kerja</h3><p style='font-size:32px;font-weight:bold;'>120</p></div>
+            <div class="card"><h3>Lainnya</h3><p style='font-size:32px;font-weight:bold;'>87</p></div>
+            <div class="card"><h3>Jenis Dokumen Terdaftar</h3><p style='font-size:32px;font-weight:bold;'>24</p></div>
+        </div>
+ 
+ 
+        <div class="grid">
+            <div class="card">
+                <h3>Total Kontrak Perjanjian Kerja</h3>
+                <canvas id="chartSuratMasuk"></canvas>
+            </div>
+            <div class="card">
+                <h3>Total Lainnya</h3>
+                <canvas id="chartSuratKeluar"></canvas>
+            </div>
+            <div class="card">
+                <h3>Distribusi per Jenis Dokumen</h3>
+                <canvas id="chartDistribusiJenis"></canvas>
+            </div>
+            <div class="card">
+                <h3>Nomor Surat Terakhir per Jenis Surat</h3>
+                <canvas id="chartNomorTerakhir"></canvas>
+            </div>
+        </div>
+ 
+    </div>
+ 
+<script>
+// ==== SAMPLE DATA (ubah di backend nanti) ====
+const totalMasuk = 120;
+const totalKeluar = 87;
+ 
+const jenisDokumen = ["Undangan", "Pengumuman", "Instruksi", "Nota Dinas", "Lainnya"];
+const distribusiData = [35, 20, 18, 27, 10];
+ 
+const jenisSurat = ["Undangan", "Pengumuman", "Instruksi", "Nota Dinas"];
+const nomorTerakhir = [54, 33, 21, 72];
+ 
+// ==== CHART 1: Surat Masuk ====
+new Chart(document.getElementById('chartSuratMasuk'), {
+    type: 'doughnut',
+    data: {
+        labels: ["Surat Masuk"],
+        datasets: [{ data: [totalMasuk], borderWidth: 1 }]
+    }
+});
+ 
+// ==== CHART 2: Surat Keluar ====
+new Chart(document.getElementById('chartSuratKeluar'), {
+    type: 'doughnut',
+    data: {
+        labels: ["Surat Keluar"],
+        datasets: [{ data: [totalKeluar], borderWidth: 1 }]
+    }
+});
+ 
+// ==== CHART 3: Distribusi per Jenis Dokumen ====
+new Chart(document.getElementById('chartDistribusiJenis'), {
+    type: 'bar',
+    data: {
+        labels: jenisDokumen,
+        datasets: [{ data: distribusiData, borderWidth: 1 }]
+    },
+    options: { scales: { y: { beginAtZero: true } } }
+});
+ 
+// ==== CHART 4: Nomor Surat Terakhir ====
+new Chart(document.getElementById('chartNomorTerakhir'), {
+    type: 'bar',
+    data: {
+        labels: jenisSurat,
+        datasets: [{ data: nomorTerakhir, borderWidth: 1 }]
+    },
+    options: { scales: { y: { beginAtZero: true } } }
+});
+</script>
+ 
+</body>
+ 
+<section class="mt-5 p-3">
+  <h3>Daftar Dokumen (Exportable)</h3>
+  <table id="exportTable" class="table table-bordered table-striped" style="width:100%">
+    <thead>
+      <tr>
+        <th>No</th>
+        <th>Jenis Dokumen</th>
+        <th>Nomor Surat</th>
+        <th>Tanggal</th>
+        <th>PIC</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td>SPK</td>
+        <td>SPK-2025-00123</td>
+        <td>2025-01-12</td>
+        <td>Imam</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>Memo</td>
+        <td>MEM-2025-00992</td>
+        <td>2025-01-15</td>
+        <td>Andi</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+ 
+<!-- DataTables Scripts -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+<script>
+  $(document).ready(function(){
+      $('#exportTable').DataTable({
+          dom: 'Bfrtip',
+          buttons: [ 'excelHtml5' ]
+      });
+  });
+</script>
+</html>
