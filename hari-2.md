@@ -173,9 +173,10 @@ public function authorize(): bool
 public function rules()
 {
     #yang diambil adalah parameter {user} dari route, jadi gunakan $this->route('user').
+     $userID =  $this->route('user') ?  $this->route('user')->id : null;
     return [
         'name' => 'required|string|min:3|max:255',
-        'email' => 'required|email|unique:users,email,' . $this->route('user')->id,
+        'email' => 'required|email|unique:users,email,' . $userID,
         'password' => $this->isMethod('post') ? 'required|min:6' : 'nullable|min:6',
     ];
 }
