@@ -1,4 +1,4 @@
-# Integrasi Laravel 12 dengan SB Admin 2
+# Integrasi Laravel 13 dengan SB Admin 2
 
 ## SB Admin 2
 ![SB ADMIN 2](/assets/sbadmin-2.png)
