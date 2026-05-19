@@ -92,7 +92,7 @@ Cocok untuk aplikasi besar dan tim development.
 
 Install Laravel 12:
 ```bash
-composer create-project laravel/laravel:^12.0 sample-sbadmin
+composer create-project laravel/laravel:^13.0 sample-sbadmin
 ```
 Setelah Berhasil Install, Lakukan langkah berikut:
 ```bash
