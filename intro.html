@@ -238,7 +238,24 @@
             font-size: 1.3rem;
             display: flex;
             align-items: center;
+            flex-wrap: wrap;
             gap: 10px;
+        }
+
+        .unit-badge {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(99, 102, 241, 0.15);
+            border: 1px solid rgba(99, 102, 241, 0.35);
+            color: var(--primary-light);
+            font-family: monospace;
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: 6px;
+            margin-left: auto;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
         .card p {
@@ -442,22 +459,28 @@
             </div>
             <div class="content-grid">
                 <div class="card highlight">
-                    <h4><i class="fa-solid fa-bullseye"></i> Apa itu SQL?</h4>
-                    <p>Bahasa standar yang digunakan untuk mengelola dan memanipulasi basis data relasional, seperti mengambil, menambahkan, atau mengubah data.</p>
-                </div>
-                <div class="card">
-                    <h4><i class="fa-solid fa-code"></i> Perintah Dasar</h4>
-                    <p>
-                        <strong style="color:var(--primary-light)">SELECT</strong> - Mengambil data<br>
-                        <strong style="color:var(--primary-light)">INSERT</strong> - Menambahkan data<br>
-                        <strong style="color:var(--primary-light)">UPDATE</strong> - Mengubah data<br>
-                        <strong style="color:var(--primary-light)">DELETE</strong> - Menghapus data
+                    <h4><i class="fa-solid fa-bullseye"></i> Konsep & RDBMS <span class="unit-badge">J.620100.020.02</span></h4>
+                    <p>Bahasa standar untuk mengelola basis data relasional. Menggunakan struktur tabel (baris & kolom) yang saling terhubung menggunakan Primary Key dan Foreign Key.</p>
+                    <p style="margin-top: 10px; font-size: 0.9rem; color: var(--text-muted);">
+                        • <strong>DDL (Definition)</strong>: CREATE, ALTER, DROP untuk skema.<br>
+                        • <strong>DML (Manipulation)</strong>: SELECT, INSERT, UPDATE, DELETE untuk data.<br>
+                        • <strong>TCL (Transaction)</strong>: COMMIT, ROLLBACK untuk integritas data.
                     </p>
                 </div>
                 <div class="card">
-                    <h4><i class="fa-regular fa-lightbulb"></i> Contoh Sintaks</h4>
-                    <code>SELECT * FROM users WHERE nama='John'</code>
-                    <p>Instruksi untuk mengambil seluruh baris dari tabel 'users' di mana nilai pada kolom 'nama' adalah 'John'.</p>
+                    <h4><i class="fa-solid fa-code"></i> Perintah Dasar SQL</h4>
+                    <p>Operasi CRUD (Create, Read, Update, Delete) pada basis data:</p>
+                    <p style="margin-top: 10px; font-size: 0.9rem; color: var(--text-muted);">
+                        • <strong style="color:var(--primary-light)">SELECT</strong> - Mengambil data dari tabel.<br>
+                        • <strong style="color:var(--primary-light)">INSERT</strong> - Menyisipkan data baru.<br>
+                        • <strong style="color:var(--primary-light)">UPDATE</strong> - Memperbarui data yang ada.<br>
+                        • <strong style="color:var(--primary-light)">DELETE</strong> - Menghapus data dari database.
+                    </p>
+                </div>
+                <div class="card">
+                    <h4><i class="fa-regular fa-lightbulb"></i> Sintaks Kompleks (JOIN & GROUP)</h4>
+                    <code>SELECT u.nama, COUNT(o.id) AS total_order FROM users u LEFT JOIN orders o ON u.id = o.user_id GROUP BY u.nama HAVING total_order > 3;</code>
+                    <p>Menggabungkan tabel pengguna dan pesanan, menghitung total pesanan per pengguna, dan menyaring hasil untuk pengguna dengan pesanan lebih dari 3.</p>
                 </div>
             </div>
         </div>
@@ -490,10 +513,15 @@
                     <p>Framework CSS untuk komponen antarmuka</p>
                 </div>
             </div>
-            <div class="card highlight" style="margin-top: 25px;">
-                <h4><i class="fa-solid fa-circle-question"></i> Kenapa Menggunakan Framework?</h4>
-                <p>Framework mempercepat siklus pengembangan, memastikan struktur kode yang lebih rapi, dan mencegah pembuatan komponen standar dari awal.</p>
-            </div>
+             <div class="card highlight" style="margin-top: 25px;">
+                <h4><i class="fa-solid fa-circle-question"></i> Kenapa Menggunakan Framework? <span class="unit-badge">J.620100.003.01</span></h4>
+                <p>Framework mempercepat pengembangan perangkat lunak dengan menyediakan struktur standar (seperti MVC) dan pustaka kode siap pakai, mengurangi penulisan kode berulang.</p>
+                <p style="margin-top: 10px; font-size: 0.9rem; color: var(--text-muted);">
+                    • <strong>Routing & Middleware</strong>: Mengelola rute alur URL dan memfilter request HTTP masuk.<br>
+                    • <strong>ORM (Object-Relational Mapping)</strong>: Berinteraksi dengan database menggunakan pemrograman berorientasi objek.<br>
+                    • <strong>Security</strong>: Proteksi bawaan terhadap Cross-Site Scripting (XSS), SQL Injection, dan CSRF.
+                </p>
+             </div>
         </div>
 
         <!-- Testing Section -->
@@ -504,166 +532,306 @@
             </div>
             <div class="content-grid">
                 <div class="card">
-                    <h4><span class="step-number">1</span> Definisi UAT</h4>
-                    <p>User Acceptance Testing merupakan tahapan pengujian akhir oleh pengguna untuk memastikan aplikasi beroperasi sesuai spesifikasi dan kebutuhan bisnis.</p>
+                    <h4><span class="step-number">1</span> Definisi & Kriteria UAT <span class="unit-badge">J.620100.038.01</span></h4>
+                    <p>User Acceptance Testing (UAT) adalah tahap akhir pengujian fungsionalitas sistem oleh pengguna akhir (user/client) sebelum aplikasi dirilis ke lingkungan production.</p>
+                    <p style="margin-top: 10px; font-size: 0.9rem; color: var(--text-muted);">
+                        • <strong>Acceptance Criteria</strong>: Sistem harus memenuhi semua spesifikasi yang disetujui di awal.<br>
+                        • <strong>Staging Environment</strong>: Pengujian dijalankan di lingkungan replika yang mirip production.
+                    </p>
                 </div>
                 <div class="card">
-                    <h4><span class="step-number">2</span> Alur Pengujian</h4>
-                    <p>Pembuatan skenario pengujian <i class="fa-solid fa-arrow-right mx-1"></i> Pengguna melakukan validasi fitur <i class="fa-solid fa-arrow-right mx-1"></i> Pencatatan hasil <i class="fa-solid fa-arrow-right mx-1"></i> Perbaikan bug dan penyesuaian.</p>
+                    <h4><span class="step-number">2</span> Alur Kerja UAT</h4>
+                    <p>Siklus formal pengujian UAT dimulai dari persiapan dokumen hingga persetujuan perilisan aplikasi:</p>
+                    <p style="margin-top: 10px; font-size: 0.9rem; color: var(--text-muted);">
+                        1. <strong>UAT Test Plan</strong>: Menyusun skenario pengujian.<br>
+                        2. <strong>Eksekusi Tes</strong>: Pengguna menjalankan skenario di platform.<br>
+                        3. <strong>Log Isu</strong>: Pencatatan bug ke sistem (seperti Jira).<br>
+                        4. <strong>UAT Sign-Off</strong>: Persetujuan tertulis bahwa aplikasi siap live.
+                    </p>
                 </div>
                 <div class="card">
-                    <h4><span class="step-number">3</span> Contoh Skenario</h4>
-                    <p>Validasi alur checkout e-commerce: Pengguna memilih produk <i class="fa-solid fa-arrow-right mx-1"></i> menambahkan ke keranjang <i class="fa-solid fa-arrow-right mx-1"></i> melakukan pembayaran <i class="fa-solid fa-arrow-right mx-1"></i> transaksi berhasil ✅</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Monitoring Section -->
-        <div class="section glass-panel fade-in-up">
-            <div class="section-title">
-                <div class="icon icon-orange"><i class="fa-solid fa-chart-line"></i></div>
-                <h2>Monitoring Aplikasi</h2>
-            </div>
-            <div class="content-grid">
-                <div class="card highlight">
-                    <h4><i class="fa-solid fa-magnifying-glass-chart"></i> Tujuan Monitoring</h4>
-                    <p>Memastikan performa, ketersediaan, dan keandalan sistem tetap optimal, serta mendeteksi potensi masalah sebelum berdampak pada pengguna.</p>
-                </div>
-                <div class="card">
-                    <h4><i class="fa-solid fa-gauge-high"></i> Metrik Pemantauan</h4>
-                    <ul>
-                       <li>Penggunaan CPU (beban komputasi prosesor)</li>
-                       <li>Penggunaan Memori (alokasi RAM aktif)</li>
-                       <li>Bandwidth (kapasitas transfer data jaringan)</li>
-                       <li>Waktu Respons (kecepatan pemrosesan permintaan)</li>
-                    </ul>
-                </div>
-                <div class="card">
-                    <h4><i class="fa-solid fa-toolbox"></i> Tools Observabilitas Laravel</h4>
-                    <p style="line-height: 1.6;">
-                        Meninggalkan tools generik, ekosistem Laravel memiliki alat bantu pantau bawaan:<br>
-                        • <a href="https://laravel.com/docs/13.x/telescope" target="_blank" style="color: var(--primary-light); text-decoration: none; font-weight: bold;">Laravel Telescope</a> (Insight request & query)<br>
-                        • <a href="https://laravel.com/docs/13.x/horizon" target="_blank" style="color: var(--primary-light); text-decoration: none; font-weight: bold;">Laravel Horizon</a> (Dashboard antrean Redis)<br>
-                        • <strong style="color: var(--primary-light);">Log Viewer</strong> (Pemantauan file log via GUI)
+                    <h4><span class="step-number">3</span> Contoh Skenario UAT</h4>
+                    <p>Skenario UAT Checkout E-Commerce:</p>
+                    <p style="margin-top: 10px; font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">
+                        • <strong>Pre-condition</strong>: Pengguna telah login dan memiliki saldo e-wallet cukup.<br>
+                        • <strong>Aksi</strong>: Menambahkan produk ke keranjang → Klik bayar → Masukkan PIN pembayaran → Verifikasi email.<br>
+                        • <strong>Hasil Diharapkan</strong>: Saldo berkurang, status pesanan menjadi "Dibayar", dan stok produk terpotong otomatis.
                     </p>
                 </div>
             </div>
         </div>
 
+        <!-- Monitoring Section -->
+         <div class="section glass-panel fade-in-up">
+             <div class="section-title">
+                 <div class="icon icon-orange"><i class="fa-solid fa-chart-line"></i></div>
+                 <h2>Monitoring & Observabilitas</h2>
+             </div>
+             <div class="content-grid">
+                 <div class="card highlight">
+                     <h4><i class="fa-solid fa-magnifying-glass-chart"></i> Tujuan Monitoring <span class="unit-badge">J.620100.045.01</span></h4>
+                     <p>Memastikan performa, ketersediaan (uptime), dan keandalan sistem tetap optimal, serta mendeteksi anomali penggunaan resource server sebelum berdampak negatif ke pengguna.</p>
+                 </div>
+                 <div class="card">
+                     <h4><i class="fa-solid fa-bug"></i> Debugging Aplikasi <span class="unit-badge">J.620100.025.02</span></h4>
+                     <p>Proses sistematis mendeteksi, mengisolasi, dan memperbaiki galat (bug) dalam kode program.</p>
+                     <p style="margin-top: 10px; font-size: 0.9rem; color: var(--text-muted);">
+                         • <strong>Teknik</strong>: Menganalisis stack trace error, menggunakan interactive debugger (Xdebug), profiling memori, dan print debugging (seperti <code>dd()</code> atau <code>console.log()</code>).
+                     </p>
+                 </div>
+                 <div class="card">
+                     <h4><i class="fa-solid fa-bell"></i> Alert & Notifikasi <span class="unit-badge">J.620100.044.01</span></h4>
+                     <p>Menerapkan sistem pengiriman notifikasi otomatis saat terjadi kegagalan sistem, beban CPU/RAM melebihi ambang batas, atau munculnya lonjakan eror HTTP 500.</p>
+                     <p style="margin-top: 10px; font-size: 0.9rem; color: var(--text-muted);">
+                         • <strong>Integrasi</strong>: PagerDuty, Slack/Telegram Webhooks, atau SMS/Email Gateway.
+                     </p>
+                 </div>
+                 <div class="card">
+                     <h4><i class="fa-solid fa-gauge-high"></i> Metrik Pemantauan</h4>
+                     <ul>
+                        <li>Penggunaan CPU (beban komputasi prosesor)</li>
+                        <li>Penggunaan Memori (alokasi RAM aktif)</li>
+                        <li>Bandwidth (kapasitas transfer data jaringan)</li>
+                        <li>Waktu Respons (kecepatan pemrosesan permintaan)</li>
+                     </ul>
+                 </div>
+                 <div class="card">
+                     <h4><i class="fa-solid fa-toolbox"></i> Tools Observabilitas Laravel</h4>
+                     <p style="line-height: 1.6;">
+                         Meninggalkan tools generik, ekosistem Laravel memiliki alat bantu pantau bawaan:<br>
+                         • <a href="https://laravel.com/docs/13.x/telescope" target="_blank" style="color: var(--primary-light); text-decoration: none; font-weight: bold;">Laravel Telescope</a> (Insight request & query)<br>
+                         • <a href="https://laravel.com/docs/13.x/horizon" target="_blank" style="color: var(--primary-light); text-decoration: none; font-weight: bold;">Laravel Horizon</a> (Dashboard antrean Redis)<br>
+                         • <strong style="color: var(--primary-light);">Log Viewer</strong> (Pemantauan file log via GUI)
+                     </p>
+                 </div>
+             </div>
+         </div>
+
         <!-- Security Section -->
-        <div class="section glass-panel fade-in-up">
-            <div class="section-title">
-                <div class="icon icon-red"><i class="fa-solid fa-shield-halved"></i></div>
-                <h2>Keamanan Aplikasi</h2>
-            </div>
-            <div class="content-grid">
-                <div class="card">
-                    <h4><i class="fa-solid fa-triangle-exclamation"></i> Identifikasi Risiko</h4>
-                    <p>Menganalisis potensi kerentanan sistem terhadap serangan siber, peretasan, malware, atau eksploitasi data sensitif.</p>
-                </div>
-                <div class="card">
-                    <h4><i class="fa-solid fa-user-shield"></i> Langkah Mitigasi</h4>
-                    <ul>
-                       <li>Menerapkan kebijakan keamanan terstandarisasi</li>
-                       <li>Melakukan audit dan penetration testing berkala</li>
-                       <li>Mengadopsi best practices industri (contoh: standar OWASP)</li>
-                    </ul>
-                </div>
-                <div class="card highlight">
-                    <h4><i class="fa-regular fa-gem"></i> Dampak Positif</h4>
-                    <p>Integritas dan kerahasiaan data pengguna terjamin, ketersediaan sistem dipertahankan, serta meningkatkan kredibilitas produk perangkat lunak.</p>
-                </div>
-            </div>
-        </div>
+         <div class="section glass-panel fade-in-up">
+             <div class="section-title">
+                 <div class="icon icon-red"><i class="fa-solid fa-shield-halved"></i></div>
+                 <h2>Keamanan Aplikasi</h2>
+             </div>
+             <div class="content-grid">
+                 <div class="card">
+                     <h4><i class="fa-solid fa-triangle-exclamation"></i> Identifikasi Risiko <span class="unit-badge">J.62090.018.01</span></h4>
+                     <p>Menganalisis potensi kerentanan sistem terhadap serangan keamanan informasi berdasarkan ancaman siber terkini.</p>
+                     <p style="margin-top: 10px; font-size: 0.9rem; color: var(--text-muted);">
+                         • <strong>OWASP Top 10</strong>: SQL Injection, XSS, Broken Auth, Insecure Direct Object References (IDOR).
+                     </p>
+                 </div>
+                 <div class="card">
+                     <h4><i class="fa-solid fa-user-shield"></i> Langkah Mitigasi</h4>
+                     <p>Penerapan kontrol keamanan berlapis untuk meminimalkan risiko eksploitasi data sensitif:</p>
+                     <p style="margin-top: 10px; font-size: 0.9rem; color: var(--text-muted);">
+                         • <strong>Input Validation</strong>: Sanitasi data masuk.<br>
+                         • <strong>Kriptografi</strong>: Hashing password dengan Bcrypt/Argon2 dan HTTPS/TLS.<br>
+                         • <strong>Access Control</strong>: Role-Based Access Control (RBAC).
+                     </p>
+                 </div>
+                 <div class="card highlight">
+                     <h4><i class="fa-regular fa-gem"></i> Dampak Positif</h4>
+                     <p>Integritas dan kerahasiaan data pengguna terjamin, ketersediaan sistem dipertahankan, serta meningkatkan kredibilitas produk perangkat lunak.</p>
+                 </div>
+             </div>
+         </div>
 
         <!-- Migration Section -->
-        <div class="section glass-panel fade-in-up">
-            <div class="section-title">
-                <div class="icon icon-teal"><i class="fa-solid fa-truck-fast"></i></div>
-                <h2>Migrasi & Pembaruan Sistem</h2>
-            </div>
-            <div class="content-grid">
-                <div class="card">
-                    <h4><span class="step-number">1</span> Perencanaan</h4>
-                    <p>Menjadwalkan waktu eksekusi, menugaskan personel teknis, dan menginventarisasi kebutuhan infrastruktur operasional.</p>
-                </div>
-                <div class="card">
-                    <h4><span class="step-number">2</span> Persiapan Data</h4>
-                    <p>Melakukan pencadangan (backup) menyeluruh untuk memastikan integritas dan ketersediaan data selama proses transisi berlangsung.</p>
-                </div>
-                <div class="card">
-                    <h4><span class="step-number">3</span> Eksekusi</h4>
-                    <p>Memindahkan arsitektur sistem dari lingkungan lama ke platform baru sesuai tenggat waktu yang telah ditetapkan.</p>
-                </div>
-            </div>
-        </div>
+         <div class="section glass-panel fade-in-up">
+             <div class="section-title">
+                 <div class="icon icon-teal"><i class="fa-solid fa-truck-fast"></i></div>
+                 <h2>Migrasi, Pembaruan & Cutover</h2>
+             </div>
+             <div class="content-grid">
+                 <div class="card">
+                     <h4><span class="step-number">1</span> Perencanaan Migrasi <span class="unit-badge">J.620100.024.02</span></h4>
+                     <p>Menyusun rencana perpindahan arsitektur platform atau database dari versi lama ke versi baru secara terstruktur.</p>
+                     <p style="margin-top: 10px; font-size: 0.9rem; color: var(--text-muted);">
+                         • <strong>Skema Migrasi</strong>: Database schema mapping, kompilasi script ETL (Extract Transform Load), dan estimasi linimasa downtime.
+                     </p>
+                 </div>
+                 <div class="card">
+                     <h4><span class="step-number">2</span> Persiapan Data</h4>
+                     <p>Melakukan pencadangan (backup) menyeluruh untuk memastikan integritas dan ketersediaan data selama proses transisi berlangsung.</p>
+                 </div>
+                 <div class="card">
+                     <h4><span class="step-number">3</span> Eksekusi & Pembaruan <span class="unit-badge">J.620100.047.01</span></h4>
+                     <p>Melaksanakan upgrade framework, library dependensi, serta deploy source code terbaru ke server production.</p>
+                     <p style="margin-top: 10px; font-size: 0.9rem; color: var(--text-muted);">
+                         • <strong>Prosedur</strong>: Menggunakan package manager (<code>composer update</code>, <code>npm update</code>) dan CI/CD pipeline otomatis.
+                     </p>
+                 </div>
+                 <div class="card highlight">
+                     <h4><span class="step-number">4</span> Cutover Aplikasi <span class="unit-badge">J.620100.041.01</span></h4>
+                     <p>Tahap peralihan penuh di mana sistem lama dinonaktifkan dan digantikan sistem baru secara real-time.</p>
+                     <p style="margin-top: 10px; font-size: 0.9rem; color: var(--text-muted);">
+                         • <strong>Strategi</strong>: Blue-Green Deployment atau Canary Release untuk meminimalkan dampak jika terjadi kegagalan transaksi saat cutover.
+                     </p>
+                 </div>
+             </div>
+         </div>
 
         <!-- Project Management Section -->
+         <div class="section glass-panel fade-in-up">
+             <div class="section-title">
+                 <div class="icon icon-purple"><i class="fa-solid fa-clipboard-list"></i></div>
+                 <h2>Manajemen Proyek</h2>
+             </div>
+             <div class="content-grid">
+                 <div class="card">
+                     <h4><i class="fa-solid fa-pen-to-square"></i> Inisiasi & Integrasi <span class="unit-badge">M.702090.001.0</span></h4>
+                     <p>Penyusunan rencana proyek terpadu (Project Charter) dan menyatukan seluruh elemen teknis serta tim untuk menyukseskan siklus hidup software.</p>
+                     <div class="progress-bar-wrap">
+                         <div class="progress-label"><span>Progress</span><span>90%</span></div>
+                         <div class="progress-bar">
+                             <div class="progress-fill" data-width="90%"></div>
+                         </div>
+                     </div>
+                 </div>
+                 <div class="card">
+                     <h4><i class="fa-solid fa-handshake"></i> Ruang Lingkup Proyek <span class="unit-badge">M.702090.002.0</span></h4>
+                     <p>Mendefinisikan batas fitur dan deliverables aplikasi (Scope Management) untuk menghindari scope creep (pelebaran proyek tanpa persetujuan).</p>
+                     <div class="progress-bar-wrap">
+                         <div class="progress-label"><span>Progress</span><span>75%</span></div>
+                         <div class="progress-bar">
+                             <div class="progress-fill" data-width="75%"></div>
+                         </div>
+                     </div>
+                 </div>
+                 <div class="card">
+                     <h4><i class="fa-solid fa-desktop"></i> Evaluasi & Kualitas Proyek <span class="unit-badge">M.702090.005.0</span></h4>
+                     <p>Menetapkan standar kualitas sistem, merencanakan Quality Assurance (QA) serta Quality Control (QC) untuk kepuasan pengguna akhir.</p>
+                     <div class="progress-bar-wrap">
+                         <div class="progress-label"><span>Progress</span><span>85%</span></div>
+                         <div class="progress-bar">
+                             <div class="progress-fill" data-width="85%"></div>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+         </div>
+
+        <!-- Tools Section -->
+         <div class="section glass-panel fade-in-up">
+             <div class="section-title">
+                 <div class="icon icon-green"><i class="fa-solid fa-screwdriver-wrench"></i></div>
+                 <h2>Tools Produktivitas</h2>
+                 <span class="unit-badge">J.620100.001.01</span>
+             </div>
+             <div class="tools-grid">
+                 <div class="tool-card">
+                     <i class="fa-solid fa-laptop-code tool-icon"></i>
+                     <h4>IDE</h4>
+                     <p>VS Code, PHPStorm - lingkungan pengembangan terintegrasi.</p>
+                 </div>
+                 <div class="tool-card">
+                     <i class="fa-brands fa-git-alt tool-icon" style="color: #f14e32;"></i>
+                     <h4>Git</h4>
+                     <p>Sistem kontrol versi (VCS) untuk pelacakan kode dan kolaborasi.</p>
+                 </div>
+                 <div class="tool-card">
+                     <i class="fa-brands fa-jira tool-icon" style="color: #2684ff;"></i>
+                     <h4>Jira</h4>
+                     <p>Platform manajemen penugasan (task) dan pelacakan isu metodologi Agile.</p>
+                 </div>
+                 <div class="tool-card">
+                     <i class="fa-solid fa-vial-circle-check tool-icon"></i>
+                     <h4>Testing Tools</h4>
+                     <p>PHPUnit, Jest - framework khusus untuk otomatisasi pengujian kode.</p>
+                 </div>
+             </div>
+             <div class="card highlight" style="margin-top: 25px;">
+                 <h4><i class="fa-solid fa-chart-line"></i> Analisis Kelayakan Tools <span class="unit-badge">J.620100.001.01</span></h4>
+                 <p>Proses mengevaluasi dan memilih kakas (tools) pengembangan berdasarkan efisiensi, integrasi, dan skalabilitas tim.</p>
+                 <p style="margin-top: 10px; font-size: 0.9rem; color: var(--text-muted);">
+                     • <strong>Evaluasi</strong>: Memilih antara Git CLI vs Git GUI, Jira vs Trello, Docker vs local environment, serta kecocokan framework PHPUnit/Jest terhadap proyek.
+                 </p>
+             </div>
+         </div>
+
+        <!-- Algoritma & Pemrograman Lanjut Section -->
         <div class="section glass-panel fade-in-up">
             <div class="section-title">
-                <div class="icon icon-purple"><i class="fa-solid fa-clipboard-list"></i></div>
-                <h2>Manajemen Proyek</h2>
+                <div class="icon icon-purple"><i class="fa-solid fa-code-branch"></i></div>
+                <h2>Algoritma & Pemrograman Lanjut</h2>
             </div>
             <div class="content-grid">
                 <div class="card">
-                    <h4><i class="fa-solid fa-pen-to-square"></i> Inisiasi & Perencanaan</h4>
-                    <p>Mendefinisikan tujuan proyek, estimasi linimasa (timeline), dan struktur hierarki tim pelaksana.</p>
-                    <div class="progress-bar-wrap">
-                        <div class="progress-label"><span>Progress</span><span>90%</span></div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" data-width="90%"></div>
-                        </div>
-                    </div>
+                    <h4><i class="fa-solid fa-calculator"></i> Implementasi Algoritma <span class="unit-badge">J.620100.022.02</span></h4>
+                    <p>Menerapkan struktur data linear (array, stack, queue) dan non-linear (tree, graph) serta merancang algoritma efisien (sorting, searching) untuk memproses logika bisnis.</p>
+                    <p style="margin-top: 10px; font-size: 0.9rem; color: var(--text-muted);">
+                        • <strong>Big O Notation</strong>: Menganalisis efisiensi kompleksitas waktu O(1), O(log n), O(n), O(n²).
+                    </p>
                 </div>
                 <div class="card">
-                    <h4><i class="fa-solid fa-handshake"></i> Sinergi & Koordinasi</h4>
-                    <p>Memastikan komunikasi lintas divisi berjalan transparan agar kolaborasi tim tetap efisien dan produktif.</p>
-                    <div class="progress-bar-wrap">
-                        <div class="progress-label"><span>Progress</span><span>75%</span></div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" data-width="75%"></div>
-                        </div>
-                    </div>
+                    <h4><i class="fa-solid fa-shuffle"></i> Pemrograman Paralel <span class="unit-badge">J.620100.029.02</span></h4>
+                    <p>Menggunakan pemrograman asinkron (promises, async/await, coroutine) dan antrean pekerjaan latar belakang (queue background jobs) untuk memproses data secara konkuren.</p>
+                    <p style="margin-top: 10px; font-size: 0.9rem; color: var(--text-muted);">
+                        • <strong>Asynchronous & Worker Pools</strong>: Mengurangi blocking pada thread utama web server dengan memindahkan tugas berat ke background processor (seperti Laravel Queue/Redis).
+                    </p>
                 </div>
                 <div class="card">
-                    <h4><i class="fa-solid fa-desktop"></i> Evaluasi & Pemantauan</h4>
-                    <p>Mengawasi perkembangan capaian proyek dan merumuskan resolusi strategis ketika muncul kendala operasional.</p>
-                    <div class="progress-bar-wrap">
-                        <div class="progress-label"><span>Progress</span><span>85%</span></div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" data-width="85%"></div>
-                        </div>
-                    </div>
+                    <h4><i class="fa-solid fa-bolt"></i> Pemrograman Real-Time <span class="unit-badge">J.620100.028.02</span></h4>
+                    <p>Menerapkan transfer data real-time dua arah menggunakan WebSockets, Server-Sent Events (SSE), atau pooling dinamis untuk fungsionalitas chat atau notifikasi langsung.</p>
+                    <p style="margin-top: 10px; font-size: 0.9rem; color: var(--text-muted);">
+                        • <strong>Protokol</strong>: Koneksi TCP persisten (Full-Duplex) yang memungkinkan server mengirim data langsung ke klien tanpa request baru.
+                    </p>
                 </div>
             </div>
         </div>
 
-        <!-- Tools Section -->
+        <!-- Infrastruktur & Skalabilitas Section -->
         <div class="section glass-panel fade-in-up">
             <div class="section-title">
-                <div class="icon icon-green"><i class="fa-solid fa-screwdriver-wrench"></i></div>
-                <h2>Tools Produktivitas</h2>
+                <div class="icon icon-blue"><i class="fa-solid fa-server"></i></div>
+                <h2>Infrastruktur & Skalabilitas</h2>
             </div>
-            <div class="tools-grid">
-                <div class="tool-card">
-                    <i class="fa-solid fa-laptop-code tool-icon"></i>
-                    <h4>IDE</h4>
-                    <p>VS Code, PHPStorm - lingkungan pengembangan terintegrasi.</p>
+            <div class="content-grid">
+                <div class="card">
+                    <h4><i class="fa-solid fa-microchip"></i> Arsitektur Perangkat Keras <span class="unit-badge">TIK.SM03.001.01</span></h4>
+                    <p>Menentukan spesifikasi server (vCPU, RAM, Storage SSD, IOPS) serta konfigurasi jaringan/firewall untuk kebutuhan deployment aplikasi skala produksi.</p>
+                    <p style="margin-top: 10px; font-size: 0.9rem; color: var(--text-muted);">
+                        • <strong>Hardware sizing</strong>: Memilih CPU-optimized untuk beban kalkulasi tinggi atau Memory-optimized untuk database caching.
+                    </p>
                 </div>
-                <div class="tool-card">
-                    <i class="fa-brands fa-git-alt tool-icon" style="color: #f14e32;"></i>
-                    <h4>Git</h4>
-                    <p>Sistem kontrol versi (VCS) untuk pelacakan kode dan kolaborasi.</p>
+                <div class="card">
+                    <h4><i class="fa-solid fa-arrow-up-right-dots"></i> Skalabilitas Perangkat Lunak <span class="unit-badge">J.620100.002.01</span></h4>
+                    <p>Menganalisis dan merancang skalabilitas sistem menggunakan Load Balancer (horizontal scaling), Caching (Redis/Memcached), Database Replication, dan optimasi query.</p>
+                    <p style="margin-top: 10px; font-size: 0.9rem; color: var(--text-muted);">
+                        • <strong>Scaling Strategy</strong>: Horizontal scaling (menambah node server) vs Vertical scaling (menambah kapasitas hardware server tunggal).
+                    </p>
                 </div>
-                <div class="tool-card">
-                    <i class="fa-brands fa-jira tool-icon" style="color: #2684ff;"></i>
-                    <h4>Jira</h4>
-                    <p>Platform manajemen penugasan (task) dan pelacakan isu metodologi Agile.</p>
+                <div class="card">
+                    <h4><i class="fa-solid fa-photo-film"></i> Pemrograman Multimedia <span class="unit-badge">J.620100.030.02</span></h4>
+                    <p>Menerapkan pemrosesan media interaktif pada web seperti integrasi video/audio streaming, rendering grafis Canvas/SVG, dan optimasi aset multimedia.</p>
+                    <p style="margin-top: 10px; font-size: 0.9rem; color: var(--text-muted);">
+                        • <strong>Teknologi</strong>: HTML5 Web Audio API, Canvas rendering 2D/3D (WebGL), serta kompresi aset gambar dan video dinamis.
+                    </p>
                 </div>
-                <div class="tool-card">
-                    <i class="fa-solid fa-vial-circle-check tool-icon"></i>
-                    <h4>Testing Tools</h4>
-                    <p>PHPUnit, Jest - framework khusus untuk otomatisasi pengujian kode.</p>
+            </div>
+        </div>
+
+        <!-- Dokumentasi & Manajemen Perubahan Section -->
+        <div class="section glass-panel fade-in-up">
+            <div class="section-title">
+                <div class="icon icon-teal"><i class="fa-solid fa-file-signature"></i></div>
+                <h2>Dokumentasi & Manajemen Perubahan</h2>
+            </div>
+            <div class="content-grid">
+                <div class="card">
+                    <h4><i class="fa-solid fa-book-open-reader"></i> Petunjuk Teknis Pelanggan <span class="unit-badge">J.620100.039.02</span></h4>
+                    <p>Menyusun dokumentasi manual penggunaan (user guide), panduan instalasi deployment, dan dokumentasi API interaktif (Swagger/Postman) untuk pelanggan.</p>
+                    <p style="margin-top: 10px; font-size: 0.9rem; color: var(--text-muted);">
+                        • <strong>API Docs</strong>: Menyusun deskripsi endpoint, request/response body schema, authentication header, dan kode status HTTP standar.
+                    </p>
+                </div>
+                <div class="card highlight">
+                    <h4><i class="fa-solid fa-code-compare"></i> Analisis Dampak Perubahan <span class="unit-badge">J.620100.043.01</span></h4>
+                    <p>Menganalisis dampak perubahan kode (change impact analysis), mendeteksi potensi regresi sebelum update, serta memetakan efek migrasi skema database terhadap aplikasi.</p>
+                    <p style="margin-top: 10px; font-size: 0.9rem; color: var(--text-muted);">
+                        • <strong>Teknik</strong>: Melakukan code review, memverifikasi dependensi modul, serta menjalankan automated regression tests sebelum merge branch.
+                    </p>
                 </div>
             </div>
         </div>
