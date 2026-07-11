@@ -127,4 +127,4 @@ graph TD
 ### 7. Rencana Rilis & MVP (Minimum Viable Product)
 * **Fase 1 (MVP):** Autentikasi dasar, Manajemen Kamar (Owner), Pembayaran Manual/Midtrans VA, Manajemen Tenant Sederhana.
 * **Fase 2:** Otomatisasi WhatsApp Reminder, Sistem Komplain/Tiket, Laporan Grafik Keuangan Lanjutan.
-* **Fase 3:** Integrasi IoT smart lock untuk akses pintu kos otomatis setelah pembayaran sukses.
+
