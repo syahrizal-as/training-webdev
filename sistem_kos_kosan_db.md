@@ -21,7 +21,26 @@ Dokumen ini merinci rancangan tabel database untuk sistem manajemen kos-kosan Ko
 
 ## Kamus Data / Rancangan Tabel
 
-### 1. Tabel `properties` (Properti Kos)
+### 1. Tabel `users` (Pengguna - Tenant & Owner)
+Tabel ini merekam data pengguna sistem. Kita menambahkan kolom identifikasi (KTP) untuk verifikasi tenant sesuai flow PRD.
+
+| Nama Kolom | Tipe Data | Atribut | Keterangan |
+| :--- | :--- | :--- | :--- |
+| `id` | bigint | unsigned, primary key, auto-increment | ID Pengguna |
+| `name` | varchar(255) | not null | Nama lengkap |
+| `email` | varchar(255) | unique, not null | Alamat email |
+| `password` | varchar(255) | not null | Password (hash) |
+| `cabang_id` | bigint | unsigned, nullable | Relasi cabang (lama) |
+| `ktp_number` | varchar(16) | nullable | NIK KTP Tenant |
+| `ktp_photo` | varchar(255) | nullable | Path penyimpanan file foto KTP |
+| `is_verified` | boolean | default: `false` | Status verifikasi identitas oleh Owner/Admin |
+| `remember_token`| varchar(100) | nullable | Token remember me |
+| `created_at` | timestamp | nullable | Waktu data dibuat |
+| `updated_at` | timestamp | nullable | Waktu data diperbarui |
+
+---
+
+### 2. Tabel `properties` (Properti Kos)
 Tabel ini menyimpan data properti kos yang dikelola oleh pemilik (owner).
 
 | Nama Kolom | Tipe Data | Atribut | Keterangan |
@@ -34,7 +53,7 @@ Tabel ini menyimpan data properti kos yang dikelola oleh pemilik (owner).
 
 ---
 
-### 2. Tabel `rooms` (Kamar Kos)
+### 3. Tabel `rooms` (Kamar Kos)
 Tabel ini menyimpan data kamar yang dimiliki oleh suatu properti kos.
 
 | Nama Kolom | Tipe Data | Atribut | Keterangan |
@@ -52,7 +71,7 @@ Tabel ini menyimpan data kamar yang dimiliki oleh suatu properti kos.
 
 ---
 
-### 3. Tabel `room_images` (Foto Kamar)
+### 4. Tabel `room_images` (Foto Kamar)
 Tabel ini menyimpan beberapa foto untuk setiap kamar kos (One-to-Many).
 
 | Nama Kolom | Tipe Data | Atribut | Keterangan |
@@ -68,7 +87,7 @@ Tabel ini menyimpan beberapa foto untuk setiap kamar kos (One-to-Many).
 
 ---
 
-### 4. Tabel `facilities` (Master Fasilitas)
+### 5. Tabel `facilities` (Master Fasilitas)
 Tabel master untuk menyimpan semua daftar fasilitas yang tersedia baik untuk properti maupun kamar.
 
 | Nama Kolom | Tipe Data | Atribut | Keterangan |
@@ -81,7 +100,7 @@ Tabel master untuk menyimpan semua daftar fasilitas yang tersedia baik untuk pro
 
 ---
 
-### 5. Tabel Pivot `facility_property` (Fasilitas Properti)
+### 6. Tabel Pivot `facility_property` (Fasilitas Properti)
 Menghubungkan fasilitas dengan properti (Many-to-Many).
 
 | Nama Kolom | Tipe Data | Atribut | Keterangan |
@@ -95,7 +114,7 @@ Menghubungkan fasilitas dengan properti (Many-to-Many).
 
 ---
 
-### 6. Tabel Pivot `facility_room` (Fasilitas Kamar)
+### 7. Tabel Pivot `facility_room` (Fasilitas Kamar)
 Menghubungkan fasilitas dengan kamar (Many-to-Many).
 
 | Nama Kolom | Tipe Data | Atribut | Keterangan |
@@ -109,7 +128,7 @@ Menghubungkan fasilitas dengan kamar (Many-to-Many).
 
 ---
 
-### 7. Tabel `rentals` (Penyewaan / Kontrak)
+### 8. Tabel `rentals` (Penyewaan / Kontrak)
 Tabel ini mencatat masa sewa kamar oleh penghuni (tenant).
 
 | Nama Kolom | Tipe Data | Atribut | Keterangan |
@@ -130,7 +149,7 @@ Tabel ini mencatat masa sewa kamar oleh penghuni (tenant).
 
 ---
 
-### 8. Tabel `invoices` (Tagihan & Pembayaran dengan Midtrans)
+### 9. Tabel `invoices` (Tagihan & Pembayaran dengan Midtrans)
 Tabel ini merekam semua tagihan bulanan dan status pembayaran dari penyewaan yang aktif terintegrasi dengan Payment Gateway (seperti Midtrans).
 
 | Nama Kolom | Tipe Data | Atribut | Keterangan |
@@ -153,7 +172,7 @@ Tabel ini merekam semua tagihan bulanan dan status pembayaran dari penyewaan yan
 
 ---
 
-### 9. Tabel `complaints` (Tiket Komplain Kerusakan)
+### 10. Tabel `complaints` (Tiket Komplain Kerusakan)
 Tabel ini digunakan penghuni untuk melaporkan masalah atau kerusakan fasilitas.
 
 | Nama Kolom | Tipe Data | Atribut | Keterangan |
@@ -174,7 +193,7 @@ Tabel ini digunakan penghuni untuk melaporkan masalah atau kerusakan fasilitas.
 
 ---
 
-### 10. Tabel `messages` (Chat/Pesan)
+### 11. Tabel `messages` (Chat/Pesan)
 Tabel ini menyimpan riwayat pesan chat langsung antara Tenant/Guest dan Owner/Admin.
 
 | Nama Kolom | Tipe Data | Atribut | Keterangan |
