@@ -130,18 +130,21 @@ Tabel ini mencatat masa sewa kamar oleh penghuni (tenant).
 
 ---
 
-### 8. Tabel `invoices` (Tagihan & Pembayaran)
-Tabel ini merekam semua tagihan bulanan dan status pembayaran dari penyewaan yang aktif.
+### 8. Tabel `invoices` (Tagihan & Pembayaran dengan Midtrans)
+Tabel ini merekam semua tagihan bulanan dan status pembayaran dari penyewaan yang aktif terintegrasi dengan Payment Gateway (seperti Midtrans).
 
 | Nama Kolom | Tipe Data | Atribut | Keterangan |
 | :--- | :--- | :--- | :--- |
 | `id` | bigint | unsigned, primary key, auto-increment | ID Tagihan |
 | `rental_id` | bigint | unsigned, foreign key, index | Kunci asing ke `rentals.id` |
+| `invoice_code` | varchar(100) | unique, not null | Kode unik tagihan (misal: INV-20260712-0001) |
 | `amount` | decimal(12,2) | not null | Nominal tagihan |
 | `due_date` | date | not null | Tanggal batas pembayaran (jatuh tempo) |
 | `status` | enum | not null, default: `'Pending'` | Status bayar: `'Pending'` (Belum bayar), `'Paid'` (Lunas), `'Cancelled'` (Batal) |
 | `payment_method`| varchar(100) | nullable | Metode pembayaran (VA, QRIS, dll.) |
-| `transaction_id`| varchar(255) | nullable | ID Transaksi unik dari Payment Gateway |
+| `transaction_id`| varchar(255) | nullable | ID Transaksi unik dari Midtrans / Payment Gateway |
+| `snap_token` | varchar(255) | nullable | Token Midtrans Snap untuk checkout page |
+| `payment_url` | varchar(500) | nullable | URL Pembayaran/Redirect Link Midtrans |
 | `paid_at` | timestamp | nullable | Waktu pembayaran dilakukan |
 | `created_at` | timestamp | nullable | Waktu data dibuat |
 | `updated_at` | timestamp | nullable | Waktu data diperbarui |
