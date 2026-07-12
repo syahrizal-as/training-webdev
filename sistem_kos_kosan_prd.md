@@ -36,7 +36,7 @@ Manajemen kos-kosan secara konvensional seringkali menghadapi berbagai kendala o
 
 #### 4.2. Modul Manajemen Kamar & Properti (Sisi Owner)
 * Menambahkan properti kos baru (alamat, fasilitas umum).
-* Menambahkan kamar (nomor kamar, tipe/kelas, harga, fasilitas kamar, foto).
+* Menambahkan kamar (nomor kamar, tipe/kelas, harga, fasilitas kamar, beberapa foto kamar dengan pilihan cover/primary image).
 * Mengubah status kamar secara manual atau otomatis (Tersedia, Terisi, Perbaikan).
 
 #### 4.3. Modul Penyewaan & Kontrak
@@ -58,6 +58,12 @@ Manajemen kos-kosan secara konvensional seringkali menghadapi berbagai kendala o
 * Laporan pemasukan bulanan/tahunan.
 * Laporan tunggakan pembayaran.
 * Laporan pengeluaran operasional kos.
+
+#### 4.7. Modul Chat & Komunikasi (Tenant, Owner, & Guest)
+* Tenant terdaftar dapat melakukan obrolan langsung (real-time chat) dengan Owner kosnya.
+* Guest (pengguna belum login/calon tenant) dapat memulai obrolan langsung dari halaman informasi kos. Percakapan diidentifikasi menggunakan token sesi yang disimpan di browser guest (`guest_token`).
+* Owner/Admin dapat memantau, membalas, dan mengelola semua pesan masuk baik dari tenant terdaftar maupun guest dari satu panel komunikasi terpadu.
+* Menampilkan indikator pesan belum dibaca (unread count).
 
 ---
 
@@ -127,4 +133,3 @@ graph TD
 ### 7. Rencana Rilis & MVP (Minimum Viable Product)
 * **Fase 1 (MVP):** Autentikasi dasar, Manajemen Kamar (Owner), Pembayaran Manual/Midtrans VA, Manajemen Tenant Sederhana.
 * **Fase 2:** Otomatisasi WhatsApp Reminder, Sistem Komplain/Tiket, Laporan Grafik Keuangan Lanjutan.
-
