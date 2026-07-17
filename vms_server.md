@@ -242,3 +242,63 @@ Untuk memantau log aplikasi Anda (misal melihat error kodingan atau hasil cetak 
 # Memantau log aplikasi secara real-time
 journalctl -u my-go-app.service -f -n 100
 ```
+
+---
+
+## 7. Troubleshooting
+
+### 7.1 `go: errors parsing go.mod: invalid go version`
+**Penyebab**: Server punya Go versi lama (1.18), `go.mod` pakai versi lebih tinggi.
+
+```bash
+go version  # cek dulu
+```
+
+Kalau < 1.21, upgrade Go (lihat §7.2).
+
+### 7.2 Upgrade Go di Server
+```bash
+wget -q https://go.dev/dl/go1.23.0.linux-amd64.tar.gz -O /tmp/go.tar.gz
+sudo rm -rf /usr/local/go && sudo tar -C /usr/local -xzf /tmp/go.tar.gz && rm /tmp/go.tar.gz
+echo 'export PATH=/usr/local/go/bin:$PATH' >> ~/.bashrc && source ~/.bashrc
+go version  # harus: go1.23.0
+```
+
+### 7.3 `status=203/EXEC` (Binary tidak bisa dieksekusi)
+Systemd tidak menemukan binary. Build ulang:
+```bash
+cd /var/www/aigo
+go build -ldflags="-s -w" -o api-server ./cmd/api
+chmod +x api-server
+sudo systemctl restart aigo
+```
+
+### 7.4 `status=1/FAILURE` (Aplikasi crash)
+Cek log untuk lihat penyebab:
+```bash
+journalctl -u aigo.service -n 30 --no-pager
+# atau jalanin manual
+cd /var/www/aigo && ./api-server
+```
+
+**Penyebab umum:**
+
+| Error | Solusi |
+|---|---|
+| `Gagal menghubungkan database MySQL` | Cek `DB_HOST`, `DB_USERNAME`, `DB_PASSWORD` di `.env` |
+| `GEMINI_API_KEY belum disetel` | Pastikan `.env` punya `AI_MODE=gemini` + `GEMINI_API_KEY=...` |
+| `failed to find default credentials` | Ganti ke `AI_MODE=gemini` atau setup ADC: `gcloud auth application-default login` |
+| `bind: address already in use` | `sudo fuser -k 8080/tcp && sudo systemctl restart aigo` |
+
+### 7.5 Git pull conflict di `go.mod`
+`go mod tidy` di server nge-modify `go.mod` lokal → conflict saat pull.
+```bash
+git checkout -- go.mod && git pull
+```
+
+### 7.6 Error `no required module provides package main.go`
+Build command salah. Yang benar:
+```bash
+go build -o api-server ./cmd/api    # bukan main.go!
+```
+
