@@ -72,7 +72,7 @@ Kompilasi kode Go Anda menjadi satu file binary executable tunggal bernama `app-
 go mod tidy
 
 # Build binary Go dengan optimasi (tanpa debug info untuk memperkecil ukuran file)
-go build -ldflags="-s -w" -o app-production main.go
+go build -ldflags="-s -w" -o app-production ./cmd/api
 ```
 
 ---
@@ -232,7 +232,7 @@ Setiap kali Anda selesai melakukan `git push` dari komputer lokal, Anda hanya pe
 ```bash
 cd /var/www/my-go-app
 git pull origin main
-go build -ldflags="-s -w" -o app-production main.go
+go build -ldflags="-s -w" -o app-production ./cmd/api
 sudo systemctl restart my-go-app
 ```
 
