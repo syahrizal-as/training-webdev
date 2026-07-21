@@ -86,7 +86,7 @@ Alur kode jelas, mudah debug.
 **Aman dan Scalable:**  
 Cocok untuk aplikasi besar dan tim development.
 
-#  Laravel 12 & SB Admin 2
+#  Laravel 13 & SB Admin 2
 
 ## 1. Persiapan Project
 
