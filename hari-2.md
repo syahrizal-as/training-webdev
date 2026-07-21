@@ -364,4 +364,5 @@ Jika validasi gagal, Laravel otomatis redirect ke form dan menampilkan error di 
     - Dokumentasi berupa screenshot dari web yang sudah dibuat dalam bentuk .pdf
 
 **Link Pengumpulan Tugas:**  
-https://forms.gle/Vbtqdceytjkmrq7n6
+ https://forms.gle/EkwS92bbQ5DaX33NA 
+
