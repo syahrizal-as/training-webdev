@@ -90,7 +90,7 @@ Cocok untuk aplikasi besar dan tim development.
 
 ## 1. Persiapan Project
 
-Install Laravel 12:
+Install Laravel 13:
 ```bash
 composer create-project laravel/laravel:^13.0 sample-sbadmin
 ```
