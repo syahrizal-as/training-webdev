@@ -1,907 +1,1825 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panduan Web Developer</title>
-    
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <style>
-        :root {
-            --primary: #6366f1;
-            --primary-light: #818cf8;
-            --primary-dark: #4f46e5;
-            --secondary: #ec4899;
-            --accent: #f59e0b;
-            --bg-dark: #0f172a;
-            --bg-darker: #020617;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --glass-bg: rgba(30, 41, 59, 0.6);
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-            --card-hover-bg: rgba(255, 255, 255, 0.04);
-            
-            /* Section specific gradients */
-            --grad-blue: linear-gradient(135deg, #3b82f6, #1d4ed8);
-            --grad-green: linear-gradient(135deg, #10b981, #047857);
-            --grad-purple: linear-gradient(135deg, #8b5cf6, #6d28d9);
-            --grad-orange: linear-gradient(135deg, #f59e0b, #b45309);
-            --grad-red: linear-gradient(135deg, #ef4444, #b91c1c);
-            --grad-teal: linear-gradient(135deg, #14b8a6, #0f766e);
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#19243a">
+  <meta name="description" content="Panduan teknis komprehensif Web Developer standar SKKNI industri: basis data SQL, framework Laravel, testing UAT, observabilitas, keamanan siber, dan manajemen proyek. Disusun oleh Syahrizal As.">
+  <title>Panduan Web Developer — Materi Teknis &amp; Unit SKKNI</title>
 
-        * { 
-            margin: 0; 
-            padding: 0; 
-            box-sizing: border-box; 
-        }
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%235146d9'/%3E%3Cpath d='m25 20-13 12 13 12m14-24 13 12-13 12m-4-29-6 34' fill='none' stroke='white' stroke-width='4'/%3E%3C/svg%3E">
 
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--bg-darker);
-            background-image: 
-                radial-gradient(circle at 15% 10%, rgba(99, 102, 241, 0.15), transparent 25%),
-                radial-gradient(circle at 85% 30%, rgba(236, 72, 153, 0.15), transparent 25%),
-                radial-gradient(circle at 50% 60%, rgba(139, 92, 246, 0.1), transparent 30%),
-                radial-gradient(circle at 20% 90%, rgba(20, 184, 166, 0.1), transparent 25%);
-            background-attachment: fixed;
-            color: var(--text-main);
-            min-height: 100vh;
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
 
-        h1, h2, h3, h4, h5, h6 {
-            font-family: 'Outfit', sans-serif;
-        }
+  <!-- Shared Design System -->
+  <link rel="stylesheet" href="./assets/theme.css">
 
-        /* Ambient Background Effects */
-        .ambient-blob {
-            position: fixed;
-            border-radius: 50%;
-            filter: blur(100px);
-            z-index: -1;
-            opacity: 0.5;
-            animation: float 10s infinite ease-in-out alternate;
-        }
+  <style>
+    /* Full-width LMS Guide Styles for intro.html (No Sidebar) */
+    .reading-progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 0%;
+      height: 3px;
+      background: var(--accent);
+      z-index: 100;
+      transition: width 0.1s linear;
+    }
 
-        .blob-1 {
-            top: -10%;
-            left: -10%;
-            width: 40vw;
-            height: 40vw;
-            background: rgba(79, 70, 229, 0.2);
-        }
+    .guide-full-wrapper {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 32px 24px 60px;
+    }
 
-        .blob-2 {
-            bottom: -10%;
-            right: -10%;
-            width: 30vw;
-            height: 30vw;
-            background: rgba(131, 24, 67, 0.2);
-            animation-delay: -5s;
-            animation-direction: alternate-reverse;
-        }
+    /* Header Banner */
+    .guide-header-card {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 40px;
+      margin-bottom: 32px;
+      box-shadow: var(--shadow-sm);
+    }
+    .guide-header-top {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 32px;
+      align-items: center;
+    }
+    .stc-img-wrap {
+      width: 130px;
+      height: 130px;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      overflow: hidden;
+      flex-shrink: 0;
+      box-shadow: var(--shadow-sm);
+    }
+    .stc-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
 
-        @keyframes float {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(30px, 50px) scale(1.1); }
-        }
+    /* Horizontal Quick Jump Pill Bar */
+    .quick-jump-bar {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      margin-bottom: 32px;
+      box-shadow: var(--shadow-sm);
+    }
+    .quick-jump-title {
+      font-size: 12px;
+      font-weight: 750;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .quick-jump-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .quick-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      background: #f8fafc;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--ink-light);
+      text-decoration: none !important;
+      transition: all .15s ease;
+    }
+    .quick-pill:hover {
+      background: var(--accent-soft);
+      border-color: var(--accent-border);
+      color: var(--accent);
+    }
+    .quick-pill span.num {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--muted);
+      font-weight: 700;
+    }
 
-        /* Layout */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
+    /* Module Section */
+    .module-section {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 36px;
+      margin-bottom: 32px;
+      box-shadow: var(--shadow-sm);
+      scroll-margin-top: 86px;
+    }
+    .module-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 14px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--line-subtle);
+      margin-bottom: 24px;
+    }
+    .module-title-group {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .module-title-group h2 {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--ink);
+      letter-spacing: -0.5px;
+    }
 
-        /* Glassmorphism utility */
-        .glass-panel {
-            background: var(--glass-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border-radius: 24px;
-            border: 1px solid var(--glass-border);
-            box-shadow: var(--glass-shadow);
-        }
+    /* Content Cards within Modules */
+    .topic-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+    .topic-card {
+      background: #f8fafc;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 22px;
+      transition: all .2s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    .topic-card:hover {
+      background: white;
+      border-color: #cbd5e1;
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+    .topic-card-highlight {
+      border-left: 4px solid var(--accent);
+      background: #fafbff;
+    }
+    .topic-title {
+      font-size: 15px;
+      font-weight: 750;
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
 
-        /* Header */
-        .header {
-            text-align: center;
-            padding: 60px 30px;
-            margin-bottom: 50px;
-            position: relative;
-            overflow: hidden;
-        }
+    /* Scenario-based explanation cards (Universal format like BAB 05) */
+    .scenario-card,
+    .security-card {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 22px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow-sm);
+      transition: all .2s ease;
+    }
+    .scenario-card:hover,
+    .security-card:hover {
+      border-color: #cbd5e1;
+      box-shadow: var(--shadow-md);
+    }
+    .scenario-card-header,
+    .security-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .security-badge-danger {
+      background: #fff1f2;
+      border: 1px solid var(--rose-border);
+      color: #be123c;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 6px;
+    }
+    .scenario-badge-blue {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      color: #1d4ed8;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 6px;
+    }
+    .scenario-badge-green {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      color: #15803d;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 6px;
+    }
+    .scenario-badge-amber {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      color: #b45309;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 6px;
+    }
+    .scenario-solution-box,
+    .security-solution-box {
+      background: var(--green-soft);
+      border: 1px solid var(--green-border);
+      border-radius: 8px;
+      padding: 12px 14px;
+      margin-top: 12px;
+      font-size: 13px;
+      color: #064e3b;
+      line-height: 1.6;
+    }
+    .scenario-solution-box strong,
+    .security-solution-box strong {
+      color: #047857;
+    }
 
-        .header::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 4px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-        }
+    /* Reusable simple examples — same learning pattern used in Bab 05 */
+    .simple-example {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 20px;
+    }
+    .simple-example-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .simple-example-header h3 {
+      color: var(--ink);
+      font-size: 16px;
+      font-weight: 750;
+    }
+    .simple-example-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    .simple-example-item {
+      background: rgba(255, 255, 255, 0.78);
+      border: 1px solid #fef3c7;
+      border-radius: 9px;
+      padding: 13px;
+    }
+    .simple-example-label {
+      display: block;
+      color: #92400e;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      margin-bottom: 5px;
+      text-transform: uppercase;
+    }
+    .simple-example-item p,
+    .simple-example > p {
+      color: var(--ink-light);
+      font-size: 12.5px;
+      line-height: 1.65;
+      margin: 0;
+    }
+    .simple-example-flow {
+      display: flex;
+      align-items: stretch;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .simple-example-flow span {
+      flex: 1;
+      background: white;
+      border: 1px solid #fde68a;
+      border-radius: 8px;
+      color: var(--ink-light);
+      font-size: 12px;
+      line-height: 1.5;
+      padding: 10px;
+      text-align: center;
+    }
+    .simple-example-flow b {
+      align-self: center;
+      color: #b45309;
+      flex: 0;
+    }
 
-        .header h1 {
-            font-size: clamp(2.5rem, 5vw, 4rem);
-            margin-bottom: 20px;
-            background: linear-gradient(to right, #ffffff, #a5b4fc);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            font-weight: 700;
-            letter-spacing: -1px;
-        }
+    /* Tool Card in Guide */
+    .guide-tool-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    .guide-tool-card {
+      background: #f8fafc;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 18px;
+      text-align: center;
+      transition: all .15s ease;
+    }
+    .guide-tool-card:hover {
+      background: white;
+      border-color: #cbd5e1;
+      transform: translateY(-2px);
+    }
 
-        .header img {
-            border-radius: 16px;
-            margin: 20px 0;
-            max-width: 100%;
-            height: auto;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            border: 1px solid rgba(255,255,255,0.1);
-        }
+    /* Code Display with Copy Button */
+    .code-container {
+      position: relative;
+      margin: 12px 0 16px;
+    }
+    .code-copy-btn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #cbd5e1;
+      padding: 4px 8px;
+      font-size: 11px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all .15s ease;
+      font-family: var(--font-mono);
+    }
+    .code-copy-btn:hover {
+      background: rgba(255, 255, 255, 0.25);
+      color: white;
+    }
 
-        .header p {
-            color: var(--primary-light);
-            font-size: 1.2rem;
-            font-weight: 500;
-            letter-spacing: 1px;
-        }
-
-        /* Sections */
-        .section {
-            padding: 40px;
-            margin-bottom: 40px;
-            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .section:hover {
-            transform: translateY(-5px);
-            border-color: rgba(255, 255, 255, 0.2);
-            box-shadow: 0 20px 40px 0 rgba(0, 0, 0, 0.4);
-            background: rgba(30, 41, 59, 0.7);
-        }
-
-        .section-title {
-            display: flex;
-            align-items: center;
-            margin-bottom: 30px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-
-        .section-title h2 {
-            font-size: 2.2rem;
-            color: #fff;
-            font-weight: 600;
-        }
-
-        .icon {
-            width: 55px;
-            height: 55px;
-            margin-right: 20px;
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            color: white;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        }
-
-        .icon-blue { background: var(--grad-blue); }
-        .icon-green { background: var(--grad-green); }
-        .icon-purple { background: var(--grad-purple); }
-        .icon-orange { background: var(--grad-orange); }
-        .icon-red { background: var(--grad-red); }
-        .icon-teal { background: var(--grad-teal); }
-
-        /* Grids */
-        .content-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-        }
-
-        /* Cards */
-        .card {
-            background: var(--card-hover-bg);
-            border-radius: 16px;
-            padding: 25px;
-            border: 1px solid rgba(255,255,255,0.03);
-            border-left: 4px solid var(--primary);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .card:hover {
-            background: rgba(255,255,255,0.08);
-            border-color: rgba(255,255,255,0.1);
-            border-left-color: var(--primary-light);
-            transform: translateY(-3px);
-        }
-
-        .card h4 {
-            color: #fff;
-            margin-bottom: 15px;
-            font-size: 1.3rem;
-            display: flex;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .unit-badge {
-            display: inline-flex;
-            align-items: center;
-            background: rgba(99, 102, 241, 0.15);
-            border: 1px solid rgba(99, 102, 241, 0.35);
-            color: var(--primary-light);
-            font-family: monospace;
-            font-size: 0.75rem;
-            padding: 2px 8px;
-            border-radius: 6px;
-            margin-left: auto;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .card p {
-            color: var(--text-muted);
-            font-size: 1rem;
-        }
-
-        .card code {
-            display: block;
-            background: rgba(0,0,0,0.3);
-            padding: 10px 15px;
-            border-radius: 8px;
-            margin: 10px 0;
-            color: #a5b4fc;
-            font-family: monospace;
-            font-size: 0.9rem;
-        }
-        
-        .card ul {
-            padding-left: 20px; 
-            color: var(--text-muted);
-        }
-        
-        .card ul li {
-            margin-bottom: 5px;
-        }
-
-        .highlight {
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(236, 72, 153, 0.1));
-            border-left: 4px solid var(--secondary);
-        }
-
-        .highlight:hover {
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(236, 72, 153, 0.15));
-            border-left-color: #f472b6;
-        }
-
-        .step-number {
-            font-family: 'Outfit', sans-serif;
-            background: rgba(255,255,255,0.1);
-            color: var(--primary-light);
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 1rem;
-            border: 1px solid rgba(255,255,255,0.2);
-        }
-
-        .mx-1 {
-            margin: 0 5px;
-            color: var(--primary-light);
-        }
-
-        /* Tools Grid */
-        .tools-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
-        }
-
-        .tool-card {
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(79, 70, 229, 0.2));
-            border: 1px solid rgba(99, 102, 241, 0.3);
-            padding: 25px;
-            border-radius: 16px;
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-
-        .tool-card:hover {
-            transform: translateY(-5px);
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.25), rgba(79, 70, 229, 0.3));
-            box-shadow: 0 10px 25px rgba(79, 70, 229, 0.3);
-            border-color: rgba(99, 102, 241, 0.5);
-        }
-
-        .tool-icon {
-            font-size: 2.5rem;
-            color: #fff;
-            margin-bottom: 15px;
-        }
-
-        .tool-card h4 {
-            color: #fff;
-            margin-bottom: 10px;
-            font-size: 1.2rem;
-        }
-
-        .tool-card p {
-            color: var(--primary-light);
-            font-size: 0.95rem;
-        }
-
-        /* Progress Bars in Cards */
-        .progress-bar-wrap {
-            margin-top: 15px;
-        }
-
-        .progress-bar {
-            background: rgba(0,0,0,0.3);
-            border-radius: 10px;
-            height: 8px;
-            margin: 10px 0;
-            overflow: hidden;
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            border-radius: 10px;
-            transition: width 1.5s cubic-bezier(0.16, 1, 0.3, 1);
-            width: 0; /* Animated via JS */
-        }
-
-        .progress-label {
-            display: flex;
-            justify-content: space-between;
-            color: var(--primary-light);
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-
-        /* Footer */
-        .footer {
-            text-align: center;
-            padding: 50px 20px;
-            margin-top: 60px;
-            border-top: 1px solid rgba(255,255,255,0.05);
-        }
-
-        .footer h3 {
-            font-size: 2rem;
-            color: #fff;
-            margin-bottom: 15px;
-        }
-
-        .footer p {
-            color: var(--text-muted);
-            font-size: 1.1rem;
-            margin-bottom: 5px;
-        }
-
-        /* Animation classes */
-        .fade-in-up {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .fade-in-up.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Scrollbar */
-        ::-webkit-scrollbar {
-            width: 10px;
-        }
-        ::-webkit-scrollbar-track {
-            background: var(--bg-darker);
-        }
-        ::-webkit-scrollbar-thumb {
-            background: rgba(255,255,255,0.2);
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: rgba(255,255,255,0.3);
-        }
-
-        @media (max-width: 768px) {
-            .section { padding: 25px; }
-            .content-grid { grid-template-columns: 1fr; }
-            .header { padding: 40px 20px; }
-            .section-title h2 { font-size: 1.8rem; }
-        }
-    </style>
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .guide-tool-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 640px) {
+      .guide-full-wrapper { padding: 16px 14px 40px; }
+      .guide-header-card { padding: 24px; }
+      .guide-header-top { grid-template-columns: 1fr; }
+      .stc-img-wrap { width: 100px; height: 100px; }
+      .module-section { padding: 24px 18px; }
+      .guide-tool-grid { grid-template-columns: 1fr; }
+      .topic-grid { grid-template-columns: 1fr; }
+      .simple-example-grid { grid-template-columns: 1fr; }
+      .simple-example-flow { flex-direction: column; }
+      .simple-example-flow b { transform: rotate(90deg); }
+    }
+  </style>
 </head>
 <body>
-    <!-- Ambient Background -->
-    <div class="ambient-blob blob-1"></div>
-    <div class="ambient-blob blob-2"></div>
+  <div class="reading-progress-bar" id="readingProgress"></div>
+  <a class="skip-link" href="#main-content">Lewati ke konten panduan</a>
 
-    <div class="container">
-        <!-- Header -->
-        <div class="header glass-panel fade-in-up">
-            <h1>🚀 Panduan Web Developer</h1>
-            <img src="./assets/stc.jpeg" alt="STC" />
-            <p>created by : Syahrizal As</p>
+  <!-- SVG Symbols Definition -->
+  <svg aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <symbol id="i-code" viewBox="0 0 24 24"><path d="m8 6-6 6 6 6m8-12 6 6-6 6m-3-15-2 18"/></symbol>
+      <symbol id="i-home" viewBox="0 0 24 24"><path d="m3 10 9-7 9 7v10H3zM9 20v-7h6v7"/></symbol>
+      <symbol id="i-book" viewBox="0 0 24 24"><path d="M12 5v16M3 3h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5v16h-5a4 4 0 0 0-4 2 4 4 0 0 0-4-2H3z"/></symbol>
+      <symbol id="i-database" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 4 16 4 16 0V5M4 12c0 4 16 4 16 0"/></symbol>
+      <symbol id="i-puzzle" viewBox="0 0 24 24"><path d="M19.439 7.85c0-1.57-1.16-2.85-2.6-2.85h-1.68a2.5 2.5 0 0 0-4.32-1.74A2.5 2.5 0 0 0 9 5H7.16C5.72 5 4.56 6.28 4.56 7.85v1.68a2.5 2.5 0 0 1-1.74 4.32 2.5 2.5 0 0 1 1.74 1.84v1.89C4.56 19.14 5.72 20.42 7.16 20.42h1.68a2.5 2.5 0 0 0 4.32 1.74 2.5 2.5 0 0 0 1.84-1.74h1.84c1.43 0 2.6-1.28 2.6-2.85v-1.68a2.5 2.5 0 0 1 1.74-4.32 2.5 2.5 0 0 1-1.74-1.84V7.85z"/></symbol>
+      <symbol id="i-flask" viewBox="0 0 24 24"><path d="M10 2v7.31L4.1 19.9c-.8 1.3.1 3.1 1.7 3.1h12.4c1.6 0 2.5-1.8 1.7-3.1L14 9.31V2"/></symbol>
+      <symbol id="i-chart" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></symbol>
+      <symbol id="i-shield" viewBox="0 0 24 24"><path d="m12 2 9 4v6c0 5-9 10-9 10S3 17 3 12V6zM8 12l3 3 5-6"/></symbol>
+      <symbol id="i-truck" viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13" rx="1"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></symbol>
+      <symbol id="i-clipboard" viewBox="0 0 24 24"><rect width="16" height="18" x="4" y="4" rx="2"/><path d="M8 4V2a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="8" x2="16" y1="10" y2="10"/><line x1="8" x2="16" y1="14" y2="14"/></symbol>
+      <symbol id="i-wrench" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></symbol>
+      <symbol id="i-server" viewBox="0 0 24 24"><rect width="20" height="8" x="2" y="2" rx="2" ry="2"/><rect width="20" height="8" x="2" y="14" rx="2" ry="2"/><line x1="6" x2="6.01" y1="6" y2="6"/><line x1="6" x2="6.01" y1="18" y2="18"/></symbol>
+      <symbol id="i-file-sig" viewBox="0 0 24 24"><path d="M20 19.5v.5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8.5L20 7.5V11"/><polyline points="14 2 14 8 20 8"/><path d="M18 21a6 6 0 0 0-6-6M15 18a6 6 0 0 0-6-6"/></symbol>
+      <symbol id="i-trophy" viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></symbol>
+      <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+      <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></symbol>
+      <symbol id="i-menu" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></symbol>
+      <symbol id="i-external" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6m4-3h6v6m-11 5L21 3"/></symbol>
+      <symbol id="i-github" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/></symbol>
+    </defs>
+  </svg>
+
+  <!-- Top Navigation Bar: Simple & Bersih -->
+  <header class="site-navbar">
+    <div class="nav-container">
+      <a class="nav-brand" href="index.html">
+        <span class="brandmark"><svg class="icon"><use href="#i-code"/></svg></span>
+        <span class="brand-text">
+          <strong>WebDev<span style="color:var(--accent)">.</span></strong>
+          <small>Training Portal</small>
+        </span>
+      </a>
+
+      <!-- Simple Nav Links -->
+      <nav class="nav-links" id="navLinks">
+        <a href="index.html"><svg class="icon"><use href="#i-home"/></svg>Beranda</a>
+        <a href="intro.html" class="active"><svg class="icon"><use href="#i-book"/></svg>Panduan Teknis (12 Bab)</a>
+        <a href="https://github.com/syahrizal-as/training-webdev/blob/main/hari-2.md" target="_blank" rel="noopener noreferrer" style="color:var(--green);font-weight:700;"><svg class="icon"><use href="#i-github"/></svg>Praktek  ↗</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="index.html" class="btn btn-small" title="Kembali ke beranda">
+          <svg class="icon"><use href="#i-home"/></svg>
+          <span>Halaman Utama</span>
+        </a>
+        <a class="avatar" href="index.html#fasilitator" title="Profil Fasilitator Syahrizal As.">SA</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Full-Width Container (Tanpa Sidebar Sesuai Permintaan) -->
+  <div class="guide-full-wrapper" id="main-content">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="index.html">Beranda</a>
+      <span class="separator">/</span>
+      <strong>Panduan Web Developer (Standar SKKNI)</strong>
+    </nav>
+
+    <!-- Guide Header Card -->
+    <div class="guide-header-card">
+      <div class="guide-header-top">
+        <div>
+          <div class="eyebrow"><span class="line"></span>Buku Panduan Pembelajaran &amp; Uji Kompetensi</div>
+          <h1 style="font-size:clamp(28px, 3.2vw, 40px);font-weight:800;letter-spacing:-1.2px;color:var(--ink);margin-bottom:12px;">
+            Panduan Teknis Web Developer
+          </h1>
+          <p style="color:var(--muted);font-size:15px;line-height:1.7;max-width:740px;">
+            Buku panduan terpadu bagi peserta pelatihan Web Developer. Memuat rangkuman materi esensial, arsitektur sistem, sintaks teknis, contoh kode testing otomatis, serta pemetaan standar kompetensi kerja nasional industri perangkat lunak.
+          </p>
+          <div style="display:flex;align-items:center;gap:12px;margin-top:18px;font-size:13px;color:var(--ink-light);flex-wrap:wrap;">
+            <span class="badge badge-accent">Disusun oleh: Syahrizal As.</span>
+            <span class="badge badge-green">12 Bab Pembelajaran Lengkap</span>
+            <span class="badge badge-gray">16 Kode Unit Kompetensi SKKNI</span>
+          </div>
         </div>
-
-        <!-- SQL Section -->
-        <div class="section glass-panel fade-in-up">
-            <div class="section-title">
-                <div class="icon icon-blue"><i class="fa-solid fa-database"></i></div>
-                <h2>Database dengan SQL</h2>
-            </div>
-            <div class="content-grid">
-                <div class="card highlight">
-                    <h4><i class="fa-solid fa-bullseye"></i> Konsep & RDBMS <span class="unit-badge">J.620100.020.02</span></h4>
-                    <p>Bahasa standar untuk mengelola basis data relasional. Menggunakan struktur tabel (baris & kolom) yang saling terhubung menggunakan Primary Key dan Foreign Key.</p>
-                    <p style="margin-top: 10px; font-size: 0.9rem; color: var(--text-muted);">
-                        • <strong>DDL (Definition)</strong>: CREATE, ALTER, DROP untuk skema.<br>
-                        • <strong>DML (Manipulation)</strong>: SELECT, INSERT, UPDATE, DELETE untuk data.<br>
-                        • <strong>TCL (Transaction)</strong>: COMMIT, ROLLBACK untuk integritas data.
-                    </p>
-                </div>
-                <div class="card">
-                    <h4><i class="fa-solid fa-code"></i> Perintah Dasar SQL</h4>
-                    <p>Operasi CRUD (Create, Read, Update, Delete) pada basis data:</p>
-                    <p style="margin-top: 10px; font-size: 0.9rem; color: var(--text-muted);">
-                        • <strong style="color:var(--primary-light)">SELECT</strong> - Mengambil data dari tabel.<br>
-                        • <strong style="color:var(--primary-light)">INSERT</strong> - Menyisipkan data baru.<br>
-                        • <strong style="color:var(--primary-light)">UPDATE</strong> - Memperbarui data yang ada.<br>
-                        • <strong style="color:var(--primary-light)">DELETE</strong> - Menghapus data dari database.
-                    </p>
-                </div>
-                <div class="card">
-                    <h4><i class="fa-regular fa-lightbulb"></i> Sintaks Kompleks (JOIN & GROUP)</h4>
-                    <code>SELECT u.nama, COUNT(o.id) AS total_order FROM users u LEFT JOIN orders o ON u.id = o.user_id GROUP BY u.nama HAVING total_order > 3;</code>
-                    <p>Menggabungkan tabel pengguna dan pesanan, menghitung total pesanan per pengguna, dan menyaring hasil untuk pengguna dengan pesanan lebih dari 3.</p>
-                </div>
-            </div>
+        <div class="stc-img-wrap" title="STC Training Center">
+          <img src="./assets/stc.jpeg" alt="STC Training" onerror="this.style.display='none'">
         </div>
-
-        <!-- Framework Section -->
-        <div class="section glass-panel fade-in-up">
-            <div class="section-title">
-                <div class="icon icon-green"><i class="fa-solid fa-puzzle-piece"></i></div>
-                <h2>Framework & Library</h2>
-            </div>
-            <div class="tools-grid">
-                <div class="tool-card">
-                    <i class="fa-brands fa-laravel tool-icon" style="color: #ff2d20;"></i>
-                    <h4>Laravel</h4>
-                    <p>Framework PHP berarsitektur MVC</p>
-                </div>
-                <div class="tool-card">
-                    <i class="fa-brands fa-react tool-icon" style="color: #61dafb;"></i>
-                    <h4>React JS</h4>
-                    <p>Library JavaScript untuk UI terinteraktif</p>
-                </div>
-                <div class="tool-card">
-                    <i class="fa-brands fa-vuejs tool-icon" style="color: #42b883;"></i>
-                    <h4>Vue.js</h4>
-                    <p>Framework progresif JavaScript</p>
-                </div>
-                <div class="tool-card">
-                    <i class="fa-brands fa-bootstrap tool-icon" style="color: #7952b3;"></i>
-                    <h4>Bootstrap</h4>
-                    <p>Framework CSS untuk komponen antarmuka</p>
-                </div>
-            </div>
-             <div class="card highlight" style="margin-top: 25px;">
-                <h4><i class="fa-solid fa-circle-question"></i> Kenapa Menggunakan Framework? <span class="unit-badge">J.620100.003.01</span></h4>
-                <p>Framework mempercepat pengembangan perangkat lunak dengan menyediakan struktur standar (seperti MVC) dan pustaka kode siap pakai, mengurangi penulisan kode berulang.</p>
-                <p style="margin-top: 10px; font-size: 0.9rem; color: var(--text-muted);">
-                    • <strong>Routing & Middleware</strong>: Mengelola rute alur URL dan memfilter request HTTP masuk.<br>
-                    • <strong>ORM (Object-Relational Mapping)</strong>: Berinteraksi dengan database menggunakan pemrograman berorientasi objek.<br>
-                    • <strong>Security</strong>: Proteksi bawaan terhadap Cross-Site Scripting (XSS), SQL Injection, dan CSRF.
-                </p>
-             </div>
-        </div>
-
-        <!-- Testing Section -->
-        <div class="section glass-panel fade-in-up">
-            <div class="section-title">
-                <div class="icon icon-purple"><i class="fa-solid fa-flask"></i></div>
-                <h2>Testing & UAT</h2>
-            </div>
-            <div class="content-grid">
-                <div class="card">
-                    <h4><span class="step-number">1</span> Definisi & Kriteria UAT <span class="unit-badge">J.620100.038.01</span></h4>
-                    <p>User Acceptance Testing (UAT) adalah tahap akhir pengujian fungsionalitas sistem oleh pengguna akhir (user/client) sebelum aplikasi dirilis ke lingkungan production.</p>
-                    <p style="margin-top: 10px; font-size: 0.9rem; color: var(--text-muted);">
-                        • <strong>Acceptance Criteria</strong>: Sistem harus memenuhi semua spesifikasi yang disetujui di awal.<br>
-                        • <strong>Staging Environment</strong>: Pengujian dijalankan di lingkungan replika yang mirip production.
-                    </p>
-                </div>
-                <div class="card">
-                    <h4><span class="step-number">2</span> Alur Kerja UAT</h4>
-                    <p>Siklus formal pengujian UAT dimulai dari persiapan dokumen hingga persetujuan perilisan aplikasi:</p>
-                    <p style="margin-top: 10px; font-size: 0.9rem; color: var(--text-muted);">
-                        1. <strong>UAT Test Plan</strong>: Menyusun skenario pengujian.<br>
-                        2. <strong>Eksekusi Tes</strong>: Pengguna menjalankan skenario di platform.<br>
-                        3. <strong>Log Isu</strong>: Pencatatan bug ke sistem (seperti Jira).<br>
-                        4. <strong>UAT Sign-Off</strong>: Persetujuan tertulis bahwa aplikasi siap live.
-                    </p>
-                </div>
-                <div class="card">
-                    <h4><span class="step-number">3</span> Contoh Skenario UAT</h4>
-                    <p>Skenario UAT Checkout E-Commerce:</p>
-                    <p style="margin-top: 10px; font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">
-                        • <strong>Pre-condition</strong>: Pengguna telah login dan memiliki saldo e-wallet cukup.<br>
-                        • <strong>Aksi</strong>: Menambahkan produk ke keranjang → Klik bayar → Masukkan PIN pembayaran → Verifikasi email.<br>
-                        • <strong>Hasil Diharapkan</strong>: Saldo berkurang, status pesanan menjadi "Dibayar", dan stok produk terpotong otomatis.
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Monitoring Section -->
-         <div class="section glass-panel fade-in-up">
-             <div class="section-title">
-                 <div class="icon icon-orange"><i class="fa-solid fa-chart-line"></i></div>
-                 <h2>Monitoring & Observabilitas</h2>
-             </div>
-             <div class="content-grid">
-                 <div class="card highlight">
-                     <h4><i class="fa-solid fa-magnifying-glass-chart"></i> Tujuan Monitoring <span class="unit-badge">J.620100.045.01</span></h4>
-                     <p>Memastikan performa, ketersediaan (uptime), dan keandalan sistem tetap optimal, serta mendeteksi anomali penggunaan resource server sebelum berdampak negatif ke pengguna.</p>
-                 </div>
-                 <div class="card">
-                     <h4><i class="fa-solid fa-bug"></i> Debugging Aplikasi <span class="unit-badge">J.620100.025.02</span></h4>
-                     <p>Proses sistematis mendeteksi, mengisolasi, dan memperbaiki galat (bug) dalam kode program.</p>
-                     <p style="margin-top: 10px; font-size: 0.9rem; color: var(--text-muted);">
-                         • <strong>Teknik</strong>: Menganalisis stack trace error, menggunakan interactive debugger (Xdebug), profiling memori, dan print debugging (seperti <code>dd()</code> atau <code>console.log()</code>).
-                     </p>
-                 </div>
-                 <div class="card">
-                     <h4><i class="fa-solid fa-bell"></i> Alert & Notifikasi <span class="unit-badge">J.620100.044.01</span></h4>
-                     <p>Menerapkan sistem pengiriman notifikasi otomatis saat terjadi kegagalan sistem, beban CPU/RAM melebihi ambang batas, atau munculnya lonjakan eror HTTP 500.</p>
-                     <p style="margin-top: 10px; font-size: 0.9rem; color: var(--text-muted);">
-                         • <strong>Integrasi</strong>: PagerDuty, Slack/Telegram Webhooks, atau SMS/Email Gateway.
-                     </p>
-                 </div>
-                 <div class="card">
-                     <h4><i class="fa-solid fa-gauge-high"></i> Metrik Pemantauan</h4>
-                     <ul>
-                        <li>Penggunaan CPU (beban komputasi prosesor)</li>
-                        <li>Penggunaan Memori (alokasi RAM aktif)</li>
-                        <li>Bandwidth (kapasitas transfer data jaringan)</li>
-                        <li>Waktu Respons (kecepatan pemrosesan permintaan)</li>
-                     </ul>
-                 </div>
-                 <div class="card">
-                     <h4><i class="fa-solid fa-toolbox"></i> Tools Observabilitas Laravel</h4>
-                     <p style="line-height: 1.6;">
-                         Meninggalkan tools generik, ekosistem Laravel memiliki alat bantu pantau bawaan:<br>
-                         • <a href="https://laravel.com/docs/13.x/telescope" target="_blank" style="color: var(--primary-light); text-decoration: none; font-weight: bold;">Laravel Telescope</a> (Insight request & query)<br>
-                         • <a href="https://laravel.com/docs/13.x/horizon" target="_blank" style="color: var(--primary-light); text-decoration: none; font-weight: bold;">Laravel Horizon</a> (Dashboard antrean Redis)<br>
-                         • <strong style="color: var(--primary-light);">Log Viewer</strong> (Pemantauan file log via GUI)
-                     </p>
-                 </div>
-             </div>
-         </div>
-
-        <!-- Security Section -->
-         <div class="section glass-panel fade-in-up">
-             <div class="section-title">
-                 <div class="icon icon-red"><i class="fa-solid fa-shield-halved"></i></div>
-                 <h2>Keamanan Aplikasi</h2>
-             </div>
-             <div class="content-grid">
-                 <div class="card">
-                     <h4><i class="fa-solid fa-triangle-exclamation"></i> Identifikasi Risiko <span class="unit-badge">J.62090.018.01</span></h4>
-                     <p>Menganalisis potensi kerentanan sistem terhadap serangan keamanan informasi berdasarkan ancaman siber terkini.</p>
-                     <p style="margin-top: 10px; font-size: 0.9rem; color: var(--text-muted);">
-                         • <strong>OWASP Top 10</strong>: SQL Injection, XSS, Broken Auth, Insecure Direct Object References (IDOR).
-                     </p>
-                 </div>
-                 <div class="card">
-                     <h4><i class="fa-solid fa-user-shield"></i> Langkah Mitigasi</h4>
-                     <p>Penerapan kontrol keamanan berlapis untuk meminimalkan risiko eksploitasi data sensitif:</p>
-                     <p style="margin-top: 10px; font-size: 0.9rem; color: var(--text-muted);">
-                         • <strong>Input Validation</strong>: Sanitasi data masuk.<br>
-                         • <strong>Kriptografi</strong>: Hashing password dengan Bcrypt/Argon2 dan HTTPS/TLS.<br>
-                         • <strong>Access Control</strong>: Role-Based Access Control (RBAC).
-                     </p>
-                 </div>
-                 <div class="card highlight">
-                     <h4><i class="fa-regular fa-gem"></i> Dampak Positif</h4>
-                     <p>Integritas dan kerahasiaan data pengguna terjamin, ketersediaan sistem dipertahankan, serta meningkatkan kredibilitas produk perangkat lunak.</p>
-                 </div>
-             </div>
-         </div>
-
-        <!-- Migration Section -->
-         <div class="section glass-panel fade-in-up">
-             <div class="section-title">
-                 <div class="icon icon-teal"><i class="fa-solid fa-truck-fast"></i></div>
-                 <h2>Migrasi, Pembaruan & Cutover</h2>
-             </div>
-             <div class="content-grid">
-                 <div class="card">
-                     <h4><span class="step-number">1</span> Perencanaan Migrasi <span class="unit-badge">J.620100.024.02</span></h4>
-                     <p>Menyusun rencana perpindahan arsitektur platform atau database dari versi lama ke versi baru secara terstruktur.</p>
-                     <p style="margin-top: 10px; font-size: 0.9rem; color: var(--text-muted);">
-                         • <strong>Skema Migrasi</strong>: Database schema mapping, kompilasi script ETL (Extract Transform Load), dan estimasi linimasa downtime.
-                     </p>
-                 </div>
-                 <div class="card">
-                     <h4><span class="step-number">2</span> Persiapan Data</h4>
-                     <p>Melakukan pencadangan (backup) menyeluruh untuk memastikan integritas dan ketersediaan data selama proses transisi berlangsung.</p>
-                 </div>
-                 <div class="card">
-                     <h4><span class="step-number">3</span> Eksekusi & Pembaruan <span class="unit-badge">J.620100.047.01</span></h4>
-                     <p>Melaksanakan upgrade framework, library dependensi, serta deploy source code terbaru ke server production.</p>
-                     <p style="margin-top: 10px; font-size: 0.9rem; color: var(--text-muted);">
-                         • <strong>Prosedur</strong>: Menggunakan package manager (<code>composer update</code>, <code>npm update</code>) dan CI/CD pipeline otomatis.
-                     </p>
-                 </div>
-                 <div class="card highlight">
-                     <h4><span class="step-number">4</span> Cutover Aplikasi <span class="unit-badge">J.620100.041.01</span></h4>
-                     <p>Tahap peralihan penuh di mana sistem lama dinonaktifkan dan digantikan sistem baru secara real-time.</p>
-                     <p style="margin-top: 10px; font-size: 0.9rem; color: var(--text-muted);">
-                         • <strong>Strategi</strong>: Blue-Green Deployment atau Canary Release untuk meminimalkan dampak jika terjadi kegagalan transaksi saat cutover.
-                     </p>
-                 </div>
-             </div>
-         </div>
-
-        <!-- Project Management Section -->
-         <div class="section glass-panel fade-in-up">
-             <div class="section-title">
-                 <div class="icon icon-purple"><i class="fa-solid fa-clipboard-list"></i></div>
-                 <h2>Manajemen Proyek</h2>
-             </div>
-             <div class="content-grid">
-                 <div class="card">
-                     <h4><i class="fa-solid fa-pen-to-square"></i> Inisiasi & Integrasi <span class="unit-badge">M.702090.001.0</span></h4>
-                     <p>Penyusunan rencana proyek terpadu (Project Charter) dan menyatukan seluruh elemen teknis serta tim untuk menyukseskan siklus hidup software.</p>
-                     <div class="progress-bar-wrap">
-                         <div class="progress-label"><span>Progress</span><span>90%</span></div>
-                         <div class="progress-bar">
-                             <div class="progress-fill" data-width="90%"></div>
-                         </div>
-                     </div>
-                 </div>
-                 <div class="card">
-                     <h4><i class="fa-solid fa-handshake"></i> Ruang Lingkup Proyek <span class="unit-badge">M.702090.002.0</span></h4>
-                     <p>Mendefinisikan batas fitur dan deliverables aplikasi (Scope Management) untuk menghindari scope creep (pelebaran proyek tanpa persetujuan).</p>
-                     <div class="progress-bar-wrap">
-                         <div class="progress-label"><span>Progress</span><span>75%</span></div>
-                         <div class="progress-bar">
-                             <div class="progress-fill" data-width="75%"></div>
-                         </div>
-                     </div>
-                 </div>
-                 <div class="card">
-                     <h4><i class="fa-solid fa-desktop"></i> Evaluasi & Kualitas Proyek <span class="unit-badge">M.702090.005.0</span></h4>
-                     <p>Menetapkan standar kualitas sistem, merencanakan Quality Assurance (QA) serta Quality Control (QC) untuk kepuasan pengguna akhir.</p>
-                     <div class="progress-bar-wrap">
-                         <div class="progress-label"><span>Progress</span><span>85%</span></div>
-                         <div class="progress-bar">
-                             <div class="progress-fill" data-width="85%"></div>
-                         </div>
-                     </div>
-                 </div>
-             </div>
-         </div>
-
-        <!-- Tools Section -->
-         <div class="section glass-panel fade-in-up">
-             <div class="section-title">
-                 <div class="icon icon-green"><i class="fa-solid fa-screwdriver-wrench"></i></div>
-                 <h2>Tools Produktivitas</h2>
-                 <span class="unit-badge">J.620100.001.01</span>
-             </div>
-             <div class="tools-grid">
-                 <div class="tool-card">
-                     <i class="fa-solid fa-laptop-code tool-icon"></i>
-                     <h4>IDE</h4>
-                     <p>VS Code, PHPStorm - lingkungan pengembangan terintegrasi.</p>
-                 </div>
-                 <div class="tool-card">
-                     <i class="fa-brands fa-git-alt tool-icon" style="color: #f14e32;"></i>
-                     <h4>Git</h4>
-                     <p>Sistem kontrol versi (VCS) untuk pelacakan kode dan kolaborasi.</p>
-                 </div>
-                 <div class="tool-card">
-                     <i class="fa-brands fa-jira tool-icon" style="color: #2684ff;"></i>
-                     <h4>Jira</h4>
-                     <p>Platform manajemen penugasan (task) dan pelacakan isu metodologi Agile.</p>
-                 </div>
-                 <div class="tool-card">
-                     <i class="fa-solid fa-vial-circle-check tool-icon"></i>
-                     <h4>Testing Tools</h4>
-                     <p>PHPUnit, Jest - framework khusus untuk otomatisasi pengujian kode.</p>
-                 </div>
-             </div>
-             <div class="card highlight" style="margin-top: 25px;">
-                 <h4><i class="fa-solid fa-chart-line"></i> Analisis Kelayakan Tools <span class="unit-badge">J.620100.001.01</span></h4>
-                 <p>Proses mengevaluasi dan memilih kakas (tools) pengembangan berdasarkan efisiensi, integrasi, dan skalabilitas tim.</p>
-                 <p style="margin-top: 10px; font-size: 0.9rem; color: var(--text-muted);">
-                     • <strong>Evaluasi</strong>: Memilih antara Git CLI vs Git GUI, Jira vs Trello, Docker vs local environment, serta kecocokan framework PHPUnit/Jest terhadap proyek.
-                 </p>
-             </div>
-         </div>
-
-        <!-- Algoritma & Pemrograman Lanjut Section -->
-        <div class="section glass-panel fade-in-up">
-            <div class="section-title">
-                <div class="icon icon-purple"><i class="fa-solid fa-code-branch"></i></div>
-                <h2>Algoritma & Pemrograman Lanjut</h2>
-            </div>
-            <div class="content-grid">
-                <div class="card">
-                    <h4><i class="fa-solid fa-calculator"></i> Implementasi Algoritma <span class="unit-badge">J.620100.022.02</span></h4>
-                    <p>Menerapkan struktur data linear (array, stack, queue) dan non-linear (tree, graph) serta merancang algoritma efisien (sorting, searching) untuk memproses logika bisnis.</p>
-                    <p style="margin-top: 10px; font-size: 0.9rem; color: var(--text-muted);">
-                        • <strong>Big O Notation</strong>: Menganalisis efisiensi kompleksitas waktu O(1), O(log n), O(n), O(n²).
-                    </p>
-                </div>
-                <div class="card">
-                    <h4><i class="fa-solid fa-shuffle"></i> Pemrograman Paralel <span class="unit-badge">J.620100.029.02</span></h4>
-                    <p>Menggunakan pemrograman asinkron (promises, async/await, coroutine) dan antrean pekerjaan latar belakang (queue background jobs) untuk memproses data secara konkuren.</p>
-                    <p style="margin-top: 10px; font-size: 0.9rem; color: var(--text-muted);">
-                        • <strong>Asynchronous & Worker Pools</strong>: Mengurangi blocking pada thread utama web server dengan memindahkan tugas berat ke background processor (seperti Laravel Queue/Redis).
-                    </p>
-                </div>
-                <div class="card">
-                    <h4><i class="fa-solid fa-bolt"></i> Pemrograman Real-Time <span class="unit-badge">J.620100.028.02</span></h4>
-                    <p>Menerapkan transfer data real-time dua arah menggunakan WebSockets, Server-Sent Events (SSE), atau pooling dinamis untuk fungsionalitas chat atau notifikasi langsung.</p>
-                    <p style="margin-top: 10px; font-size: 0.9rem; color: var(--text-muted);">
-                        • <strong>Protokol</strong>: Koneksi TCP persisten (Full-Duplex) yang memungkinkan server mengirim data langsung ke klien tanpa request baru.
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Infrastruktur & Skalabilitas Section -->
-        <div class="section glass-panel fade-in-up">
-            <div class="section-title">
-                <div class="icon icon-blue"><i class="fa-solid fa-server"></i></div>
-                <h2>Infrastruktur & Skalabilitas</h2>
-            </div>
-            <div class="content-grid">
-                <div class="card">
-                    <h4><i class="fa-solid fa-microchip"></i> Arsitektur Perangkat Keras <span class="unit-badge">TIK.SM03.001.01</span></h4>
-                    <p>Menentukan spesifikasi server (vCPU, RAM, Storage SSD, IOPS) serta konfigurasi jaringan/firewall untuk kebutuhan deployment aplikasi skala produksi.</p>
-                    <p style="margin-top: 10px; font-size: 0.9rem; color: var(--text-muted);">
-                        • <strong>Hardware sizing</strong>: Memilih CPU-optimized untuk beban kalkulasi tinggi atau Memory-optimized untuk database caching.
-                    </p>
-                </div>
-                <div class="card">
-                    <h4><i class="fa-solid fa-arrow-up-right-dots"></i> Skalabilitas Perangkat Lunak <span class="unit-badge">J.620100.002.01</span></h4>
-                    <p>Menganalisis dan merancang skalabilitas sistem menggunakan Load Balancer (horizontal scaling), Caching (Redis/Memcached), Database Replication, dan optimasi query.</p>
-                    <p style="margin-top: 10px; font-size: 0.9rem; color: var(--text-muted);">
-                        • <strong>Scaling Strategy</strong>: Horizontal scaling (menambah node server) vs Vertical scaling (menambah kapasitas hardware server tunggal).
-                    </p>
-                </div>
-                <div class="card">
-                    <h4><i class="fa-solid fa-photo-film"></i> Pemrograman Multimedia <span class="unit-badge">J.620100.030.02</span></h4>
-                    <p>Menerapkan pemrosesan media interaktif pada web seperti integrasi video/audio streaming, rendering grafis Canvas/SVG, dan optimasi aset multimedia.</p>
-                    <p style="margin-top: 10px; font-size: 0.9rem; color: var(--text-muted);">
-                        • <strong>Teknologi</strong>: HTML5 Web Audio API, Canvas rendering 2D/3D (WebGL), serta kompresi aset gambar dan video dinamis.
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Dokumentasi & Manajemen Perubahan Section -->
-        <div class="section glass-panel fade-in-up">
-            <div class="section-title">
-                <div class="icon icon-teal"><i class="fa-solid fa-file-signature"></i></div>
-                <h2>Dokumentasi & Manajemen Perubahan</h2>
-            </div>
-            <div class="content-grid">
-                <div class="card">
-                    <h4><i class="fa-solid fa-book-open-reader"></i> Petunjuk Teknis Pelanggan <span class="unit-badge">J.620100.039.02</span></h4>
-                    <p>Menyusun dokumentasi manual penggunaan (user guide), panduan instalasi deployment, dan dokumentasi API interaktif (Swagger/Postman) untuk pelanggan.</p>
-                    <p style="margin-top: 10px; font-size: 0.9rem; color: var(--text-muted);">
-                        • <strong>API Docs</strong>: Menyusun deskripsi endpoint, request/response body schema, authentication header, dan kode status HTTP standar.
-                    </p>
-                </div>
-                <div class="card highlight">
-                    <h4><i class="fa-solid fa-code-compare"></i> Analisis Dampak Perubahan <span class="unit-badge">J.620100.043.01</span></h4>
-                    <p>Menganalisis dampak perubahan kode (change impact analysis), mendeteksi potensi regresi sebelum update, serta memetakan efek migrasi skema database terhadap aplikasi.</p>
-                    <p style="margin-top: 10px; font-size: 0.9rem; color: var(--text-muted);">
-                        • <strong>Teknik</strong>: Melakukan code review, memverifikasi dependensi modul, serta menjalankan automated regression tests sebelum merge branch.
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Tips Success -->
-        <div class="section glass-panel fade-in-up">
-            <div class="section-title">
-                <div class="icon icon-orange"><i class="fa-solid fa-trophy"></i></div>
-                <h2>Kunci Sukses Web Developer</h2>
-            </div>
-            <div class="content-grid">
-                <div class="card highlight">
-                    <h4><i class="fa-solid fa-layer-group"></i> Fundamental Konseptual</h4>
-                    <p>Kuasai secara mendalam prinsip dasar pemrograman, struktur data, algoritma, serta arsitektur basis data relasional.</p>
-                </div>
-                <div class="card highlight">
-                    <h4><i class="fa-solid fa-dumbbell"></i> Implementasi Praktis</h4>
-                    <p>Terapkan landasan teori ke dalam praktik. Bangun portofolio teknis melalui pengerjaan proyek pengembangan perangkat lunak nyata.</p>
-                </div>
-                <div class="card highlight">
-                    <h4><i class="fa-solid fa-rocket"></i> Adaptasi Berkelanjutan</h4>
-                    <p>Ekosistem teknologi web berevolusi dengan cepat, sehingga kemampuan adaptasi dan pembelajaran berkesinambungan adalah prasyarat utama.</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Footer -->
-        <div class="footer fade-in-up">
-            <h3>🎉 Selamat Belajar!</h3>
-            <p>Semoga materi komprehensif ini membantu Anda menghadapi uji kompetensi (ujikom) dengan penuh keyakinan dan kompetensi.</p>
-            <p style="margin-top: 15px; color: var(--primary-light);"><em>Good luck, future software engineers! 💻✨</em></p>
-        </div>
+      </div>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Intersection Observer for fade-in animations
-            const observerOptions = {
-                threshold: 0.1,
-                rootMargin: '0px 0px -50px 0px'
-            };
-            
-            const observer = new IntersectionObserver(function(entries) {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                        
-                        // Animate progress bars if inside this section
-                        const progressBars = entry.target.querySelectorAll('.progress-fill');
-                        progressBars.forEach(bar => {
-                            const targetWidth = bar.getAttribute('data-width');
-                            if(targetWidth) {
-                                setTimeout(() => {
-                                    bar.style.width = targetWidth;
-                                }, 300); // slight delay after section appears
-                            }
-                        });
-                        
-                        // Optional: Unobserve after animating once
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, observerOptions);
-            
-            // Observe all elements with fade-in-up class
-            const fadeElements = document.querySelectorAll('.fade-in-up');
-            fadeElements.forEach(el => {
-                observer.observe(el);
-            });
-        });
-    </script>
+    <!-- Quick Jump Pill Bar (Navigasi Bab Cepat Pengganti Sidebar) -->
+    <nav class="quick-jump-bar" aria-label="Navigasi Cepat Bab">
+      <div class="quick-jump-title">
+        <svg class="icon" style="width:14px;height:14px;color:var(--accent);"><use href="#i-book"/></svg>
+        <span>Lompat Cepat ke Bab Materi:</span>
+      </div>
+      <div class="quick-jump-pills">
+        <a href="#sec-sql" class="quick-pill"><span class="num">01</span><span>Database &amp; SQL</span></a>
+        <a href="#sec-framework" class="quick-pill"><span class="num">02</span><span>Framework &amp; Library</span></a>
+        <a href="#sec-testing" class="quick-pill"><span class="num">03</span><span>Testing &amp; UAT</span></a>
+        <a href="#sec-monitoring" class="quick-pill"><span class="num">04</span><span>Monitoring &amp; Debugging</span></a>
+        <a href="#sec-security" class="quick-pill"><span class="num">05</span><span>Keamanan Aplikasi</span></a>
+        <a href="#sec-migration" class="quick-pill"><span class="num">06</span><span>Migrasi &amp; Cutover</span></a>
+        <a href="#sec-pm" class="quick-pill"><span class="num">07</span><span>Manajemen Proyek</span></a>
+        <a href="#sec-tools" class="quick-pill"><span class="num">08</span><span>Tools Produktivitas</span></a>
+        <a href="#sec-algo" class="quick-pill"><span class="num">09</span><span>Algoritma Lanjut</span></a>
+        <a href="#sec-infra" class="quick-pill"><span class="num">10</span><span>Infrastruktur &amp; Skalabilitas</span></a>
+        <a href="#sec-docs" class="quick-pill"><span class="num">11</span><span>Dokumentasi &amp; Perubahan</span></a>
+        <a href="#sec-tips" class="quick-pill"><span class="num">12</span><span>Kunci Sukses WebDev</span></a>
+        <a href="https://github.com/syahrizal-as/training-webdev/blob/main/hari-2.md" target="_blank" rel="noopener noreferrer" class="quick-pill" style="background:#f0fdf4;border-color:#bbf7d0;color:#15803d;font-weight:700;"><span class="num" style="background:#15803d;color:white;"></span><span>Praktek  ↗</span></a>
+      </div>
+    </nav>
+
+    <!-- BAB 01: Database dengan SQL -->
+    <section class="module-section" id="sec-sql">
+      <div class="module-header">
+        <div class="module-title-group">
+          <span class="icon-box icon-box-accent"><svg class="icon"><use href="#i-database"/></svg></span>
+          <div>
+            <span class="badge badge-gray" style="font-size:10px;margin-bottom:4px;">BAB 01</span>
+            <h2>Database dengan SQL</h2>
+          </div>
+        </div>
+        <span class="unit-badge">Unit SKKNI: J.620100.020.02</span>
+      </div>
+
+      <p style="color:var(--muted);font-size:14.5px;line-height:1.7;margin-bottom:20px;">
+        Database adalah tempat penyimpanan seluruh aset informasi aplikasi secara terstruktur. Berikut konsep inti dan skenario nyata penerapannya yang wajib dipahami seorang web developer:
+      </p>
+
+      <!-- 1. Primary Key & Foreign Key -->
+      <div class="scenario-card">
+        <div class="scenario-card-header">
+          <h3 style="font-size:16.5px;font-weight:750;color:var(--ink);">
+            1. Relasi Data: Primary Key &amp; Foreign Key (Menghubungkan Dua Lemari Data)
+          </h3>
+          <span class="scenario-badge-blue">Integritas Relasi</span>
+        </div>
+        <p style="color:var(--ink-light);font-size:13.5px;line-height:1.65;">
+          <strong>Apa Masalahnya?</strong> Mengapa kita tidak menaruh nama pelanggan, nomor WhatsApp, dan alamat rumah berulang-ulang di setiap baris riwayat belanjaan? Karena jika pelanggan belanja 20 kali lalu pindah rumah, admin harus mengedit 20 baris satu per satu. Jika satu saja terlewat, pengiriman barang berikutnya akan salah alamat.
+        </p>
+        <p style="color:var(--muted);font-size:13px;line-height:1.6;margin-top:6px;">
+          <strong>Contoh Nyata:</strong> Kita pisahkan menjadi 2 tabel:
+          <br>• Tabel <code class="inline-code">users</code> memiliki kolom <code class="inline-code">id</code> unik (KTP Digital Pelanggan = <strong>Primary Key</strong>).
+          <br>• Tabel <code class="inline-code">orders</code> cukup mencatat <code class="inline-code">user_id</code> (Nomor KTP pemilik belanjaan = <strong>Foreign Key</strong>).
+          <br>Kapan pun pelanggan mengubah alamatnya, data otomatis konsisten untuk semua riwayat pesanannya.
+        </p>
+        <div class="scenario-solution-box">
+          <strong>🛡️ Praktek Nyata di Laravel (Eloquent Relationship)</strong><br>
+          Cukup definisikan di Model User: <code class="inline-code">return $this-&gt;hasMany(Order::class);</code>. Laravel otomatis menghubungkan data pelanggan dan pesanannya tanpa Anda harus menulis query relasi yang rumit secara manual.
+        </div>
+      </div>
+
+      <!-- 2. Transaksi TCL (COMMIT & ROLLBACK) -->
+      <div class="scenario-card">
+        <div class="scenario-card-header">
+          <h3 style="font-size:16.5px;font-weight:750;color:var(--ink);">
+            2. Transaksi TCL (COMMIT &amp; ROLLBACK — Mengamankan Uang &amp; Stok)
+          </h3>
+          <span class="scenario-badge-amber">Anti-Data Korup</span>
+        </div>
+        <p style="color:var(--ink-light);font-size:13.5px;line-height:1.65;">
+          <strong>Apa Masalahnya?</strong> Operasi bisnis seperti transfer saldo atau checkout terdiri dari beberapa tahap: potong saldo pembeli, tambahkan saldo penjual, dan kurangi stok barang. Jika tiba-tiba koneksi database terputus di langkah kedua, uang pembeli bisa lenyap tapi barang tidak terkirim!
+        </p>
+        <p style="color:var(--muted);font-size:13px;line-height:1.6;margin-top:6px;">
+          <strong>Contoh Nyata:</strong> Budi mentransfer Rp 500.000 ke rekening Toko. Langkah 1 (potong saldo Budi) sukses. Saat melangkah ke Langkah 2, server listrik mati. Jika tanpa transaksi (TCL), saldo Budi hilang begitu saja. Dengan TCL, sistem memastikan: <em>"Semua langkah harus berhasil bersamaan (COMMIT), atau jika ada 1 error maka semua perubahan dibatalkan seketika kembali ke awal (ROLLBACK)!"</em>.
+        </p>
+        <div class="scenario-solution-box">
+          <strong>🛡️ Praktek Nyata di Laravel (DB Transaction)</strong><br>
+          Gunakan pembungkus otomatis:
+          <code class="inline-code">DB::transaction(function () use ($budi, $toko) { $budi-&gt;decrement('saldo', 500000); $toko-&gt;increment('saldo', 500000); });</code>. Jika terjadi gangguan di tengah jalan, saldo Budi aman dan tidak akan berkurang sepeser pun.
+        </div>
+      </div>
+
+      <!-- 3. Sintaks Kompleks JOIN & GROUP BY -->
+      <div class="scenario-card">
+        <div class="scenario-card-header">
+          <h3 style="font-size:16.5px;font-weight:750;color:var(--ink);">
+            3. Analisis Data Bisnis: JOIN &amp; GROUP BY (Laporan Otomatis)
+          </h3>
+          <span class="scenario-badge-green">Kueri Cepat</span>
+        </div>
+        <p style="color:var(--ink-light);font-size:13.5px;line-height:1.65;">
+          <strong>Apa Masalahnya?</strong> Pemilik bisnis meminta laporan: <em>"Tolong tampilkan daftar pelanggan yang sudah belanja lebih dari 3 kali bulan ini agar bisa kita beri voucher loyalitas!"</em>. Anda tidak perlu mengekspor ribuan data ke Excel dan menghitungnya satu per satu.
+        </p>
+        <p style="color:var(--muted);font-size:13px;line-height:1.6;margin-top:6px;">
+          <strong>Solusi SQL:</strong> Gabungkan tabel pengguna dan pesanan dengan <code class="inline-code">LEFT JOIN</code>, kelompokkan pesanan per nama dengan <code class="inline-code">GROUP BY</code>, lalu filter hanya yang jumlahnya lebih dari 3 dengan perintah <code class="inline-code">HAVING</code>:
+        </p>
+
+        <div class="code-container editor-box" style="margin-top:12px;">
+          <button class="code-copy-btn" onclick="copyCode(this)">Salin Kode</button>
+          <div class="editor-top">
+            <div class="editor-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>
+            <span>laporan_loyalitas.sql — MySQL</span>
+          </div>
+          <div class="editor-code">
+            <pre><code><span class="tok-kw">SELECT</span> u.nama, <span class="tok-kw">COUNT</span>(o.id) <span class="tok-kw">AS</span> total_order
+<span class="tok-kw">FROM</span> users u
+<span class="tok-kw">LEFT JOIN</span> orders o <span class="tok-kw">ON</span> u.id = o.user_id
+<span class="tok-kw">GROUP BY</span> u.nama
+<span class="tok-kw">HAVING</span> total_order > 3;</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="simple-example">
+        <div class="simple-example-header">
+          <h3>Rangkuman Alur Kerja Database di Industri</h3>
+          <span class="badge badge-amber">Siklus Data</span>
+        </div>
+        <div class="simple-example-grid">
+          <div class="simple-example-item">
+            <span class="simple-example-label">1. Rancang Skema (DDL)</span>
+            <p>Tentukan tabel, relasi Primary-Foreign Key, dan tipe data agar tidak ada data dobel.</p>
+          </div>
+          <div class="simple-example-item">
+            <span class="simple-example-label">2. Operasi Harian (DML)</span>
+            <p>Jalankan CRUD (tambah, lihat, ubah, hapus) melalui query atau ORM Eloquent yang aman.</p>
+          </div>
+          <div class="simple-example-item">
+            <span class="simple-example-label">3. Proteksi &amp; Laporan (TCL)</span>
+            <p>Gunakan transaksi agar data keuangan tidak korup, serta JOIN untuk laporan bisnis.</p>
+          </div>
+        </div>
+        <div class="simple-example-flow">
+          <span>Struktur Tabel Rapi</span><b>&rarr;</b><span>Kueri Cepat &amp; Aman</span><b>&rarr;</b><span>Data Bisnis Terpercaya</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- BAB 02: Framework & Library -->
+    <section class="module-section" id="sec-framework">
+      <div class="module-header">
+        <div class="module-title-group">
+          <span class="icon-box icon-box-green"><svg class="icon"><use href="#i-puzzle"/></svg></span>
+          <div>
+            <span class="badge badge-gray" style="font-size:10px;margin-bottom:4px;">BAB 02</span>
+            <h2>Framework &amp; Library</h2>
+          </div>
+        </div>
+        <span class="unit-badge">Unit SKKNI: J.620100.003.01</span>
+      </div>
+
+      <div class="guide-tool-grid">
+        <div class="guide-tool-card">
+          <strong style="color:#ff2d20;font-size:18px;display:block;margin-bottom:4px;">Laravel</strong>
+          <small style="color:var(--muted);font-size:12px;">Framework PHP berarsitektur MVC</small>
+        </div>
+        <div class="guide-tool-card">
+          <strong style="color:#0284c7;font-size:18px;display:block;margin-bottom:4px;">React JS</strong>
+          <small style="color:var(--muted);font-size:12px;">Library JavaScript UI terinteraktif</small>
+        </div>
+        <div class="guide-tool-card">
+          <strong style="color:#10b981;font-size:18px;display:block;margin-bottom:4px;">Vue.js</strong>
+          <small style="color:var(--muted);font-size:12px;">Framework progresif JavaScript</small>
+        </div>
+        <div class="guide-tool-card">
+          <strong style="color:#7952b3;font-size:18px;display:block;margin-bottom:4px;">Bootstrap</strong>
+          <small style="color:var(--muted);font-size:12px;">Framework CSS komponen antarmuka</small>
+        </div>
+      </div>
+
+      <p style="color:var(--muted);font-size:14.5px;line-height:1.7;margin:20px 0;">
+        Framework dan library adalah fondasi pengembangan web modern agar tim dapat membangun aplikasi berstandar industri dengan cepat, aman, dan mudah dirawat:
+      </p>
+
+      <!-- 1. Native vs Framework -->
+      <div class="scenario-card">
+        <div class="scenario-card-header">
+          <h3 style="font-size:16.5px;font-weight:750;color:var(--ink);">
+            1. Mengapa Butuh Framework? (PHP Native vs Laravel)
+          </h3>
+          <span class="scenario-badge-blue">Efisiensi &amp; Keamanan</span>
+        </div>
+        <p style="color:var(--ink-light);font-size:13.5px;line-height:1.65;">
+          <strong>Apa Masalahnya?</strong> Jika membangun web dari nol menggunakan PHP murni (native), developer harus membuat sendiri mekanisme pengacak password, penyaring serangan hacker, rute URL, session login, dan koneksi database. Hal ini memakan waktu berbulan-bulan dan rawan bocor jika ada celah yang terlewat.
+        </p>
+        <p style="color:var(--muted);font-size:13px;line-height:1.6;margin-top:6px;">
+          <strong>Contoh Nyata:</strong> Menggunakan Laravel seperti membeli mobil baru yang sudah dilengkapi mesin bersertifikat, rem ABS, dan kantong udara (airbag). Anda tinggal mengemudikannya dan langsung fokus membuat fitur bisnis utama (katalog produk, diskon kupon, dan pembayaran) tanpa perlu merakit roda atau baut sendiri.
+        </p>
+        <div class="scenario-solution-box">
+          <strong>🛡️ Proteksi Bawaan Otomatis di Laravel</strong><br>
+          Formulir Laravel otomatis terlindungi dari pembajakan dengan token <code class="inline-code">@csrf</code>, input query terlindungi dari SQL Injection via Eloquent ORM, dan output Blade otomatis dibersihkan dari skrip jahat XSS.
+        </div>
+      </div>
+
+      <!-- 2. Arsitektur MVC -->
+      <div class="scenario-card">
+        <div class="scenario-card-header">
+          <h3 style="font-size:16.5px;font-weight:750;color:var(--ink);">
+            2. Arsitektur MVC (Model - View - Controller) Seperti Rumah Makan
+          </h3>
+          <span class="scenario-badge-green">Pemisahan Tugas</span>
+        </div>
+        <p style="color:var(--ink-light);font-size:13.5px;line-height:1.65;">
+          <strong>Apa Masalahnya?</strong> Jika kode tampilan HTML, logika hitung harga, dan query database dicampur aduk dalam 1 file setebal 2.000 baris, tim developer akan kesulitan bekerja bersama dan mencari satu error kecil bisa memakan waktu seharian.
+        </p>
+        <p style="color:var(--muted);font-size:13px;line-height:1.6;margin-top:6px;">
+          <strong>Contoh Nyata (Analogi 3 Petugas):</strong>
+          <br>• <strong>Model (Gudang Data &amp; Koki):</strong> Mengambil dan menyimpan data ke lemari database (tabel <code class="inline-code">products</code>).
+          <br>• <strong>Controller (Pelayan Restoran):</strong> Menerima permintaan pembeli, meminta Model mengambil barang yang tepat, lalu mengirimkannya ke View.
+          <br>• <strong>View (Etalase / Meja Saji):</strong> Tampilan antarmuka indah yang dilihat pembeli di layar HP atau monitor laptop (Blade HTML/CSS).
+        </p>
+
+        <div class="code-container editor-box" style="margin-top:12px;">
+          <button class="code-copy-btn" onclick="copyCode(this)">Salin Kode</button>
+          <div class="editor-top">
+            <div class="editor-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>
+            <span>ProductController.php — Contoh Nyata MVC</span>
+          </div>
+          <div class="editor-code">
+            <pre><code><span class="tok-comment">// 1. Route menerima request: GET /produk/15</span>
+<span class="tok-comment">// 2. Controller memanggil Model dan mengoper ke View:</span>
+<span class="tok-kw">public function</span> <span class="tok-cmd">show</span>($id)
+{
+    $produk = Product::findOrFail($id); <span class="tok-comment">// Model mengambil data</span>
+    <span class="tok-kw">return</span> view('produk.detail', compact('produk')); <span class="tok-comment">// View menampilkan</span>
+}</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="simple-example">
+        <div class="simple-example-header">
+          <h3>Alur Kerja Request Pengguna di Framework Modern</h3>
+          <span class="badge badge-amber">Siklus HTTP Request</span>
+        </div>
+        <div class="simple-example-grid">
+          <div class="simple-example-item">
+            <span class="simple-example-label">1. Route &amp; Middleware</span>
+            <p>Memeriksa apakah pengunjung berhak masuk (login) dan mengarahkan ke fungsi yang tepat.</p>
+          </div>
+          <div class="simple-example-item">
+            <span class="simple-example-label">2. Controller &amp; Model</span>
+            <p>Menjalankan logika bisnis, menghitung diskon/ongkir, dan mengambil data dari database.</p>
+          </div>
+          <div class="simple-example-item">
+            <span class="simple-example-label">3. View / JSON Response</span>
+            <p>Menyajikan halaman HTML indah untuk browser atau respons JSON untuk aplikasi mobile.</p>
+          </div>
+        </div>
+        <div class="simple-example-flow">
+          <span>Browser Pengunjung</span><b>&rarr;</b><span>Route &amp; Controller</span><b>&rarr;</b><span>Database Model</span><b>&rarr;</b><span>Layar Tampilan View</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- BAB 03: Testing & User Acceptance Testing (UAT) + CONTOH TESTING LARAVEL -->
+    <section class="module-section" id="sec-testing">
+      <div class="module-header">
+        <div class="module-title-group">
+          <span class="icon-box icon-box-accent"><svg class="icon"><use href="#i-flask"/></svg></span>
+          <div>
+            <span class="badge badge-gray" style="font-size:10px;margin-bottom:4px;">BAB 03</span>
+            <h2>Testing &amp; User Acceptance Testing (UAT)</h2>
+          </div>
+        </div>
+        <span class="unit-badge">Unit SKKNI: J.620100.038.01</span>
+      </div>
+
+      <div class="topic-grid">
+        <div class="topic-card">
+          <div class="topic-title">
+            <span>1. Definisi &amp; Kriteria UAT</span>
+            <span class="badge badge-accent">Tahap Akhir</span>
+          </div>
+          <p style="color:var(--muted);font-size:13.5px;line-height:1.6;margin-bottom:12px;">
+            User Acceptance Testing (UAT) adalah tahap akhir pengujian fungsionalitas sistem oleh pengguna akhir (user/client) sebelum aplikasi dirilis ke lingkungan production.
+          </p>
+          <div style="background:#f1f5f9;border-radius:8px;padding:12px;font-size:12.5px;line-height:1.6;">
+            • <strong>Acceptance Criteria:</strong> Sistem harus memenuhi semua spesifikasi yang disetujui di awal.<br>
+            • <strong>Staging Environment:</strong> Pengujian dijalankan di lingkungan replika yang mirip production.
+          </div>
+        </div>
+
+        <div class="topic-card">
+          <div class="topic-title">
+            <span>2. Alur Kerja UAT</span>
+            <span class="badge badge-gray">Siklus Formal</span>
+          </div>
+          <p style="color:var(--muted);font-size:13.5px;line-height:1.6;margin-bottom:12px;">
+            Siklus formal pengujian UAT dimulai dari persiapan dokumen hingga persetujuan perilisan aplikasi:
+          </p>
+          <ol style="padding-left:18px;font-size:12.5px;color:var(--ink-light);line-height:1.6;">
+            <li><strong>UAT Test Plan:</strong> Menyusun skenario pengujian.</li>
+            <li><strong>Eksekusi Tes:</strong> Pengguna menjalankan skenario di platform.</li>
+            <li><strong>Log Isu:</strong> Pencatatan bug ke sistem (seperti Jira).</li>
+            <li><strong>UAT Sign-Off:</strong> Persetujuan tertulis bahwa aplikasi siap live.</li>
+          </ol>
+        </div>
+
+        <div class="topic-card" style="grid-column: 1 / -1;">
+          <div class="topic-title">
+            <span>3. Contoh Skenario UAT: Checkout E-Commerce</span>
+            <span class="badge badge-green">Studi Kasus</span>
+          </div>
+          <div style="background:#f8fafc;border:1px solid var(--line);border-radius:10px;padding:16px;font-size:13px;line-height:1.7;color:var(--ink-light);">
+            • <strong>Pre-condition:</strong> Pengguna telah login ke dalam sistem dan memiliki saldo e-wallet yang mencukupi.<br>
+            • <strong>Aksi Pengguna:</strong> Menambahkan produk ke keranjang belanja &rarr; Klik tombol bayar &rarr; Masukkan PIN pembayaran &rarr; Verifikasi notifikasi email.<br>
+            • <strong>Hasil Diharapkan:</strong> Saldo e-wallet berkurang sesuai nominal, status transaksi berubah menjadi "Dibayar", dan stok produk di gudang terpotong otomatis.
+          </div>
+        </div>
+      </div>
+
+      <!-- Sample Testing di Laravel (Feature Test Otomatis) -->
+      <div class="simple-example">
+        <div class="simple-example-header">
+          <h3>Contoh Sederhana: Menguji Form Pelanggan</h3>
+          <span class="badge badge-amber">Tes Positif &amp; Negatif</span>
+        </div>
+        <div class="simple-example-grid">
+          <div class="simple-example-item">
+            <span class="simple-example-label">Skenario Berhasil</span>
+            <p>Isi nama dan email baru. Sistem harus menyimpan data lalu kembali ke daftar pelanggan.</p>
+          </div>
+          <div class="simple-example-item">
+            <span class="simple-example-label">Skenario Gagal</span>
+            <p>Kosongkan email atau gunakan email yang sudah terdaftar. Sistem harus menolak dan menampilkan pesan validasi.</p>
+          </div>
+          <div class="simple-example-item">
+            <span class="simple-example-label">Mengapa Diuji?</span>
+            <p>Agar perubahan kode berikutnya tidak diam-diam merusak proses tambah pelanggan yang sebelumnya sudah benar.</p>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:24px;border-top:1px solid var(--line-subtle);padding-top:24px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:12px;">
+          <div>
+            <h3 style="font-size:17px;font-weight:750;color:var(--ink);">Contoh Implementasi Testing Otomatis di Laravel (Feature Test)</h3>
+            <p style="font-size:13px;color:var(--muted);margin-top:2px;">Sebelum UAT manual diserahkan ke klien, developer menulis automated test untuk memastikan fitur CRUD dan validasi tidak pernah rusak saat ada perubahan kode.</p>
+          </div>
+          <span class="badge badge-accent">PHPUnit / Pest Test</span>
+        </div>
+
+        <div style="background:#f8fafc;border:1px solid var(--line);border-radius:8px;padding:10px 14px;font-size:12.5px;color:var(--ink);margin-bottom:12px;font-family:var(--font-mono);">
+          <strong>Perintah Pembuatan File Test:</strong> <code class="inline-code">php artisan make:test CustomerTest</code>
+        </div>
+
+        <div class="code-container editor-box">
+          <button class="code-copy-btn" onclick="copyCode(this)">Salin Kode</button>
+          <div class="editor-top">
+            <div class="editor-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>
+            <span>tests/Feature/CustomerTest.php — Laravel Feature Test</span>
+          </div>
+          <div class="editor-code">
+            <pre><code><span class="tok-kw">&lt;?php</span>
+<span class="tok-kw">namespace</span> Tests\Feature;
+
+<span class="tok-kw">use</span> Tests\TestCase;
+<span class="tok-kw">use</span> App\Models\Customer;
+<span class="tok-kw">use</span> Illuminate\Foundation\Testing\RefreshDatabase;
+
+<span class="tok-kw">class</span> <span class="tok-cmd">CustomerTest</span> <span class="tok-kw">extends</span> TestCase
+{
+    <span class="tok-kw">use</span> RefreshDatabase; <span class="tok-comment">// Reset database otomatis setiap kali test dijalankan</span>
+
+    <span class="tok-comment">/** @test: Memverifikasi halaman daftar pelanggan dapat dimuat sukses */</span>
+    <span class="tok-kw">public function</span> test_halaman_pelanggan_bisa_diakses(): <span class="tok-kw">void</span>
+    {
+        $response = $this-&gt;get('/customers');
+        $response-&gt;assertStatus(200); <span class="tok-comment">// HTTP 200 OK</span>
+        $response-&gt;assertSee('Data Pelanggan');
+    }
+
+    <span class="tok-comment">/** @test: Memverifikasi proses penambahan pelanggan baru dan tersimpan di database */</span>
+    <span class="tok-kw">public function</span> test_bisa_menambah_pelanggan_baru(): <span class="tok-kw">void</span>
+    {
+        $data = [
+            'name'  =&gt; 'Budi Santoso',
+            'email' =&gt; 'budi@example.com'
+        ];
+
+        $response = $this-&gt;post('/customers', $data);
+
+        <span class="tok-comment">// Pastikan redirect sukses ke halaman index dan data ada di database</span>
+        $response-&gt;assertRedirect('/customers');
+        $this-&gt;assertDatabaseHas('customers', [
+            'email' =&gt; 'budi@example.com'
+        ]);
+    }
+
+    <span class="tok-comment">/** @test: Memverifikasi penolakan jika email sudah terdaftar (Anti-Duplikat) */</span>
+    <span class="tok-kw">public function</span> test_email_duplikat_ditolak_validasi(): <span class="tok-kw">void</span>
+    {
+        Customer::create(['name' =&gt; 'Pelanggan Lama', 'email' =&gt; 'sama@example.com']);
+
+        $response = $this-&gt;post('/customers', [
+            'name'  =&gt; 'Pelanggan Baru',
+            'email' =&gt; 'sama@example.com'
+        ]);
+
+        <span class="tok-comment">// Validasi harus menolak dan mencatat error pada kolom email</span>
+        $response-&gt;assertSessionHasErrors('email');
+    }
+}</code></pre>
+          </div>
+        </div>
+
+        <div style="background:#f1f5f9;border-radius:8px;padding:12px 14px;font-size:12.5px;color:var(--ink-light);margin-top:10px;">
+          <strong>Cara Menjalankan Test di Terminal:</strong><br>
+          <code class="inline-code">php artisan test --filter=CustomerTest</code><br>
+          Jika semua berwarna hijau (<strong>PASS</strong>), artinya seluruh logika dan keamanan database terbukti aman tanpa cacat sebelum aplikasi diserahkan untuk pengujian UAT oleh pengguna.
+        </div>
+      </div>
+    </section>
+
+    <!-- BAB 04: Monitoring & Observabilitas -->
+    <section class="module-section" id="sec-monitoring">
+      <div class="module-header">
+        <div class="module-title-group">
+          <span class="icon-box icon-box-amber"><svg class="icon"><use href="#i-chart"/></svg></span>
+          <div>
+            <span class="badge badge-gray" style="font-size:10px;margin-bottom:4px;">BAB 04</span>
+            <h2>Monitoring &amp; Observabilitas</h2>
+          </div>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <span class="unit-badge">J.620100.045.01</span>
+          <span class="unit-badge">J.620100.025.02</span>
+          <span class="unit-badge">J.620100.044.01</span>
+        </div>
+      </div>
+
+      <p style="color:var(--muted);font-size:14.5px;line-height:1.7;margin-bottom:20px;">
+        Monitoring dan observabilitas adalah mata dan telinga developer untuk memastikan sistem tetap hidup, sehat, dan cepat di server produksi:
+      </p>
+
+      <!-- 1. Log Error & Debugging -->
+      <div class="scenario-card">
+        <div class="scenario-card-header">
+          <h3 style="font-size:16.5px;font-weight:750;color:var(--ink);">
+            1. Kotak Hitam Aplikasi: Membaca Log Error (<code class="inline-code">laravel.log</code>)
+          </h3>
+          <span class="scenario-badge-amber">Investigasi Bug</span>
+        </div>
+        <p style="color:var(--ink-light);font-size:13.5px;line-height:1.65;">
+          <strong>Apa Masalahnya?</strong> Pengguna melapor: <em>"Min, tadi saya mau checkout belanjaan tiba-tiba muncul layar putih error 500!"</em>. Jika developer tidak memiliki rekaman catatan kejadian (log), developer hanya bisa meraba-raba dan menebak penyebabnya tanpa kepastian.
+        </p>
+        <p style="color:var(--muted);font-size:13px;line-height:1.6;margin-top:6px;">
+          <strong>Contoh Nyata:</strong> Saat membuka file <code class="inline-code">storage/logs/laravel.log</code>, sistem mencatat waktu dan lokasi kode secara presisi:
+          <br><code class="inline-code" style="color:#b91c1c;background:#fff1f2;">[14:22:05] ERROR: Call to member function pay() on null in OrderController.php:48</code>
+          <br>Developer langsung mengetahui dalam hitungan detik bahwa pembeli belum memilih metode pembayaran sebelum menekan tombol bayar!
+        </p>
+        <div class="scenario-solution-box">
+          <strong>🛡️ Praktek Nyata di Laravel</strong><br>
+          Gunakan <code class="inline-code">Log::error('Gagal transaksi', ['user_id' => $user->id, 'error' => $e->getMessage()]);</code> dan aktifkan <strong>Laravel Telescope</strong> di tahap staging untuk menginspeksi query database lambat, request masuk, dan status queue tanpa menebak.
+        </div>
+      </div>
+
+      <!-- 2. Alert Otomatis -->
+      <div class="scenario-card">
+        <div class="scenario-card-header">
+          <h3 style="font-size:16.5px;font-weight:750;color:var(--ink);">
+            2. Alert Otomatis ke Telegram / Slack (Peringatan Dini Sebelum Krisis)
+          </h3>
+          <span class="scenario-badge-blue">Pencegahan Downtime</span>
+        </div>
+        <p style="color:var(--ink-light);font-size:13.5px;line-height:1.65;">
+          <strong>Apa Masalahnya?</strong> Kapasitas RAM server tiba-tiba habis atau hard disk penuh di jam 2 dini hari saat semua orang sedang tidur lelap. Jika tidak ada sistem pemantau, toko online akan mati sepanjang malam hingga pagi hari.
+        </p>
+        <p style="color:var(--muted);font-size:13px;line-height:1.6;margin-top:6px;">
+          <strong>Contoh Nyata:</strong> Bot pengawas server mendeteksi penggunaan RAM mencapai 92%. Bot secara otomatis menembakkan notifikasi webhook ke grup WhatsApp atau Telegram tim IT:
+          <br><em style="color:#b45309;font-weight:600;">"⚠️ ALERT: CPU Server 94% selama 5 menit berturut-turut! Lonjakan transaksi terdeteksi."</em>
+          <br>Tim developer langsung bisa menambah kapasitas server atau membersihkan cache sebelum server benar-benar tumbang.
+        </p>
+        <div class="scenario-solution-box">
+          <strong>🛡️ Tools Pemantau yang Direkomendasikan</strong><br>
+          Gunakan UptimeRobot (notifikasi web mati gratis), Sentry / Bugsnag (pelacak error aplikasi otomatis ke Slack), dan Laravel Horizon untuk memantau kelancaran antrean background job.
+        </div>
+      </div>
+
+      <div class="simple-example">
+        <div class="simple-example-header">
+          <h3>Contoh Kasus Nyata: Mengatasi Halaman Checkout yang Tiba-Tiba Lambat</h3>
+          <span class="badge badge-amber">Cari Penyebab Berdasarkan Metrik</span>
+        </div>
+        <div class="simple-example-grid">
+          <div class="simple-example-item">
+            <span class="simple-example-label">1. Gejala Awal</span>
+            <p>Waktu respon checkout melonjak dari 0.3 detik menjadi 9 detik dan beberapa transaksi gagal (HTTP 504 Gateway Timeout).</p>
+          </div>
+          <div class="simple-example-item">
+            <span class="simple-example-label">2. Cek Log &amp; Metrik</span>
+            <p>Buka Telescope dan temukan ada query SQL laporan penjualan berat yang tidak sengaja terpanggil di halaman kasir.</p>
+          </div>
+          <div class="simple-example-item">
+            <span class="simple-example-label">3. Tindakan Perbaikan</span>
+            <p>Pindahkan pembuatan laporan ke background queue, respon checkout kembali kilat 0.2 detik, dan CPU kembali normal.</p>
+          </div>
+        </div>
+        <div class="simple-example-flow">
+          <span>Alert Masuk ke Chat</span><b>&rarr;</b><span>Cek Baris Kode di Log</span><b>&rarr;</b><span>Optimasi Query &amp; Selesai</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- BAB 05: Keamanan Aplikasi Web -->
+    <section class="module-section" id="sec-security">
+      <div class="module-header">
+        <div class="module-title-group">
+          <span class="icon-box icon-box-navy"><svg class="icon"><use href="#i-shield"/></svg></span>
+          <div>
+            <span class="badge badge-gray" style="font-size:10px;margin-bottom:4px;">BAB 05</span>
+            <h2>Keamanan Aplikasi Web</h2>
+          </div>
+        </div>
+        <span class="unit-badge">Unit SKKNI: J.62090.018.01</span>
+      </div>
+
+      <p style="color:var(--muted);font-size:14.5px;line-height:1.7;margin-bottom:24px;">
+        Keamanan aplikasi dapat dipahami dari kejadian yang dekat dengan pengguna. Berikut empat ancaman yang sering muncul di dunia nyata, dilengkapi contoh serangan dan cara menerapkan perlindungan yang tersedia di Laravel:
+      </p>
+
+      <!-- 1. SQL Injection -->
+      <div class="security-card">
+        <div class="security-card-header">
+          <h3 style="font-size:17px;font-weight:750;color:var(--ink);">
+            1. SQL Injection (Penyusupan Perintah Database Palsu)
+          </h3>
+          <span class="security-badge-danger">Ancaman Data Bocor</span>
+        </div>
+        <p style="color:var(--ink-light);font-size:13.5px;line-height:1.65;">
+          <strong>Apa Masalahnya?</strong> Celah ini terjadi saat formulir website menerima ketikan apa saja dari pengguna dan langsung menggabungkannya ke dalam perintah database tanpa diperiksa.
+        </p>
+        <p style="color:var(--muted);font-size:13px;line-height:1.6;margin-top:6px;">
+          <strong>Contoh Nyata:</strong> Bayangkan di kolom pencarian atau login, hacker tidak mengetik nama melainkan mengetik tanda petik dan perintah jahat seperti: <code class="inline-code">' OR 1=1 --</code>. Database yang tidak terlindungi akan terkecoh dan menganggap perintah itu benar, sehingga hacker bisa login tanpa password atau menghapus seluruh tabel!
+        </p>
+        <div class="security-solution-box">
+          <strong>🛡️ Cara Aman di Laravel</strong><br>
+          Gunakan Eloquent, Query Builder, atau PDO dengan <strong>parameter binding</strong>. Input pengguna akan dikirim sebagai nilai data, bukan ditempel langsung menjadi perintah SQL. Hindari membuat raw query dengan menggabungkan string dari input pengguna.
+        </div>
+      </div>
+
+      <!-- 2. Cross-Site Scripting (XSS) -->
+      <div class="security-card">
+        <div class="security-card-header">
+          <h3 style="font-size:17px;font-weight:750;color:var(--ink);">
+            2. Cross-Site Scripting / XSS (Penyisipan Kode Jahat di Layar Korban)
+          </h3>
+          <span class="security-badge-danger">Pembajakan Akun</span>
+        </div>
+        <p style="color:var(--ink-light);font-size:13.5px;line-height:1.65;">
+          <strong>Apa Masalahnya?</strong> Hacker menuliskan skrip JavaScript jahat ke dalam kolom komentar atau review produk. Saat pengunjung lain membuka halaman itu, skrip tersebut berjalan otomatis di browser mereka tanpa disadari.
+        </p>
+        <p style="color:var(--muted);font-size:13px;line-height:1.6;margin-top:6px;">
+          <strong>Contoh Nyata:</strong> Hacker menulis komentar: <code class="inline-code">&lt;script&gt;curiCookieLogin()&lt;/script&gt;</code>. Jika website menampilkan komentar tanpa dibersihkan, browser pembaca lain akan mengeksekusi skrip tersebut dan token login mereka terkirim ke server hacker!
+        </p>
+        <div class="security-solution-box">
+          <strong>🛡️ Cara Aman di Laravel</strong><br>
+          Tampilkan data dengan kurung kurawal ganda <code class="inline-code">{{ $komentar }}</code> agar Blade melakukan <strong>escaping</strong>. Kode berbahaya akan tampil sebagai teks, bukan dijalankan oleh browser. Hindari sintaks output mentah <code class="inline-code">{!! $data !!}</code> untuk data yang berasal dari pengguna.
+        </div>
+      </div>
+
+      <!-- 3. Broken Authentication -->
+      <div class="security-card">
+        <div class="security-card-header">
+          <h3 style="font-size:17px;font-weight:750;color:var(--ink);">
+            3. Broken Authentication (Celah Verifikasi Login &amp; Sesi Bocor)
+          </h3>
+          <span class="security-badge-danger">Kelemahan Login</span>
+        </div>
+        <p style="color:var(--ink-light);font-size:13.5px;line-height:1.65;">
+          <strong>Apa Masalahnya?</strong> Sistem keamanan pintu masuk (login) yang lemah, misalnya mengizinkan pengguna mencoba tebak kata sandi tanpa batas atau menyimpan kata sandi dalam bentuk teks biasa di database.
+        </p>
+        <p style="color:var(--muted);font-size:13px;line-height:1.6;margin-top:6px;">
+          <strong>Contoh Nyata:</strong> Hacker menggunakan robot komputer untuk menebak password jutaan kali dalam 5 menit (<em>Brute Force</em>), atau jika database bocor, password yang tersimpan terbaca jelas karena tidak diacak (*plain text*).
+        </p>
+        <div class="security-solution-box">
+          <strong>🛡️ Cara Aman di Laravel</strong><br>
+          Simpan password dengan hashing <strong>Bcrypt / Argon2</strong>, batasi percobaan login menggunakan <strong>Rate Limiter</strong>, dan lakukan regenerasi sesi setelah login. Contohnya, setelah lima percobaan gagal, pengguna harus menunggu sebelum mencoba kembali.
+        </div>
+      </div>
+
+      <!-- 4. IDOR -->
+      <div class="security-card">
+        <div class="security-card-header">
+          <h3 style="font-size:17px;font-weight:750;color:var(--ink);">
+            4. Insecure Direct Object References / IDOR (Intip Data Lewat Ganti Angka URL)
+          </h3>
+          <span class="security-badge-danger">Bocor Privasi</span>
+        </div>
+        <p style="color:var(--ink-light);font-size:13.5px;line-height:1.65;">
+          <strong>Apa Masalahnya?</strong> Sistem menampilkan data penting hanya berdasarkan nomor ID di link URL, tanpa memeriksa apakah pengguna yang sedang login benar-benar pemilik data tersebut.
+        </p>
+        <p style="color:var(--muted);font-size:13px;line-height:1.6;margin-top:6px;">
+          <strong>Contoh Nyata:</strong> Anda membuka tagihan invoice Anda di alamat link <code class="inline-code">https://toko.com/invoice/101</code>. Lalu Anda iseng mengganti angka di URL menjadi <code class="inline-code">https://toko.com/invoice/102</code>. Jika sistem memiliki celah IDOR, Anda langsung bisa melihat tagihan dan nama pelanggan lain!
+        </p>
+        <div class="security-solution-box">
+          <strong>🛡️ Cara Aman di Laravel</strong><br>
+          Buat <strong>Policy atau Gate</strong>, lalu periksa izin sebelum mengirim data: <code class="inline-code">$user-&gt;can('view', $invoice)</code>. Jika invoice bukan milik pengguna tersebut, aplikasi harus menghentikan proses dengan respons <strong>403 Forbidden</strong>. Pemeriksaan ini wajib diterapkan oleh developer pada setiap endpoint terkait.
+        </div>
+      </div>
+    </section>
+
+    <!-- BAB 06: Migrasi, Pembaruan & Cutover -->
+    <section class="module-section" id="sec-migration">
+      <div class="module-header">
+        <div class="module-title-group">
+          <span class="icon-box icon-box-green"><svg class="icon"><use href="#i-truck"/></svg></span>
+          <div>
+            <span class="badge badge-gray" style="font-size:10px;margin-bottom:4px;">BAB 06</span>
+            <h2>Migrasi, Pembaruan &amp; Cutover</h2>
+          </div>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <span class="unit-badge">J.620100.024.02</span>
+          <span class="unit-badge">J.620100.047.01</span>
+          <span class="unit-badge">J.620100.041.01</span>
+        </div>
+      </div>
+
+      <p style="color:var(--muted);font-size:14.5px;line-height:1.7;margin-bottom:20px;">
+        Memperbarui aplikasi di server produksi membutuhkan kehati-hatian tinggi agar data pengguna tetap utuh dan layanan tidak mati berjam-jam:
+      </p>
+
+      <!-- 1. Backup & Migrasi Data -->
+      <div class="scenario-card">
+        <div class="scenario-card-header">
+          <h3 style="font-size:16.5px;font-weight:750;color:var(--ink);">
+            1. Migrasi Database &amp; Backup (Jaring Pengaman Sebelum Bencana)
+          </h3>
+          <span class="scenario-badge-amber">Perlindungan Data</span>
+        </div>
+        <p style="color:var(--ink-light);font-size:13.5px;line-height:1.65;">
+          <strong>Apa Masalahnya?</strong> Saat merilis fitur baru, struktur tabel database seringkali harus ditambah atau diubah. Jika proses migrasi macet di tengah jalan karena script SQL error atau mati lampu, database bisa korup dan aplikasi lumpuh total!
+        </p>
+        <p style="color:var(--muted);font-size:13px;line-height:1.6;margin-top:6px;">
+          <strong>Contoh Nyata:</strong> Sebuah toko memiliki 50.000 riwayat transaksi. Sebelum developer mengetik perintah pembaruan, mereka wajib membuat file cadangan otomatis (<code class="inline-code">mysqldump</code> atau snapshot cloud). Jika terjadi kegagalan sistem, database dapat dipulihkan kembali ke kondisi 5 menit sebelumnya tanpa ada satu pun transaksi yang lenyap.
+        </p>
+        <div class="scenario-solution-box">
+          <strong>🛡️ Praktek Nyata di Laravel (Migration &amp; Rollback)</strong><br>
+          Selalu tulis fungsi pembalik di migration file: metode <code class="inline-code">up()</code> untuk menambah kolom dan <code class="inline-code">down()</code> untuk menghapusnya. Jika update gagal, Anda cukup mengeksekusi <code class="inline-code">php artisan migrate:rollback</code> untuk membatalkan perubahan secara otomatis.
+        </div>
+      </div>
+
+      <!-- 2. Cutover & Blue-Green Deployment -->
+      <div class="scenario-card">
+        <div class="scenario-card-header">
+          <h3 style="font-size:16.5px;font-weight:750;color:var(--ink);">
+            2. Cutover Aplikasi: Blue-Green Deployment (Pindah Rel Tanpa Bikin Web Mati)
+          </h3>
+          <span class="scenario-badge-green">Zero-Downtime</span>
+        </div>
+        <p style="color:var(--ink-light);font-size:13.5px;line-height:1.65;">
+          <strong>Apa Masalahnya?</strong> Bagaimana cara mengganti sistem versi lama ke versi baru saat ribuan pembeli sedang aktif bertransaksi tanpa harus menampilkan layar menyebalkan: <em>"Website Sedang Ditutup untuk Pemeliharaan"</em>?
+        </p>
+        <p style="color:var(--muted);font-size:13px;line-height:1.6;margin-top:6px;">
+          <strong>Contoh Nyata (Analogi Dua Jalur Kereta):</strong>
+          <br>• <strong>Server Biru (Versi Lama):</strong> Tetap aktif melayani seluruh pembeli tanpa gangguan.
+          <br>• <strong>Server Hijau (Versi Baru):</strong> Dinyalakan di sebelahnya, diisi kode terbaru, dan diuji secara internal sampai 100% aman.
+          <br>Saat siap, saklar traffic internet diputar ke Server Hijau dalam tempo 1 detik. Pengguna tidak merasakan jeda sedikit pun! Jika mendadak ada bug kritis, saklar bisa diputar balik ke Server Biru seketika (<em>Instant Rollback</em>).
+        </p>
+        <div class="scenario-solution-box">
+          <strong>🛡️ Strategi Cutover di Lapangan</strong><br>
+          Gunakan Nginx reverse proxy atau Load Balancer untuk mengalihkan traffic, atau manfaatkan fitur <code class="inline-code">php artisan down --secret="tim-dev-123"</code> agar tim internal tetap bisa menguji web di server live sebelum dibuka untuk publik.
+        </div>
+      </div>
+
+      <div class="simple-example">
+        <div class="simple-example-header">
+          <h3>Panduan Langkah Aman Rilis Aplikasi (Checklist Cutover)</h3>
+          <span class="badge badge-amber">Standard Operating Procedure</span>
+        </div>
+        <div class="simple-example-grid">
+          <div class="simple-example-item">
+            <span class="simple-example-label">1. Pra-Rilis (Backup)</span>
+            <p>Backup penuh database dan file upload. Uji script migrasi di server replika (staging).</p>
+          </div>
+          <div class="simple-example-item">
+            <span class="simple-example-label">2. Eksekusi Rilis</span>
+            <p>Jalankan migrasi, perbarui dependensi composer/npm, dan bersihkan cache aplikasi.</p>
+          </div>
+          <div class="simple-example-item">
+            <span class="simple-example-label">3. Pasca-Rilis (Smoke Test)</span>
+            <p>Uji coba alur login dan transaksi nyata dalam 5 menit pertama untuk memastikan sistem stabil.</p>
+          </div>
+        </div>
+        <div class="simple-example-flow">
+          <span>Backup Data &amp; Aset</span><b>&rarr;</b><span>Deploy Kode &amp; Migrasi</span><b>&rarr;</b><span>Uji Transaksi Langsung</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- BAB 07: Manajemen Proyek -->
+    <section class="module-section" id="sec-pm">
+      <div class="module-header">
+        <div class="module-title-group">
+          <span class="icon-box icon-box-accent"><svg class="icon"><use href="#i-clipboard"/></svg></span>
+          <div>
+            <span class="badge badge-gray" style="font-size:10px;margin-bottom:4px;">BAB 07</span>
+            <h2>Manajemen Proyek Perangkat Lunak</h2>
+          </div>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <span class="unit-badge">M.702090.001.0</span>
+          <span class="unit-badge">M.702090.002.0</span>
+          <span class="unit-badge">M.702090.005.0</span>
+        </div>
+      </div>
+
+      <p style="color:var(--muted);font-size:14.5px;line-height:1.7;margin-bottom:20px;">
+        Keberhasilan proyek perangkat lunak bukan hanya soal kepiawaian koding, melainkan ketepatan mengelola ruang lingkup, waktu, dan ekspektasi klien:
+      </p>
+
+      <!-- 1. Scope Creep & Project Charter -->
+      <div class="scenario-card">
+        <div class="scenario-card-header">
+          <h3 style="font-size:16.5px;font-weight:750;color:var(--ink);">
+            1. Menjinakkan "Scope Creep" (Fitur Tambahan Siluman Tanpa Batas)
+          </h3>
+          <span class="scenario-badge-amber">Manajemen Ekspektasi</span>
+        </div>
+        <p style="color:var(--ink-light);font-size:13.5px;line-height:1.65;">
+          <strong>Apa Masalahnya?</strong> Di awal kesepakatan, klien meminta website reservasi sederhana dengan waktu 3 minggu dan biaya Rp 7 juta. Di minggu kedua, klien tiba-tiba meminta: <em>"Tolong tambahin fitur konsultasi video langsung, rekam medis digital, dan aplikasi Android ya, kan masih satu paket?"</em>. Jika developer mengiyakan semuanya tanpa batas, proyek akan molor berbulan-bulan dan developer rugi tenaga!
+        </p>
+        <p style="color:var(--muted);font-size:13px;line-height:1.6;margin-top:6px;">
+          <strong>Contoh Nyata:</strong> Developer profesional mengatasinya dengan <strong>Project Charter &amp; Scope of Work (SOW)</strong> yang ditandatangani di awal. Saat klien meminta fitur di luar daftar, developer menjawab dengan santun:
+          <br><em>"Ide fitur video konsultasi ini sangat bagus! Mari kita fokus selesaikan fitur inti reservasi Fase 1 sesuai jadwal, lalu fitur video ini kita catat sebagai Change Request Fase 2 dengan anggaran dan waktu baru."</em>
+        </p>
+        <div class="scenario-solution-box">
+          <strong>🛡️ Prinsip Kerja Profesional</strong><br>
+          Tentukan batasan jelas apa yang <em>termasuk (in-scope)</em> dan apa yang <em>tidak termasuk (out-of-scope)</em> secara hitam di atas putih sebelum menulis baris kode pertama.
+        </div>
+      </div>
+
+      <!-- 2. Agile & Kanban Board -->
+      <div class="scenario-card">
+        <div class="scenario-card-header">
+          <h3 style="font-size:16.5px;font-weight:750;color:var(--ink);">
+            2. Koordinasi Tim: Metodologi Agile &amp; Papan Kanban (Jira / Trello)
+          </h3>
+          <span class="scenario-badge-blue">Alur Kerja Terbuka</span>
+        </div>
+        <p style="color:var(--ink-light);font-size:13.5px;line-height:1.65;">
+          <strong>Apa Masalahnya?</strong> Tim beranggotakan beberapa developer bekerja tanpa koordinasi terpusat. Terjadi tumpang tindih pengerjaan tugas, manajer bingung progres sebenarnya, dan bug kritis terabaikan hingga H-1 peluncuran.
+        </p>
+        <p style="color:var(--muted);font-size:13px;line-height:1.6;margin-top:6px;">
+          <strong>Contoh Nyata:</strong> Gunakan papan tugas visual dengan kolom yang jelas:
+          <br>• <strong>To Do:</strong> Daftar tugas yang harus dikerjakan minggu ini.
+          <br>• <strong>In Progress:</strong> Tugas yang sedang aktif diketik oleh developer (maksimal 2 tugas per orang agar fokus).
+          <br>• <strong>Code Review / Testing:</strong> Tugas yang sedang diperiksa oleh rekan developer dan tim QA.
+          <br>• <strong>Done:</strong> Fitur yang sudah lolos uji di server staging dan disetujui klien.
+        </p>
+        <div class="scenario-solution-box">
+          <strong>🛡️ Standar Industri</strong><br>
+          Lakukan pertemuan singkat 10 menit setiap pagi (<em>Daily Standup</em>) untuk menjawab 3 hal: apa yang selesai kemarin, apa fokus hari ini, dan kendala teknis apa yang butuh bantuan.
+        </div>
+      </div>
+
+      <div class="simple-example">
+        <div class="simple-example-header">
+          <h3>Studi Kasus Proyek Nyata: Website Reservasi 4 Minggu</h3>
+          <span class="badge badge-amber">Rencana Terukur</span>
+        </div>
+        <div class="simple-example-grid">
+          <div class="simple-example-item">
+            <span class="simple-example-label">1. Lingkup Disepakati</span>
+            <p>Formulir jadwal booking, data pasien, notifikasi WhatsApp otomatis, dan dashboard admin klinik.</p>
+          </div>
+          <div class="simple-example-item">
+            <span class="simple-example-label">2. Ditunda ke Fase 2</span>
+            <p>Fitur pembayaran kartu kredit dan rekam medis elektronik dicatat untuk pengembangan berikutnya.</p>
+          </div>
+          <div class="simple-example-item">
+            <span class="simple-example-label">3. Hasil Akhir</span>
+            <p>Aplikasi rilis tepat waktu dalam 4 minggu, bebas bug kritis, dan klien puas menandatangani BAST.</p>
+          </div>
+        </div>
+        <div class="simple-example-flow">
+          <span>Kunci Scope Tertulis</span><b>&rarr;</b><span>Pantau Progres di Kanban</span><b>&rarr;</b><span>Rilis Tepat Waktu</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- BAB 08: Tools Produktivitas -->
+    <section class="module-section" id="sec-tools">
+      <div class="module-header">
+        <div class="module-title-group">
+          <span class="icon-box icon-box-green"><svg class="icon"><use href="#i-wrench"/></svg></span>
+          <div>
+            <span class="badge badge-gray" style="font-size:10px;margin-bottom:4px;">BAB 08</span>
+            <h2>Tools Produktivitas &amp; Kolaborasi</h2>
+          </div>
+        </div>
+        <span class="unit-badge">Unit SKKNI: J.620100.001.01</span>
+      </div>
+
+      <div class="guide-tool-grid">
+        <div class="guide-tool-card">
+          <strong style="font-size:16px;color:var(--ink);display:block;margin-bottom:4px;">IDE</strong>
+          <small style="color:var(--muted);font-size:12px;">VS Code, PHPStorm</small>
+          <p style="font-size:11.5px;color:var(--muted);margin-top:6px;">Lingkungan pengembangan terintegrasi.</p>
+        </div>
+        <div class="guide-tool-card">
+          <strong style="font-size:16px;color:#f14e32;display:block;margin-bottom:4px;">Git</strong>
+          <small style="color:var(--muted);font-size:12px;">Version Control System</small>
+          <p style="font-size:11.5px;color:var(--muted);margin-top:6px;">Pelacakan histori kode &amp; kolaborasi tim.</p>
+        </div>
+        <div class="guide-tool-card">
+          <strong style="font-size:16px;color:#0052cc;display:block;margin-bottom:4px;">Jira</strong>
+          <small style="color:var(--muted);font-size:12px;">Issue &amp; Task Tracker</small>
+          <p style="font-size:11.5px;color:var(--muted);margin-top:6px;">Manajemen penugasan metodologi Agile.</p>
+        </div>
+        <div class="guide-tool-card">
+          <strong style="font-size:16px;color:var(--green);display:block;margin-bottom:4px;">Testing Tools</strong>
+          <small style="color:var(--muted);font-size:12px;">PHPUnit, Jest</small>
+          <p style="font-size:11.5px;color:var(--muted);margin-top:6px;">Framework otomatisasi pengujian kode.</p>
+        </div>
+      </div>
+
+      <p style="color:var(--muted);font-size:14.5px;line-height:1.7;margin:20px 0;">
+        Tools produktivitas yang tepat melipatgandakan kecepatan kerja dan menyelamatkan developer dari bencana kehilangan kode:
+      </p>
+
+      <!-- 1. Git Version Control -->
+      <div class="scenario-card">
+        <div class="scenario-card-header">
+          <h3 style="font-size:16.5px;font-weight:750;color:var(--ink);">
+            1. Git Version Control (Mesin Waktu &amp; Penyelamat Tim Developer)
+          </h3>
+          <span class="scenario-badge-blue">Kolaborasi Aman</span>
+        </div>
+        <p style="color:var(--ink-light);font-size:13.5px;line-height:1.65;">
+          <strong>Apa Masalahnya?</strong> Tanpa Git, pemula sering menyimpan folder dengan nama berantakan: <code class="inline-code">skrip_v1.php</code>, <code class="inline-code">skrip_revisi.php</code>, <code class="inline-code">skrip_fix_beneran_final.php</code>. Saat kode mendadak rusak setelah diedit, mereka kebingungan memutar balik karena tidak tahu baris mana yang salah ketik.
+        </p>
+        <p style="color:var(--muted);font-size:13px;line-height:1.6;margin-top:6px;">
+          <strong>Contoh Nyata:</strong> Andi dan Budi mengedit file yang sama secara bersamaan. Tanpa Git, kode yang disimpan terakhir oleh Andi akan menimpa dan menghapus ketikan Budi! Dengan sistem Git branching:
+          <br>• Andi bekerja aman di cabang <code class="inline-code">feature/login</code>.
+          <br>• Budi bekerja di cabang <code class="inline-code">feature/profil</code>.
+          <br>Keduanya mengajukan Pull Request (PR) di GitHub untuk diperiksa bersama sebelum digabungkan (<em>merge</em>) ke sistem utama.
+        </p>
+        <div class="scenario-solution-box">
+          <strong>🛡️ Perintah Pokok Sehari-Hari</strong><br>
+          <code class="inline-code">git status</code> (lihat file yang diubah), <code class="inline-code">git add . &amp;&amp; git commit -m "feat: tambah validasi"</code> (simpan titik checkpoint aman), dan <code class="inline-code">git pull origin main</code> (ambil pembaruan terbaru tim).
+        </div>
+      </div>
+
+      <!-- 2. IDE & Standarisasi Lingkungan Kerja -->
+      <div class="scenario-card">
+        <div class="scenario-card-header">
+          <h3 style="font-size:16.5px;font-weight:750;color:var(--ink);">
+            2. Standarisasi Editor &amp; Lingkungan Kerja (Anti: "Di Laptop Saya Jalan!")
+          </h3>
+          <span class="scenario-badge-green">Kerapian Kode</span>
+        </div>
+        <p style="color:var(--ink-light);font-size:13.5px;line-height:1.65;">
+          <strong>Apa Masalahnya?</strong> Sering terjadi masalah klasik: sebuah fitur berjalan lancar di laptop developer, tetapi begitu di-upload ke server live langsung error. Ini terjadi karena perbedaan versi PHP, ekstensi database yang belum aktif, atau format baris kode yang berbeda antar sistem operasi.
+        </p>
+        <p style="color:var(--muted);font-size:13px;line-height:1.6;margin-top:6px;">
+          <strong>Solusi Industri:</strong> Tim menyepakati standar kerja bersama:
+          <br>• Gunakan VS Code atau PhpStorm lengkap dengan ekstensi <strong>PHP Intelephense</strong> (auto-complete cerdas pencegah typo).
+          <br>• Pasang linter otomatis (<strong>Laravel Pint / PHP-CS-Fixer</strong>) agar seluruh kode tim memiliki spasi dan indentasi yang seragam.
+          <br>• Gunakan Docker / Laravel Sail agar versi PHP dan MySQL di laptop setiap anggota tim sama persis 100% dengan server produksi.
+        </p>
+        <div class="scenario-solution-box">
+          <strong>🛡️ Tips Produktivitas</strong><br>
+          Jalankan perintah <code class="inline-code">./vendor/bin/pint</code> sebelum commit kode. Laravel Pint akan merapikan seluruh struktur spasi, kurung kurawal, dan aturan PSR-12 secara instan.
+        </div>
+      </div>
+
+      <div class="simple-example">
+        <div class="simple-example-header">
+          <h3>Alur Kolaborasi Modern Developer dalam Satu Fitur</h3>
+          <span class="badge badge-amber">Workflow Git &amp; Task</span>
+        </div>
+        <div class="simple-example-grid">
+          <div class="simple-example-item">
+            <span class="simple-example-label">1. Ambil Task di Jira</span>
+            <p>Pindahkan kartu tugas dari kolom "To Do" ke "In Progress" dan buat branch baru di Git.</p>
+          </div>
+          <div class="simple-example-item">
+            <span class="simple-example-label">2. Koding &amp; Uji di IDE</span>
+            <p>Tulis kode, jalankan automated test lokal, dan pastikan linter tidak menemukan error.</p>
+          </div>
+          <div class="simple-example-item">
+            <span class="simple-example-label">3. Pull Request &amp; Review</span>
+            <p>Buat PR di GitHub, diskusikan masukan senior developer, lalu merge ke branch utama.</p>
+          </div>
+        </div>
+        <div class="simple-example-flow">
+          <span>Ambil Kartu Tugas</span><b>&rarr;</b><span>Koding di Branch Terisolasi</span><b>&rarr;</b><span>Review &amp; Merge Damai</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- BAB 09: Algoritma & Pemrograman Lanjut -->
+    <section class="module-section" id="sec-algo">
+      <div class="module-header">
+        <div class="module-title-group">
+          <span class="icon-box icon-box-accent"><svg class="icon"><use href="#i-code"/></svg></span>
+          <div>
+            <span class="badge badge-gray" style="font-size:10px;margin-bottom:4px;">BAB 09</span>
+            <h2>Algoritma &amp; Pemrograman Lanjut</h2>
+          </div>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <span class="unit-badge">J.620100.022.02</span>
+          <span class="unit-badge">J.620100.029.02</span>
+          <span class="unit-badge">J.620100.028.02</span>
+        </div>
+      </div>
+
+      <p style="color:var(--muted);font-size:14.5px;line-height:1.7;margin-bottom:20px;">
+        Algoritma dan pemrograman lanjut adalah penentu apakah aplikasi Anda tetap gesit atau macet total saat menangani ribuan tugas berat sekaligus:
+      </p>
+
+      <!-- 1. Background Queue Worker -->
+      <div class="scenario-card">
+        <div class="scenario-card-header">
+          <h3 style="font-size:16.5px;font-weight:750;color:var(--ink);">
+            1. Antrean Latar Belakang (Queue Worker) — Kasir Tidak Boleh Memasak!
+          </h3>
+          <span class="scenario-badge-blue">Anti-Lagging</span>
+        </div>
+        <p style="color:var(--ink-light);font-size:13.5px;line-height:1.65;">
+          <strong>Apa Masalahnya?</strong> Saat pengguna menekan tombol "Daftar", sistem harus mengirim email verifikasi dan membuat PDF kartu anggota. Menghubungi server email eksternal butuh waktu 3 sampai 6 detik. Jika diproses langsung di browser, layar pengguna akan berputar loading lama dan terkesan aplikasi rusak!
+        </p>
+        <p style="color:var(--muted);font-size:13px;line-height:1.6;margin-top:6px;">
+          <strong>Contoh Nyata (Analogi Kasir Restoran):</strong>
+          <br>Kasir tidak boleh ikut memasak burger ke dapur sementara antrean pembeli mengular panjang di depannya. Kasir cukup mencatat pesanan di secarik tiket, meletakkannya di loket dapur (<strong>Queue Job</strong>), lalu langsung tersenyum melayani pembeli berikutnya dalam 2 detik. Koki di dapur (<strong>Worker</strong>) yang memasak pesanan tersebut secara terpisah di belakang layar.
+        </p>
+        <div class="scenario-solution-box">
+          <strong>🛡️ Praktek Nyata di Laravel (Queue Dispatch)</strong><br>
+          Alih-alih mengirim langsung, gunakan: <code class="inline-code">SendWelcomeEmail::dispatch($user)-&gt;onQueue('emails');</code>. Pengguna langsung menerima respon <em>"Pendaftaran Berhasil!"</em> dalam 0.1 detik, sementara server Redis memproses pengiriman email di background.
+        </div>
+      </div>
+
+      <!-- 2. Big O & Database Indexing -->
+      <div class="scenario-card">
+        <div class="scenario-card-header">
+          <h3 style="font-size:16.5px;font-weight:750;color:var(--ink);">
+            2. Efisiensi Algoritma (Big O Notation) &amp; Indeks Database
+          </h3>
+          <span class="scenario-badge-green">Performa Kilat</span>
+        </div>
+        <p style="color:var(--ink-light);font-size:13.5px;line-height:1.65;">
+          <strong>Apa Masalahnya?</strong> Mencari 1 akun email di antara 1.000.000 pengguna. Jika sistem memeriksa baris demi baris dari awal sampai akhir (<em>Linear Search O(N)</em>), server membutuhkan waktu 10-15 detik dan beban prosesor melonjak 100%.
+        </p>
+        <p style="color:var(--muted);font-size:13px;line-height:1.6;margin-top:6px;">
+          <strong>Contoh Nyata (Analogi Kamus Tebal):</strong>
+          <br>Saat mencari arti kata <em>"Zebra"</em> di kamus setebal 1.000 halaman, Anda tidak membacanya lembar demi lembar dari halaman 1. Anda langsung membuka lekukan pembatas alfabet huruf 'Z' di tepi buku (<em>Binary Search O(log N)</em>).
+        </p>
+        <div class="scenario-solution-box">
+          <strong>🛡️ Solusi Nyata di Laravel Migration</strong><br>
+          Cukup tambahkan baris indeks pada kolom yang sering dicari: <code class="inline-code">$table-&gt;string('email')-&gt;index();</code>. Waktu pencarian data dari 1.000.000 baris akan turun drastis dari 12 detik menjadi 0.003 detik!
+        </div>
+      </div>
+
+      <div class="simple-example">
+        <div class="simple-example-header">
+          <h3>Skenario Nyata E-Commerce: Transaksi Checkout Bebas Macet</h3>
+          <span class="badge badge-amber">Algoritma &amp; Proses Latar</span>
+        </div>
+        <div class="simple-example-grid">
+          <div class="simple-example-item">
+            <span class="simple-example-label">1. Algoritma Inti</span>
+            <p>Hitung promo voucher, pajak PPN, dan pilih kurir terdekat dalam hitungan milidetik.</p>
+          </div>
+          <div class="simple-example-item">
+            <span class="simple-example-label">2. Lempar ke Queue</span>
+            <p>Pembuatan invoice PDF dan pengiriman pesan WhatsApp diserahkan ke worker latar belakang.</p>
+          </div>
+          <div class="simple-example-item">
+            <span class="simple-example-label">3. Notifikasi Real-Time</span>
+            <p>WebSockets (Pusher/Reverb) memperbarui status di layar pengguna begitu kurir bergerak.</p>
+          </div>
+        </div>
+        <div class="simple-example-flow">
+          <span>Kalkulasi Cepat</span><b>&rarr;</b><span>Pekerjaan Berat ke Queue</span><b>&rarr;</b><span>Update Real-Time ke Layar</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- BAB 10: Infrastruktur & Skalabilitas -->
+    <section class="module-section" id="sec-infra">
+      <div class="module-header">
+        <div class="module-title-group">
+          <span class="icon-box icon-box-green"><svg class="icon"><use href="#i-server"/></svg></span>
+          <div>
+            <span class="badge badge-gray" style="font-size:10px;margin-bottom:4px;">BAB 10</span>
+            <h2>Infrastruktur &amp; Skalabilitas Sistem</h2>
+          </div>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <span class="unit-badge">TIK.SM03.001.01</span>
+          <span class="unit-badge">J.620100.002.01</span>
+          <span class="unit-badge">J.620100.030.02</span>
+        </div>
+      </div>
+
+      <p style="color:var(--muted);font-size:14.5px;line-height:1.7;margin-bottom:20px;">
+        Arsitektur infrastruktur dirancang agar aplikasi tetap tangguh, tidak tumbang saat kebanjiran pengunjung, dan merespons dalam sekejap mata:
+      </p>
+
+      <!-- 1. Vertical vs Horizontal Scaling -->
+      <div class="scenario-card">
+        <div class="scenario-card-header">
+          <h3 style="font-size:16.5px;font-weight:750;color:var(--ink);">
+            1. Mengatasi Lonjakan Pengunjung: Scale Up vs Scale Out &amp; Load Balancer
+          </h3>
+          <span class="scenario-badge-blue">Skalabilitas Tinggi</span>
+        </div>
+        <p style="color:var(--ink-light);font-size:13.5px;line-height:1.65;">
+          <strong>Apa Masalahnya?</strong> Saat promo tanggal kembar (11.11), toko online diserbu 50.000 pembeli serentak. Server tunggal kehabisan memori dan langsung mati total dengan tampilan eror <em>502 Bad Gateway</em>.
+        </p>
+        <p style="color:var(--muted);font-size:13px;line-height:1.6;margin-top:6px;">
+          <strong>Contoh Nyata (Analogi Gerbang Tol):</strong>
+          <br>• <strong>Vertical Scaling (Scale Up):</strong> Mengganti server dengan mesin super mahal (RAM 128GB). Cara ini memiliki batas fisik dan server harus dimatikan saat proses upgrade.
+          <br>• <strong>Horizontal Scaling (Scale Out):</strong> Menyewa 4 server aplikasi standar yang bekerja serentak, dipandu oleh <strong>Load Balancer</strong> (seperti petugas gerbang tol yang membagi antrean mobil ke pintu 1, 2, 3, dan 4 secara seimbang agar arus lancar).
+        </p>
+        <div class="scenario-solution-box">
+          <strong>🛡️ Standar Arsitektur Modern</strong><br>
+          Jadikan aplikasi Anda <em>stateless</em>: simpan sesi login pengguna di server Redis terpusat dan file upload gambar di Cloud Storage (seperti AWS S3 atau Cloudflare R2), sehingga server web mana pun bebas ditambah atau dikurangi tanpa menghilangkan data pengguna.
+        </div>
+      </div>
+
+      <!-- 2. Redis Caching -->
+      <div class="scenario-card">
+        <div class="scenario-card-header">
+          <h3 style="font-size:16.5px;font-weight:750;color:var(--ink);">
+            2. Akses Kilat Melalui Caching Memori (Redis / Memcached)
+          </h3>
+          <span class="scenario-badge-green">Respon Kilat</span>
+        </div>
+        <p style="color:var(--ink-light);font-size:13.5px;line-height:1.65;">
+          <strong>Apa Masalahnya?</strong> Setiap kali 5.000 pengunjung membuka halaman depan, sistem menanyakan data yang sama ke hard disk database: <em>"Tampilkan daftar kategori produk!"</em>. Menghajar database ribuan kali per detik dengan pertanyaan yang sama membuat database kepanasan dan macet parah.
+        </p>
+        <p style="color:var(--muted);font-size:13px;line-height:1.6;margin-top:6px;">
+          <strong>Contoh Nyata:</strong> Jika datanya jarang berubah, mengapa harus membaca hard disk berulang-ulang? Simpan hasil query tersebut di dalam memori RAM kilat (Cache Redis).
+        </p>
+        <div class="scenario-solution-box">
+          <strong>🛡️ Praktek Nyata di Laravel (Cache Remember)</strong><br>
+          <code class="inline-code">$kategori = Cache::remember('kategori_utama', 3600, fn() =&gt; Category::all());</code>. Data dibaca dari database hanya 1 kali, dan 4.999 pengunjung berikutnya dilayani langsung dari RAM dalam 2 milidetik!
+        </div>
+      </div>
+
+      <div class="simple-example">
+        <div class="simple-example-header">
+          <h3>Skenario Penyelamatan Toko Online Saat Promo Kilat (Flash Sale)</h3>
+          <span class="badge badge-amber">Taktik Infrastruktur</span>
+        </div>
+        <div class="simple-example-grid">
+          <div class="simple-example-item">
+            <span class="simple-example-label">1. Kompresi Aset</span>
+            <p>Konversi foto produk ke format modern WebP/AVIF untuk menghemat kuota bandwidth hingga 70%.</p>
+          </div>
+          <div class="simple-example-item">
+            <span class="simple-example-label">2. Aktifkan Caching</span>
+            <p>Simpan katalog dan menu di Redis agar database fokus hanya melayani pemrosesan pembayaran.</p>
+          </div>
+          <div class="simple-example-item">
+            <span class="simple-example-label">3. Bagi Beban (Load Balancer)</span>
+            <p>Sebarkan pengunjung ke 4 cluster server replika sehingga tidak ada satu pun mesin yang tumbang.</p>
+          </div>
+        </div>
+        <div class="simple-example-flow">
+          <span>Aset Ringan WebP</span><b>&rarr;</b><span>Data Disajikan dari Redis RAM</span><b>&rarr;</b><span>Beban Dibagi Rata Load Balancer</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- BAB 11: Dokumentasi & Manajemen Perubahan -->
+    <section class="module-section" id="sec-docs">
+      <div class="module-header">
+        <div class="module-title-group">
+          <span class="icon-box icon-box-accent"><svg class="icon"><use href="#i-file-sig"/></svg></span>
+          <div>
+            <span class="badge badge-gray" style="font-size:10px;margin-bottom:4px;">BAB 11</span>
+            <h2>Dokumentasi &amp; Manajemen Perubahan</h2>
+          </div>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <span class="unit-badge">J.620100.039.02</span>
+          <span class="unit-badge">J.620100.043.01</span>
+        </div>
+      </div>
+
+      <p style="color:var(--muted);font-size:14.5px;line-height:1.7;margin-bottom:20px;">
+        Dokumentasi yang jelas dan analisis dampak perubahan adalah tanda kedewasaan tim pengembang agar aplikasi tidak mudah rusak saat diperbarui:
+      </p>
+
+      <!-- 1. API Documentation -->
+      <div class="scenario-card">
+        <div class="scenario-card-header">
+          <h3 style="font-size:16.5px;font-weight:750;color:var(--ink);">
+            1. Dokumentasi API Interaktif (Swagger / Postman) — Bahasa Pemersatu Tim
+          </h3>
+          <span class="scenario-badge-blue">Komunikasi Efektif</span>
+        </div>
+        <p style="color:var(--ink-light);font-size:13.5px;line-height:1.65;">
+          <strong>Apa Masalahnya?</strong> Tim Backend selesai membuat endpoint URL untuk checkout barang, tetapi tidak mencatat format data JSON yang diharapkan. Developer Frontend web dan Android kebingungan menebak parameter: <em>"Nama key-nya `user_id` atau `id_user`? Format tanggalnya apa? Kalau gagal dapat status apa?"</em>. Terjadi tanya jawab berulang-ulang di grup chat yang menghambat jadwal rilis.
+        </p>
+        <p style="color:var(--muted);font-size:13px;line-height:1.6;margin-top:6px;">
+          <strong>Contoh Nyata:</strong> Tim Backend menyajikan dokumentasi interaktif (Swagger / Postman). Developer Frontend cukup membuka halaman dokumentasi, melihat contoh payload request &amp; response, lalu menguji kirim data langsung dengan tombol <em>"Try It Out / Send"</em> tanpa perlu menebak-nebak lagi.
+        </p>
+        <div class="scenario-solution-box">
+          <strong>🛡️ Praktek Nyata di Laravel</strong><br>
+          Gunakan library seperti <strong>Dedoc Scramble</strong> atau <strong>L5-Swagger</strong>. Sistem akan membaca Route dan Form Request Laravel Anda, lalu menghasilkan halaman dokumentasi API interaktif berstandar OpenAPI secara otomatis.
+        </div>
+      </div>
+
+      <!-- 2. Analisis Dampak & Regression Testing -->
+      <div class="scenario-card">
+        <div class="scenario-card-header">
+          <h3 style="font-size:16.5px;font-weight:750;color:var(--ink);">
+            2. Analisis Dampak Perubahan (Mencegah: "Perbaiki Fitur A, Fitur B Malah Rusak")
+          </h3>
+          <span class="scenario-badge-amber">Anti-Regresi</span>
+        </div>
+        <p style="color:var(--ink-light);font-size:13.5px;line-height:1.65;">
+          <strong>Apa Masalahnya?</strong> Seorang developer mengubah format angka di modul keranjang belanja. Tanpa disadari, perubahan fungsi tersebut merusak rumus kalkulasi pajak PPN di faktur PDF dan pembukuan bulanan. Pemilik bisnis baru menyadarinya sebulan kemudian saat laporan keuangan selisih jutaan rupiah!
+        </p>
+        <p style="color:var(--muted);font-size:13px;line-height:1.6;margin-top:6px;">
+          <strong>Contoh Nyata:</strong> Sebelum sebuah kode digabungkan ke server utama, jalankan <strong>Automated Regression Testing</strong> dan <strong>Code Review</strong>. Sistem otomatis akan menguji seluruh fitur lama dalam hitungan detik. Jika ada satu modul terkait yang terganggu, proses deployment akan dihentikan seketika sampai bug diperbaiki.
+        </p>
+        <div class="scenario-solution-box">
+          <strong>🛡️ Disiplin Tim Developer</strong><br>
+          Terapkan aturan pull request wajib disetujui minimal 1 orang reviewer (<em>Peer Code Review</em>) dan seluruh pipeline pengujian otomatis di GitHub Actions harus berstatus hijau sebelum di-merge.
+        </div>
+      </div>
+
+      <div class="simple-example">
+        <div class="simple-example-header">
+          <h3>Skenario Nyata: Menambah Metode Pembayaran Transfer Bank</h3>
+          <span class="badge badge-amber">Manajemen Perubahan Terpadu</span>
+        </div>
+        <div class="simple-example-grid">
+          <div class="simple-example-item">
+            <span class="simple-example-label">1. Dokumentasi</span>
+            <p>Catat format request nomor rekening, webhook status pembayaran, dan contoh JSON response.</p>
+          </div>
+          <div class="simple-example-item">
+            <span class="simple-example-label">2. Cek Dampak Modul</span>
+            <p>Pastikan perubahan tidak merusak modul checkout e-wallet lama dan pembuatan faktur PDF invoice.</p>
+          </div>
+          <div class="simple-example-item">
+            <span class="simple-example-label">3. Uji Regresi</span>
+            <p>Jalankan test suite otomatis, verifikasi di server staging, baru kemudian rilis ke publik.</p>
+          </div>
+        </div>
+        <div class="simple-example-flow">
+          <span>Tulis Spek API</span><b>&rarr;</b><span>Uji Modul Terdampak</span><b>&rarr;</b><span>Rilis Tanpa Efek Samping</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- BAB 12: Kunci Sukses Web Developer -->
+    <section class="module-section" id="sec-tips">
+      <div class="module-header">
+        <div class="module-title-group">
+          <span class="icon-box icon-box-amber"><svg class="icon"><use href="#i-trophy"/></svg></span>
+          <div>
+            <span class="badge badge-gray" style="font-size:10px;margin-bottom:4px;">BAB 12</span>
+            <h2>Kunci Sukses Web Developer</h2>
+          </div>
+        </div>
+        <span class="badge badge-amber">Prinsip Karir</span>
+      </div>
+
+      <p style="color:var(--muted);font-size:14.5px;line-height:1.7;margin-bottom:20px;">
+        Menjadi web developer handal dan siap kerja adalah perjalanan bertahap. Berikut prinsip nyata untuk mempercepat transisi Anda dari pemula menjadi profesional:
+      </p>
+
+      <!-- 1. Escape Tutorial Hell -->
+      <div class="scenario-card">
+        <div class="scenario-card-header">
+          <h3 style="font-size:16.5px;font-weight:750;color:var(--ink);">
+            1. Menghindari Jebakan Menonton Saja (Tutorial Hell)
+          </h3>
+          <span class="scenario-badge-amber">Aksi Nyata</span>
+        </div>
+        <p style="color:var(--ink-light);font-size:13.5px;line-height:1.65;">
+          <strong>Apa Masalahnya?</strong> Banyak pemula merasa sudah menguasai koding setelah menonton puluhan jam video tutorial. Namun saat membuka text editor kosong untuk proyek sendiri, mereka mendadak bingung tidak tahu harus mulai mengetik apa dari baris pertama.
+        </p>
+        <p style="color:var(--muted);font-size:13px;line-height:1.6;margin-top:6px;">
+          <strong>Contoh Nyata:</strong> Menonton tutorial seperti naik taksi: Anda merasa tahu jalan, tetapi saat disuruh menyetir sendiri Anda tersesat. Terapkan aturan <strong>20/80</strong>: 20% waktu untuk memahami konsep dasar, dan 80% waktu untuk membangun aplikasi nyata dari nol (seperti sistem kasir warung, booking lapangan futsal, atau sistem absensi).
+        </p>
+        <div class="scenario-solution-box">
+          <strong>🛡️ Sikap Mental Developer Handal</strong><br>
+          Jangan takut saat layar terminal berwarna merah karena error! Pesan error adalah petunjuk terbaik komputer tentang apa yang perlu diperbaiki. Setiap bug yang Anda pecahkan sendiri melatih insting analisa Anda.
+        </div>
+      </div>
+
+      <!-- 2. Portofolio Nyata yang Dilirik Industri -->
+      <div class="scenario-card">
+        <div class="scenario-card-header">
+          <h3 style="font-size:16.5px;font-weight:750;color:var(--ink);">
+            2. Membangun Portofolio Nyata yang Memikat Klien &amp; Rekruter
+          </h3>
+          <span class="scenario-badge-green">Kesiapan Kerja</span>
+        </div>
+        <p style="color:var(--ink-light);font-size:13.5px;line-height:1.65;">
+          <strong>Apa Masalahnya?</strong> Mengirim CV yang hanya memuat daftar kata kunci teknis (HTML, PHP, MySQL) tanpa menyertakan bukti karya nyata yang bisa diakses langsung oleh rekruter atau calon klien.
+        </p>
+        <p style="color:var(--muted);font-size:13px;line-height:1.6;margin-top:6px;">
+          <strong>Contoh Nyata:</strong> Bangun minimal 2 proyek unggulan di GitHub yang dilengkapi dokumentasi file <code class="inline-code">README.md</code> rapi, diagram alur basis data, instruksi instalasi, tautan website live yang aktif, serta pengujian otomatis yang berstatus lolos (pass). Portofolio seperti ini 10x lebih meyakinkan daripada sertifikat teori semata.
+        </p>
+        <div class="scenario-solution-box">
+          <strong>🛡️ 3 Kunci Kompetensi Industri</strong><br>
+          Kuasai <strong>Fundamental</strong> (HTTP &amp; SQL), disiplin menggunakan <strong>Git</strong> untuk kolaborasi rapi, dan latih <strong>Komunikasi</strong> empati saat menerjemahkan kebutuhan bisnis klien menjadi fitur teknis.
+        </div>
+      </div>
+
+      <div class="simple-example">
+        <div class="simple-example-header">
+          <h3>Contoh Rencana Belajar: Proyek CRUD Pelanggan</h3>
+          <span class="badge badge-amber">Belajar Bertahap</span>
+        </div>
+        <div class="simple-example-grid">
+          <div class="simple-example-item">
+            <span class="simple-example-label">Minggu 1 — Fondasi</span>
+            <p>Pelajari HTML form, request HTTP, validasi input, tabel database, serta operasi SQL dasar.</p>
+          </div>
+          <div class="simple-example-item">
+            <span class="simple-example-label">Minggu 2 — Implementasi</span>
+            <p>Buat fitur tambah, lihat, ubah, dan hapus pelanggan dengan Laravel. Simpan proyek di Git.</p>
+          </div>
+          <div class="simple-example-item">
+            <span class="simple-example-label">Minggu 3 — Peningkatan</span>
+            <p>Tambahkan autentikasi, authorization, automated test, dokumentasi, lalu deploy untuk mendapat umpan balik.</p>
+          </div>
+        </div>
+        <p style="margin-top:12px;"><strong>Target akhirnya:</strong> bukan sekadar mengikuti tutorial, tetapi mampu menjelaskan alasan setiap keputusan dan memperbaiki masalah yang muncul.</p>
+      </div>
+
+      <div class="callout callout-green" style="margin-top:20px;align-items:center;">
+        <svg class="icon" style="width:28px;height:28px;color:var(--green);"><use href="#i-trophy"/></svg>
+        <div style="flex:1">
+          <strong style="font-size:15px;">Selamat Belajar &amp; Sukses Uji Kompetensi!</strong>
+          <p style="font-size:13px;margin:2px 0 0;color:#064e3b;">
+            Semoga materi komprehensif ini membantu Anda menghadapi uji kompetensi (ujikom) dengan penuh keyakinan dan kompetensi teknis yang solid. <em>Good luck, future software engineers!</em> 💻✨
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Next Step Action Card: Hari-2 di GitHub -->
+    <section class="card" style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: white; padding: 36px 32px; border-radius: 16px; margin-top: 28px; position: relative; overflow: hidden; border: 1px solid #334155; box-shadow: var(--shadow-lg);">
+      <div style="position:absolute;right:-30px;bottom:-30px;opacity:0.07;pointer-events:none;color:white;">
+        <svg style="width:240px;height:240px;" viewBox="0 0 24 24"><use href="#i-github"/></svg>
+      </div>
+      
+      <div style="position:relative;z-index:2;max-width:820px;">
+        <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(16, 185, 129, 0.18);border:1px solid rgba(16, 185, 129, 0.4);color:#6ee7b7;padding:5px 12px;border-radius:20px;font-size:11.5px;font-weight:750;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:14px;">
+          <span>🚀 Sesi Praktek Hands-On </span>
+        </div>
+        
+        <h2 style="font-size:24px;font-weight:800;color:white;margin-bottom:12px;line-height:1.35;">
+          Siap Praktek? Lanjut ke Pembelajaran 
+        </h2>
+        
+        <p style="font-size:14.5px;color:#cbd5e1;line-height:1.75;margin-bottom:24px;">
+          Selamat telah menyelesaikan 12 bab panduan teknis SKKNI! Tahap selanjutnya adalah terjun ke sesi praktek intensif: <strong>Integrasi Laravel dengan Template SB Admin 2</strong> — mulai dari slicing template Bootstrap, penyusunan layout Blade terstruktur, pembuatan Controller, hingga manajemen asset dan routing di Laravel.
+        </p>
+
+        <div style="display:flex;align-items:center;flex-wrap:wrap;gap:14px;">
+          <a href="https://github.com/syahrizal-as/training-webdev/blob/main/hari-2.md" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-lg" style="background:var(--green);border-color:var(--green);font-size:15px;padding:12px 24px;box-shadow:0 4px 14px rgba(16, 185, 129, 0.35);">
+            <svg class="icon"><use href="#i-github"/></svg>
+            <span>Buka Modul Hari-2 di GitHub</span>
+            <svg class="icon"><use href="#i-external"/></svg>
+          </a>
+          
+          <a href="index.html" class="btn btn-lg" style="background:rgba(255,255,255,0.08);color:white;border-color:rgba(255,255,255,0.22);font-size:15px;padding:12px 20px;">
+            <svg class="icon"><use href="#i-home"/></svg>
+            <span>Kembali ke Beranda (index.html)</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-top">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <span class="brandmark"><svg class="icon"><use href="#i-code"/></svg></span>
+          <div>
+            <strong style="font-size:16px;color:var(--ink);display:block;">WebDev Training Portal</strong>
+            <small style="color:var(--muted)">Panduan Teknis Pelatihan Web Developer • Syahrizal As</small>
+          </div>
+        </div>
+        <div class="footer-nav">
+          <a href="index.html">Beranda</a>
+          <a href="index.html#fasilitator">Fasilitator</a>
+          <a href="index.html#roles">Peran WebDev</a>
+          <a href="index.html#alur">Alur Belajar</a>
+          <!-- <a href="portal.html">Portal Lengkap</a> -->
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div>&copy; 2026 Web Developer Training. Hak Cipta Dilindungi.</div>
+        <div>Materi acuan teknis standar SKKNI untuk penguatan kompetensi digital.</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Script for Reading Progress & Copy Code -->
+  <script>
+    // Reading Progress Bar
+    window.addEventListener('scroll', () => {
+      const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      const progressBar = document.getElementById('readingProgress');
+      if (progressBar) progressBar.style.width = scrolled + '%';
+    });
+
+    // Copy Code functionality
+    function copyCode(btn) {
+      const codeBlock = btn.parentElement.querySelector('code');
+      if (!codeBlock) return;
+      navigator.clipboard.writeText(codeBlock.innerText).then(() => {
+        const originalText = btn.textContent;
+        btn.textContent = 'Tersalin! ✓';
+        btn.style.color = '#6ee7b7';
+        setTimeout(() => {
+          btn.textContent = originalText;
+          btn.style.color = '';
+        }, 2000);
+      });
+    }
+  </script>
 </body>
 </html>
