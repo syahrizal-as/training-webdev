@@ -97,7 +97,7 @@ composer create-project laravel/laravel:^13.0 sample-sbadmin
 Setelah Berhasil Install, Lakukan langkah berikut:
 ```bash
 cd sample-sbadmin
-composer run dev
+php artisan serve
 ```
 lalu buka browser dan akses `http://localhost:8000`
 hasil nya seperti berikut :
